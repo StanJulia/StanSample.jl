@@ -112,24 +112,32 @@ function stan_cmd_and_paths(exec_path::AbstractString, data_file::AbstractString
              stdout = log_file), (sample_file, log_file)
 end
 
+function stan_sample(model, data::NamedTuple, n_chains::Integer;
+                     output_base = default_output_base(model),
+                     data_file = output_base * ".data.R",
+                     rm_samples = true)
+    stan_dump(data_file, data; force = true)
+    stan_sample(model, data_file, n_chains; output_base = output_base, rm_samples = rm_samples)
+end
+
 """
 $(SIGNATURES)
 
-Sample `n_chains` from `model` using `data`. Return the full paths of the sample files.
+Sample `n_chains` from `model` using `data_file`. Return the full paths of the sample files.
 
 `output_base` is used to write the data file (using `StanDump.stan_dump`) and to determine
 the resulting names for the sampler output. It defaults to the source file name without the
 extension.
 
+When `data` is provided as a `NamedTuple`, it is written using `StanDump.stan_dump` first.
+
 When `rm_samples` (default: `true`), remove potential pre-existing sample files after
 compiling the model.
 """
-function stan_sample(model::StanModel, data, n_chains;
+function stan_sample(model::StanModel, data_file::AbstractString, n_chains::Integer;
                      output_base = default_output_base(model),
-                     data_file = output_base * ".data.R",
                      rm_samples = true)
     exec_path = ensure_executable(model)
-    stan_dump(data_file, data; force = true)
     rm_samples && rm.(find_samples(model))
     cmds_and_paths = [stan_cmd_and_paths(exec_path, data_file, output_base, id)
                       for id in 1:n_chains]
