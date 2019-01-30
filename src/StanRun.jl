@@ -9,6 +9,7 @@ module StanRun
 export StanModel, stan_sample
 
 using ArgCheck: @argcheck
+using Distributed: pmap
 using DocStringExtensions: SIGNATURES
 using Parameters: @unpack
 using StanDump: stan_dump
@@ -94,6 +95,23 @@ Default `output_base`, in the same directory as the model. Internal, not exporte
 """
 default_output_base(model::StanModel) = replace_ext(model.source_path, "", ".stan")
 
+sample_file_path(output_base::AbstractString, id::Int) = output_base * "_chain_$(id).csv"
+
+log_file_path(output_base::AbstractString, id::Int) = output_base * "_chain_$(id).log"
+
+"""
+$(SIGNATURES)
+
+Make a Stan command. Internal, not exported.
+"""
+function stan_cmd_and_paths(exec_path::AbstractString, data_file::AbstractString,
+                            output_base::AbstractString, id::Integer)
+    sample_file = sample_file_path(output_base, id)
+    log_file = log_file_path(output_base, id)
+    pipeline(`$(exec_path) sample id=$(id) data file=$(data_file) output file=$(sample_file)`;
+             stdout = log_file), (sample_file, log_file)
+end
+
 """
 $(SIGNATURES)
 
@@ -112,12 +130,13 @@ function stan_sample(model::StanModel, data, n_chains;
                      rm_samples = true)
     exec_path = ensure_executable(model)
     stan_dump(data_file, data; force = true)
-    sample_files = [output_base * "_chain_$(i).csv" for i in 1:n_chains]
     rm_samples && rm.(find_samples(model))
-    for (i, sample_file) in enumerate(sample_files)
-        run(`$(exec_path) sample id=$(i) data file=$(data_file) output file=$(sample_file)`)
+    cmds_and_paths = [stan_cmd_and_paths(exec_path, data_file, output_base, id)
+                      for id in 1:n_chains]
+    pmap(cmds_and_paths) do cmd_and_path
+        run(first(cmd_and_path))
+        last(cmd_and_path)
     end
-    sample_files
 end
 
 """
