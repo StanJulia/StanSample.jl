@@ -123,7 +123,8 @@ end
 """
 $(SIGNATURES)
 
-Sample `n_chains` from `model` using `data_file`. Return the full paths of the sample files.
+Sample `n_chains` from `model` using `data_file`. Return the full paths of the sample files
+and logs as pairs. In case of an error with a chain, the first value is `nothing`.
 
 `output_base` is used to write the data file (using `StanDump.stan_dump`) and to determine
 the resulting names for the sampler output. It defaults to the source file name without the
@@ -142,8 +143,8 @@ function stan_sample(model::StanModel, data_file::AbstractString, n_chains::Inte
     cmds_and_paths = [stan_cmd_and_paths(exec_path, data_file, output_base, id)
                       for id in 1:n_chains]
     pmap(cmds_and_paths) do cmd_and_path
-        run(first(cmd_and_path))
-        last(cmd_and_path)
+        cmd, (sample_path, log_path) = cmd_and_path
+        success(cmd) ? sample_path : nothing, log_path
     end
 end
 
