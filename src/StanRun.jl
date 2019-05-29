@@ -6,11 +6,11 @@ be used to sample from it.
 """
 module StanRun
 
-export StanModel, stan_sample
+export StanModel, StanModelError, stan_sample, stan_compile
 
 using ArgCheck: @argcheck
 using Distributed: pmap
-using DocStringExtensions: SIGNATURES
+using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 using Parameters: @unpack
 using StanDump: stan_dump
 
@@ -25,6 +25,12 @@ end
 struct StanModel{S <: AbstractString}
     source_path::S
     cmdstan_home::S
+end
+
+function Base.show(io::IO, model::StanModel)
+    @unpack source_path, cmdstan_home = model
+    print(io, "Stan model at $(source_path)",
+          "\n    (CmdStan home: $(model.cmdstan_home))")
 end
 
 """
@@ -73,19 +79,45 @@ function StanModel(source_path; cmdstan_home = get_cmdstan_home())
 end
 
 """
+$(TYPEDEF)
+
+Error thrown when a Stan model fails to compile. Accessing fields directly is part of the
+API.
+
+$(FIELDS)
+"""
+struct StanModelError <: Exception
+    model::StanModel
+    message::String
+end
+
+function Base.showerror(io::IO, e::StanModelError)
+    print(io, "error when compiling ", e.model, ":\n",
+          e.message)
+end
+
+"""
 $(SIGNATURES)
 
 Ensure that a compiled model executable exists, and return its path.
+
+If compilation fails, a `StanModelError` is returned instead.
 
 Internal, not exported.
 """
 function ensure_executable(model::StanModel)
     @unpack cmdstan_home = model
     exec_path = executable_path(model)
-    cd(cmdstan_home) do
-        run(`make -f $(cmdstan_home)/makefile -C $(cmdstan_home) $(exec_path)`)
+    error_output = IOBuffer()
+    is_ok = cd(cmdstan_home) do
+        success(pipeline(`make -f $(cmdstan_home)/makefile -C $(cmdstan_home) $(exec_path)`;
+                         stderr = error_output))
     end
-    exec_path
+    if is_ok
+        exec_path
+    else
+        throw(StanModelError(model, String(take!(error_output))))
+    end
 end
 
 """
@@ -110,6 +142,16 @@ function stan_cmd_and_paths(exec_path::AbstractString, data_file::AbstractString
     log_file = log_file_path(output_base, id)
     pipeline(`$(exec_path) sample id=$(id) data file=$(data_file) output file=$(sample_file)`;
              stdout = log_file), (sample_file, log_file)
+end
+
+"""
+$(SIGNATURES)
+
+Compile a model, throwing an error if it failed.
+"""
+function stan_compile(model)
+    ensure_executable(model)
+    nothing
 end
 
 function stan_sample(model, data::NamedTuple, n_chains::Integer;

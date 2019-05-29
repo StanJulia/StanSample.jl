@@ -22,7 +22,7 @@ pkg> add https://github.com/tpapp/StanRun.jl.git
 You need a working [CmdStan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like
 ```julia
 # CmdStan setup
-ENV["JULIA_CMDSTAN_HOME"] = expanduser("~/src/cmdstan-2.18.1/") # replace with your path
+ENV["JULIA_CMDSTAN_HOME"] = expanduser("~/src/cmdstan-2.19.1/") # replace with your path
 ```
 
 ## Usage

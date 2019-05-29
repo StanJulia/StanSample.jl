@@ -22,3 +22,13 @@ using StanRun, Test
     @test first.(chains) == sort(StanRun.find_samples(OUTPUT_BASE)) ==
         [joinpath(SAMPLEDIR, "test_chain_$(i).csv") for i in 1:n_chains]
 end
+
+@testset "model error and message" begin
+    model = StanModel(joinpath(@__DIR__, "test_incorrect.stan"))
+    try
+        stan_compile(model)
+    catch e
+        @test e isa StanRun.StanModelError
+        @test occursin("Variable \"x\" does not exist", e.message)
+    end
+end
