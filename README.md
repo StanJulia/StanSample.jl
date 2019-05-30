@@ -6,7 +6,7 @@
 ![Lifecycle](https://img.shields.io/badge/lifecycle-retired-orange.svg)
 ![Lifecycle](https://img.shields.io/badge/lifecycle-archived-red.svg)
 ![Lifecycle](https://img.shields.io/badge/lifecycle-dormant-blue.svg) -->
-[![Build Status](https://travis-ci.com/tpapp/StanRun.jl.svg?branch=master)](https://travis-ci.com/tpapp/StanRun.jl)
+[![Build Status](https://travis-ci.org/tpapp/StanRun.jl.svg?branch=master)](https://travis-ci.org/tpapp/StanRun.jl)
 [![codecov.io](http://codecov.io/github/tpapp/StanRun.jl/coverage.svg?branch=master)](http://codecov.io/github/tpapp/StanRun.jl?branch=master)
 
 A collection of routines for running [CmdStan](https://mc-stan.org/users/interfaces/cmdstan.html).
@@ -30,7 +30,7 @@ ENV["JULIA_CMDSTAN_HOME"] = expanduser("~/src/cmdstan-2.19.1/") # replace with y
 ```julia
 using StanRun
 model = StanModel("/path/to/model.stan") # directory should be writable, for compilation
-data = (N = 100, x = randn(N, 1000))     # data as a NamedTuple
+data = (N = 100, x = randn(N, 1000))     # in a format supported by stan_dump
 chains = stan_sample(model, data, 5)     # 5 chain paths and log files
 ```
 
