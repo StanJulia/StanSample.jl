@@ -1,7 +1,7 @@
 name = "StanRun"
 uuid = "d49c3b98-12bb-537a-8c40-37c13654c7f4"
 authors = ["Tamas K. Papp <tkpapp@gmail.com>"]
-version = "0.2.0"
+version = "0.2.1"
 
 [deps]
 ArgCheck = "dce04be8-c92d-5529-be00-80e4d2c0e197"
