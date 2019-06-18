@@ -1,5 +1,5 @@
 name = "StanSample"
-#uuid = "d49c3b98-12bb-537a-8c40-37c13654c7f4"
+uuid = "d5108340-3788-5656-91a1-cc24fec11e37"
 authors = ["Rob J Goedman <goedman@icloud.com>"]
 version = "0.0.1"
 
