@@ -25,6 +25,8 @@ You need a working [CmdStan](https://mc-stan.org/users/interfaces/cmdstan.html) 
 ENV["JULIA_CMDSTAN_HOME"] = expanduser("~/src/cmdstan-2.19.1/") # replace with your path
 ```
 
+This package is derived from Tamas Papp's [StanRun.jl]() package.
+
 ## Usage
 
 It is recommended that you start your Julia process with multiple worker processes to take advantage of parallel sampling, eg
