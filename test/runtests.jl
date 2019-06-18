@@ -1,4 +1,4 @@
-using StanRun, Test
+using StanJulia, Test
 
 @testset "cmdstan run and results" begin
     # setup environment
@@ -10,8 +10,8 @@ using StanRun, Test
     # run a model
     model = StanModel(SRC)
     @test repr(model) ==
-        "Stan model at $(SRC)\n    (CmdStan home: $(StanRun.get_cmdstan_home()))"
-    exec_path = StanRun.ensure_executable(model)
+        "Stan model at $(SRC)\n    (CmdStan home: $(StanJulia.get_cmdstan_home()))"
+    exec_path = StanJulia.ensure_executable(model)
     @test isfile(exec_path)
     n_chains = 5
     OUTPUT_BASE = joinpath(SAMPLEDIR, "test")
@@ -22,13 +22,13 @@ using StanRun, Test
         @test ctime(sample) ≥ time_before
         @test ctime(sample) ≥ time_before
     end
-    @test first.(chains) == sort(StanRun.find_samples(OUTPUT_BASE)) ==
+    @test first.(chains) == sort(StanJulia.find_samples(OUTPUT_BASE)) ==
         [joinpath(SAMPLEDIR, "test_chain_$(i).csv") for i in 1:n_chains]
 end
 
 @testset "unset cmdstan environment" begin
     withenv("JULIA_CMDSTAN_HOME" => nothing) do
-        @test_throws ErrorException StanRun.get_cmdstan_home()
+        @test_throws ErrorException StanJulia.get_cmdstan_home()
     end
 end
 
@@ -37,7 +37,7 @@ end
     try
         stan_compile(model)
     catch e
-        @test e isa StanRun.StanModelError
+        @test e isa StanJulia.StanModelError
         @test occursin("Variable \"x\" does not exist", e.message)
         io = IOBuffer()
         showerror(io, e)

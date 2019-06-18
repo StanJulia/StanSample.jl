@@ -8,7 +8,7 @@ be used to sample from it.
 [`StanModelError`](@ref) is thrown if this fails, which contains the error messages from
 `stanc`.
 """
-module StanRun
+module StanSample
 
 export StanModel, StanModelError, stan_sample, stan_compile
 
