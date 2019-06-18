@@ -11,6 +11,11 @@
 
 A collection of routines for running [CmdStan](https://mc-stan.org/users/interfaces/cmdstan.html).
 
+
+## Important note
+
+### This is not a package being tested for release. If succesful, it might be used in CmdStan.jl v6.
+
 ## Installation
 
 This package is registered. Install with
