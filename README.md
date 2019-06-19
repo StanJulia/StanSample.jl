@@ -18,10 +18,10 @@ A collection of routines for running [CmdStan](https://mc-stan.org/users/interfa
 
 ## Installation
 
-This package is registered. Install with
+This package is not registered. Install with
 
 ```julia
-pkg> add StanSample
+pkg> add https://github.com/StanJulia/StanSample.jl
 ```
 
 You need a working [CmdStan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like
@@ -46,9 +46,6 @@ Use this package like this:
 
 ```julia
 using StanSample
-model = StanModel("/path/to/model.stan") # directory should be writable, for compilation
-data = (N = 100, x = randn(N, 1000))     # in a format supported by stan_dump
-chains = stan_sample(model, data, 5)     # 5 chain paths and log files
 ```
 
 See the docstrings (in particular `?StanSample`) for more.
