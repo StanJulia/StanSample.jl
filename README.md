@@ -14,7 +14,7 @@ A collection of routines for running [CmdStan](https://mc-stan.org/users/interfa
 
 ## Important note
 
-### This is not a package being tested for release. If succesful, it might be used in CmdStan.jl v6.
+### This is not a package being tested for release. If succesful, it might be used in CmdStan.jl v6 or as a support package underlying CmdStan.jl,
 
 ## Installation
 
