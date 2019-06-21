@@ -10,18 +10,28 @@ be used to sample from it.
 """
 module StanSample
 
-using Unicode, DelimitedFiles, Distributed
+using Reexport
+
+@reexport using Unicode, DelimitedFiles, Distributed, OrderedCollections
+@reexport using StanDump
+@reexport using StanSamples
+@reexport using StanRun
+@reexport using MCMCChains
+
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
-using StanDump
-using StanSamples
-using StanRun
+using CmdStan: update_model_file, convert_a3d
 
 import StanRun: stan_cmd_and_paths, stan_sample
 
 include("read_stanrun_samples.jl")
+include("sample_defaults.jl")
+include("create_subcmd.jl")
 
 export StanModel, StanModelError, stan_sample, stan_compile,
-  read_samples, read_stanrun_samples
+  read_samples, read_stanrun_samples, sample_defaults, adapt_defaults,
+  random_defaults, refresh_defaults, SamplerSettings, sampler_settings,
+  sample_ntproto, adapt_ntproto, random_ntproto, refresh_ntproto,
+  create_subcmd, update_model_file, convert_a3d
 
 """
 $(SIGNATURES)
@@ -29,12 +39,15 @@ $(SIGNATURES)
 Make a Stan command. Internal, not exported.
 """
 function stan_cmd_and_paths(exec_path::AbstractString,
-                            output_base::AbstractString, id::Integer)
+                            output_base::AbstractString, id::Integer,
+                            settings::SamplerSettings)
     #println("Using StanSample version of stan_cmd_and_paths.\n")
     sample_file = StanRun.sample_file_path(output_base, id)
     log_file = StanRun.log_file_path(output_base, id)
     data_file = data_file_path(output_base, id)
-    cmd = `$(exec_path) sample id=$(id) data file=$(data_file) output file=$(sample_file)`
+    subcmd = create_subcmd(settings)
+    cmd = `$(exec_path) $(subcmd) id=$(id) data file=$(data_file) output file=$(sample_file)`
+    cmd = `$cmd refresh=$(settings.refresh[:refresh])`
     #println(cmd)
     pipeline(cmd; stdout = log_file), (sample_file, log_file)
 end
@@ -64,11 +77,12 @@ compiling the model.
 function stan_sample(model::StanModel,
                     n_chains::Integer;
                     output_base = StanRun.default_output_base(model),
-                    rm_samples = true)
+                    rm_samples = true,
+                    settings = sampler_settings)
     #println("Using StanSample version of stan_sample.\n")
     exec_path = StanRun.ensure_executable(model)
     rm_samples && rm.(StanRun.find_samples(model))
-    cmds_and_paths = [stan_cmd_and_paths(exec_path, output_base, id)
+    cmds_and_paths = [stan_cmd_and_paths(exec_path, output_base, id, settings)
                       for id in 1:n_chains]
     pmap(cmds_and_paths) do cmd_and_path
         cmd, (sample_path, log_path) = cmd_and_path
@@ -79,9 +93,13 @@ end
 function stan_sample(model, data::Union{Dict, NamedTuple}, n_chains::Integer;
                      output_base = StanRun.default_output_base(model),
                      data_file = output_base * ".data.R",
-                     rm_samples = true)
+                     rm_samples = true,
+                     settings = sampler_settings)
     stan_dump(data_file, data; force = true)
-    stan_sample(model, data_file, n_chains; output_base = output_base, rm_samples = rm_samples)
+    stan_sample(model, data_file, n_chains; 
+      output_base = output_base, 
+      rm_samples = rm_samples,
+      settings = sampler_settings)
 end
 
 

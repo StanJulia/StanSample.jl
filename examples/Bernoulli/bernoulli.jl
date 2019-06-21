@@ -1,9 +1,6 @@
 ######### CmdStan program example  ###########
 
-using CmdStan: update_model_file, convert_a3d
-using MCMCChains
-using StanDump, StanRun, StanSample
-using Unicode, DelimitedFiles, CSV
+using StanSample
 
 ProjDir = @__DIR__
 cd(ProjDir) #do
@@ -41,20 +38,20 @@ cd(ProjDir) #do
   update_model_file(joinpath(tmpdir, "bernoulli.stan"), strip(bernoulli_model))
   sm = StanModel(joinpath(tmpdir, "bernoulli.stan"))
   
+  sampler_settings.adapt[:delta]=0.85
+  
   stan_compile(sm)
   
-  stan_sample(sm, bernoulli_data[1], 4)
+  stan_sample(sm, 4)
   
-  exec_path = StanRun.ensure_executable(sm)
+  println()
   output_base = StanRun.default_output_base(sm)
-  pipelin_cmd = StanSample.stan_cmd_and_paths(exec_path, output_base, 1)
-  
   nt = read_samples(output_base*"_chain_1.csv")
-  display(nt)
+  #display(nt)
   println()
   
   a3d, cnames = read_stanrun_samples(output_base, "_chain")
   chns = convert_a3d(a3d, cnames, Val(:mcmcchains); start=1)
-  describe(chns)
+  cdf = describe(chns)
   
 #end # cd
