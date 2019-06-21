@@ -1,6 +1,6 @@
 name = "StanSample"
 uuid = "d5108340-3788-5656-91a1-cc24fec11e37"
-authors = ["StanJulia <goedman@icloud.com>"]
+authors = ["Rob J Goedman <goedman@icloud.com>"]
 version = "0.0.1"
 
 [deps]
