@@ -17,6 +17,7 @@ using Reexport
 @reexport using StanRun
 @reexport using StanSamples
 @reexport using MCMCChains
+@reexport using Parameters
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 using CmdStan: update_model_file, convert_a3d
@@ -24,13 +25,15 @@ using CmdStan: update_model_file, convert_a3d
 import StanRun: stan_cmd_and_paths, default_output_base
 #import StanRun: stan_sample
 
-include("create_R_data_files.jl")
-include("read_stanrun_samples.jl")
-include("sample_defaults.jl")
-include("stan_sample.jl")
-include("stan_cmd_and_paths.jl")
+include("utilities/create_R_data_files.jl")
+include("utilities/read_stanrun_samples.jl")
+include("utilities/sample_defaults.jl")
+include("utilities/stan_sample.jl")
+include("utilities/stan_cmd_and_paths.jl")
+include("model/CmdStanModel.jl")
 
-export  read_stanrun_samples, update_settings,
+export  CmdStanModel,
+  read_stanrun_samples, update_settings,
   update_model_file, convert_a3d, data_file_path,
   default_output_base, create_R_data_files
 

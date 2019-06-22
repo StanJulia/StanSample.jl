@@ -25,31 +25,26 @@ cd(ProjDir) #do
     Dict("N" => 10, "y" => [0, 0, 0, 0, 0, 0, 1, 0, 1, 1]),
     Dict("N" => 10, "y" => [0, 0, 0, 1, 0, 0, 0, 1, 0, 1])
   ]
+  
   bernoulli_nt = (N=10, y=[0,1,0,1,0,0,0,0,0,1])
 
   tmpdir = joinpath(ProjDir, "tmp")
-  if !isdir(tmpdir)
-    mkdir(tmpdir)
-  end
-  #tmpdir = mktempdir()
+  stanmodel = CmdStanModel("bernoulli",  bernoulli_model, tmpdir=tmpdir);
+ 
+  update_settings(stanmodel, (delta=0.85,))
   
-  update_model_file(joinpath(tmpdir, "bernoulli.stan"), strip(bernoulli_model))
-  sm = StanModel(joinpath(tmpdir, "bernoulli.stan"))
-  
-  update_settings((delta=0.85,))
-  
-  stan_compile(sm)
+  stan_compile(stanmodel.sm)
   println()
-  @show stan_sample(sm, bernoulli_nt, 4)
+  @show stan_sample(stanmodel.sm, bernoulli_nt, 4)
   println()
-  @show stan_sample(sm, bernoulli_data[1], 4)  
+  @show stan_sample(stanmodel.sm, bernoulli_data[1], 4)  
   println()
-  @show stan_sample(sm, bernoulli_data, 4)  
+  @show stan_sample(stanmodel.sm, bernoulli_data, 4)  
   println()
-  @show stan_sample(sm, bernoulli_data[1:3], 4)  
+  @show stan_sample(stanmodel.sm, bernoulli_data[1:3], 4)  
   println()
   
-  output_base = default_output_base(sm)
+  output_base = default_output_base(stanmodel.sm)
   nt = read_samples(output_base*"_chain_1.csv")
   println()
   

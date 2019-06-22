@@ -40,22 +40,22 @@ end
 sampler_settings = SamplerSettings(sample_defaults, adapt_defaults,
   random_defaults, refresh_defaults)
 
-function update_settings(s)
+function update_settings(model, s::T) where {T <: NamedTuple}
   for key in keys(s)
-    if key in keys(sample_defaults)
-      sample_defaults[key = values(s[key])]
+    if key in keys(model.settings.sample)
+      model.settings.sample[key = values(s[key])]
       continue
     end
-    if key in keys(adapt_defaults)
-      adapt_defaults[key]= values(s[key])
+    if key in keys(model.settings.adapt)
+      model.settings.adapt[key]= values(s[key])
       continue
     end
-    if key in keys(random_defaults)
-      random_defaults[key] = values(s[key])
+    if key in keys(model.settings.random)
+      model.settings.random[key] = values(s[key])
       continue
     end
-    if key in keys(refresh_defaults)
-      refres_defaults[key] = values(s[key])
+    if key in keys(model.settings.refresh)
+      model.settings.refresh[key] = values(s[key])
       continue
     end
     error("Improper setting name: $key")

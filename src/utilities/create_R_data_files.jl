@@ -11,6 +11,3 @@ function create_R_data_files(sm::StanModel, data::T, nchains::Int) where {T <: V
     end
   end
 end
-      
-  
-      
