@@ -25,29 +25,32 @@ cd(ProjDir) #do
     Dict("N" => 10, "y" => [0, 0, 0, 0, 0, 0, 1, 0, 1, 1]),
     Dict("N" => 10, "y" => [0, 0, 0, 1, 0, 0, 0, 1, 0, 1])
   ]
+  bernoulli_nt = (N=10, y=[0,1,0,1,0,0,0,0,0,1])
 
   tmpdir = joinpath(ProjDir, "tmp")
   if !isdir(tmpdir)
     mkdir(tmpdir)
   end
-  
-  for (i, d) in enumerate(bernoulli_data)
-    stan_dump(joinpath(tmpdir, "bernoulli_data_$i.R"), d, force=true)
-  end
+  #tmpdir = mktempdir()
   
   update_model_file(joinpath(tmpdir, "bernoulli.stan"), strip(bernoulli_model))
   sm = StanModel(joinpath(tmpdir, "bernoulli.stan"))
   
-  sampler_settings.adapt[:delta]=0.85
+  update_settings((delta=0.85,))
   
   stan_compile(sm)
-  
-  stan_sample(sm, 4)
-  
   println()
-  output_base = StanRun.default_output_base(sm)
+  @show stan_sample(sm, bernoulli_nt, 4)
+  println()
+  @show stan_sample(sm, bernoulli_data[1], 4)  
+  println()
+  @show stan_sample(sm, bernoulli_data, 4)  
+  println()
+  @show stan_sample(sm, bernoulli_data[1:3], 4)  
+  println()
+  
+  output_base = default_output_base(sm)
   nt = read_samples(output_base*"_chain_1.csv")
-  #display(nt)
   println()
   
   a3d, cnames = read_stanrun_samples(output_base, "_chain")

@@ -1,5 +1,3 @@
-using OrderedCollections
-
 sample_defaults = OrderedDict(
   :num_samples => 1000,
   :num_warmup => 1000,
@@ -41,3 +39,25 @@ end
 
 sampler_settings = SamplerSettings(sample_defaults, adapt_defaults,
   random_defaults, refresh_defaults)
+
+function update_settings(s)
+  for key in keys(s)
+    if key in keys(sample_defaults)
+      sample_defaults[key = values(s[key])]
+      continue
+    end
+    if key in keys(adapt_defaults)
+      adapt_defaults[key]= values(s[key])
+      continue
+    end
+    if key in keys(random_defaults)
+      random_defaults[key] = values(s[key])
+      continue
+    end
+    if key in keys(refresh_defaults)
+      refres_defaults[key] = values(s[key])
+      continue
+    end
+    error("Improper setting name: $key")
+  end
+end

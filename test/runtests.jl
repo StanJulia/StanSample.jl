@@ -5,3 +5,4 @@ using StanSample, Test
   s = summarize(chns)
   @test s[:theta, :mean][1] ≈ 0.34 atol=0.1
 end
+
