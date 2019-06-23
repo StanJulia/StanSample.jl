@@ -9,9 +9,6 @@
 [![Build Status](https://travis-ci.org/StanJulia/StanSample.jl.svg?branch=master)](https://travis-ci.org/StanJulia/StanSample.jl)
 [![codecov.io](http://codecov.io/github/StanJulia/StanSample.jl/coverage.svg?branch=master)](http://codecov.io/github/StanJulia/StanSample.jl?branch=master)
 
-A collection of routines for running [CmdStan](https://mc-stan.org/users/interfaces/cmdstan.html).
-
-
 ## Important note
 
 ### This is not a package being tested for release. If succesful, it might be used in CmdStan.jl v6 or as a support package underlying CmdStan.jl,
