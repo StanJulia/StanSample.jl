@@ -2,7 +2,7 @@ import Base: show
 
 """
 
-# Available top level Method
+# AbstractStanMethod
 
 ### Method
 ```julia
@@ -10,10 +10,10 @@ import Base: show
 *  Optimize::Method             : Optimization
 *  Diagnose::Method             : Diagnostics
 *  Variational::Method          : Variational Bayes
-*  Quamtities:Method            : Generated_Quantities
+*  Generate_Quamtities:Method   : Generate_Quantities
 ```
 """ 
-abstract type Method end
+abstract type AbstractStanMethod end
 
 mutable struct Random
   seed::Int64
@@ -21,13 +21,13 @@ end
 Random(;seed::Number=-1) = Random(seed)
 
 mutable struct Output
-  file::String
-  diagnostic_file::String
+  output_base::AbstractString
+  file::AbstractString
+  diagnostic_file::AbstractString
   refresh::Int64
 end
-Output(;file::String="", diagnostic_file::String="", refresh::Number=100) =
-  Output(file, diagnostic_file, refresh)
-
+Output(;output_base="", file="", diagnostic_file="", refresh=100) =
+  Output(output_base, file, diagnostic_file, refresh)
 
 """
 
@@ -247,7 +247,7 @@ Adapt(;engaged::Bool=true, gamma::Number=0.05, delta::Number=0.8,
 
 # Sample type and constructor
 
-Settings for method=Sample() in Stanmodel. 
+Settings for method=Sample() in CmdStanSampleModel. 
 
 ### Method
 ```julia
@@ -273,12 +273,12 @@ Sample(;
 
 ### Related help
 ```julia
-?Stanmodel                      : Create a StanModel
+?CmdStanSampleModel             : Create a StanModel
 ?Adapt
 ?SamplingAlgorithm
 ```
 """
-mutable struct Sample <: Method
+mutable struct Sample <: AbstractStanMethod
   num_samples::Int64
   num_warmup::Int64
   save_warmup::Bool

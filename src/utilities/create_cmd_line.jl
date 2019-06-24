@@ -11,17 +11,17 @@ cmdline(m)
 
 ### Required arguments
 ```julia
-* `m::Stanmodel`                : Stanmodel
+* `m::CmdStanSampleModel`                : CmdStanSampleModel
 ```
 
 ### Related help
 ```julia
-?Stanmodel                      : Create a StanModel
+?CmdStanSampleModel                      : Create a CmdStanSampleModel
 ```
 """
 function cmdline(m)
   cmd = ``
-  if isa(m, Stanmodel)
+  if isa(m, CmdStanSampleModel)
     # Handle the model name field for unix and windows
     cmd = @static Sys.isunix() ? `./$(getfield(m, :name))` : `cmd /c $(getfield(m, :name)).exe`
 

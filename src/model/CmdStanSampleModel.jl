@@ -1,46 +1,76 @@
+import Base: show
+
+"""
+# CmdStanSampleModel 
+
+Create a CmdStanSampleModel. 
+
+### Required arguments
+```julia
+* `name::AbstractString`        : Name for the model
+* `model::AbstractString`       : Stan model source
+```
+
+### Optional arguments
+```julia
+* `method::AbstractStanMethod`  : See ?Method (default: Sample())
+* `random::Random`              : Random seed settings
+* `output::Output`              : File output options
+* `tmpdir::AbstractString`      : Directory where output files are stored
+* `summary=true`                : Create computed stan summary
+* `printsummary=true`           : Show computed stan summary
+```
+
+"""
 mutable struct CmdStanSampleModel
   name::AbstractString
   model::AbstractString
-  num_chains::Int
-  num_warmup::Int
-  num_samples::Int
-  thin::Int
-  id::Int
-  model::String
-  model_file::String
-  monitors::Vector{String}
-  data::Vector{DataDict}
-  data_file::String
-  command::Vector{Base.AbstractCmd}
   method::Method
   random::Random
-  init::Vector{DataDict}
-  init_file::String
   output::Output
-  output_base::AbstractString
+  tmpdir::AbstractString
+  summary::Bool
   printsummary::Bool
   sm::StanRun.StanModel
-  pdir::String
-  tmpdir::AbstractString
-  output_format::Symbol
-  settings::StanSample.SamplerSettings
 end
 
-function CmdStanSampleModel(name::AbstractString, model::AbstractString;
-  tmpdir = mktempdir(), 
-  settings = StanSample.sampler_settings)
+function CmdStanSampleModel(
+  name::AbstractString,
+  model::AbstractString;
+  method = Sampler(),
+  random = Random(),
+  output = Output(),
+  tmpdir = mktempdir())
   
   !isdir(tmpdir) && mkdir(tmpdir)
+  
   update_model_file(joinpath(tmpdir, "$(name).stan"), strip(model))
   sm = StanModel(joinpath(tmpdir, "$(name).stan"))
-  output_base = default_output_base(sm)
+  
+  output.output_base = default_output_base(sm)
+  
   stan_compile(sm)
-  CmdStanSampleModel(name, model, tmpdir, output_base, sm, settings)
+  
+  CmdStanSampleModel(name, model, method, random, output, tmpdir, false, false, sm)
 end
 
-function Base.show(io::IO, model::CmdStanSampleModel)
-    @unpack tmpdir, sm = model
-    println(io, "Stan model at `$(tmpdir)`")
-    println("`cmdstan` executable is at: $(sm.cmdstan_home))")
+function model_show(io::IO, m::CmdStanSampleModel, compact::Bool)
+  println("  name =                    \"$(m.name)\"")
+  println("  model_file =              \"$(m.model_file)\"")
+  println("  output =                  Output()")
+  println("    file =                    \"$(m.output.file)\"")
+  println("    diagnostics_file =        \"$(m.output.diagnostic_file)\"")
+  println("    refresh =                 $(m.output.refresh)")
+  println("  tmpdir =                 \"$(m.tmpdir)\"")
+  if isa(m.method, Sample)
+    sample_show(io, m.method, compact)
+  elseif isa(m.method, Optimize)
+    optimize_show(io, m.method, compact)
+  elseif isa(m.method, Variational)
+    variational_show(io, m.method, compact)
+  else
+    diagnose_show(io, m.method, compact)
+  end
 end
 
+show(io::IO, m::CmdStanSampleModel) = model_show(io, m, false)
