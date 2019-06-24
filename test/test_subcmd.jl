@@ -25,7 +25,7 @@ using StanSample, Test
       Dict("N" => 10, "y" => [0, 0, 0, 1, 0, 0, 0, 1, 0, 1])
     ]
   
-  csm = CmdStanSampleModel("bernoulli", bernoulli_model)
+  cssm = CmdStanSampleModel("bernoulli", bernoulli_model)
 
 end
 

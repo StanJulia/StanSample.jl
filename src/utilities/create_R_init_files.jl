@@ -1,4 +1,4 @@
-function create_R_data_files(sm::StanModel, init::T, num_chains::Int) where {T <: Vector}
+function create_R_init_files(sm::StanModel, init::T, num_chains::Int) where {T <: Vector}
   if length(init) == num_chains
     for (i, d) in enumerate(init)
       stan_dump(sm.output.output_base*"_init_$i.R", d, force=true)
