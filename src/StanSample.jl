@@ -35,6 +35,7 @@ include("utilities/stan_cmd_and_paths.jl")
 include("model/CmdStanSampleModel.jl")
 
 export  CmdStanSampleModel,
+  Sample, Adapt, 
   read_stanrun_samples, update_settings,
   update_model_file, convert_a3d, data_file_path,
   default_output_base, create_R_data_files

@@ -25,7 +25,7 @@ Create a CmdStanSampleModel.
 mutable struct CmdStanSampleModel
   name::AbstractString
   model::AbstractString
-  method::Method
+  method::AbstractStanMethod
   random::Random
   output::Output
   tmpdir::AbstractString
@@ -37,7 +37,7 @@ end
 function CmdStanSampleModel(
   name::AbstractString,
   model::AbstractString;
-  method = Sampler(),
+  method = Sample(),
   random = Random(),
   output = Output(),
   tmpdir = mktempdir())
@@ -56,7 +56,6 @@ end
 
 function model_show(io::IO, m::CmdStanSampleModel, compact::Bool)
   println("  name =                    \"$(m.name)\"")
-  println("  model_file =              \"$(m.model_file)\"")
   println("  output =                  Output()")
   println("    file =                    \"$(m.output.file)\"")
   println("    diagnostics_file =        \"$(m.output.diagnostic_file)\"")

@@ -3,7 +3,7 @@
 using StanSample
 
 ProjDir = @__DIR__
-cd(ProjDir) do
+cd(ProjDir) #do
 
   bernoulli_model = "
   data { 
@@ -19,21 +19,16 @@ cd(ProjDir) do
   }
   ";
 
-  bernoulli_data = [
-    Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1]),
-    Dict("N" => 10, "y" => [0, 1, 0, 0, 0, 0, 1, 0, 0, 1]),
-    Dict("N" => 10, "y" => [0, 0, 0, 0, 0, 0, 1, 0, 1, 1]),
-    Dict("N" => 10, "y" => [0, 0, 0, 1, 0, 0, 0, 1, 0, 1])
-  ]
-  
-  bernoulli_nt = (N=10, y=[0,1,0,1,0,0,0,0,0,1])
+  bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
   tmpdir = joinpath(ProjDir, "tmp")
-  global stanmodel = CmdStanSampleModel("bernoulli",  bernoulli_model, tmpdir=tmpdir);
-  #global stanmodel = CmdStanSampleModel("bernoulli",  bernoulli_model);
- 
-  update_settings(stanmodel, (delta=0.85,))
+  stanmodel = CmdStanSampleModel("bernoulli", bernoulli_model;
+    tmpdir = tmpdir,
+    method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
   
+  stanmodel
+  
+  #=
   @show stan_sample(stanmodel.sm, bernoulli_nt, 4)
   println()
   @show stan_sample(stanmodel.sm, bernoulli_data[1], 4)  
@@ -48,5 +43,6 @@ cd(ProjDir) do
   a3d, cnames = read_stanrun_samples(stanmodel.output_base, "_chain")
   global chns = convert_a3d(a3d, cnames, Val(:mcmcchains); start=1)
   cdf = describe(chns)
+  =#
   
-end # cd
+  #end # cd

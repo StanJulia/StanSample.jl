@@ -23,46 +23,39 @@ compiling the model.
 """
 function stan_sample(model::StanModel, data::T, n_chains::Integer;
                      output_base = default_output_base(model),
-                      rm_samples = true,
-                     settings = sampler_settings) where {T<:NamedTuple}
+                      rm_samples = true) where {T<:NamedTuple}
     for i in 1:n_chains
       stan_dump(default_output_base(model)*"_data_$i.R", data, force=true)
     end
     _stan_sample(model, n_chains; 
       output_base = output_base, 
-      rm_samples = rm_samples,
-      settings = sampler_settings)
+      rm_samples = rm_samples)
 end
 
 function stan_sample(model::StanModel,  data::T, n_chains::Integer;
                      output_base = default_output_base(model),
-                     rm_samples = true,
-                     settings = sampler_settings) where {T<:Dict}
+                     rm_samples = true) where {T<:Dict}
   for i in 1:n_chains
     stan_dump(default_output_base(model)*"_data_$i.R", data, force=true)
   end
   _stan_sample(model, n_chains; 
       output_base = output_base, 
-      rm_samples = rm_samples,
-      settings = sampler_settings)
+      rm_samples = rm_samples)
 end
 
 function stan_sample(model::StanModel,  data::T, n_chains::Integer;
                      output_base = default_output_base(model),
-                     rm_samples = true,
-                     settings = sampler_settings) where {T<:Vector}
+                     rm_samples = true) where {T<:Vector}
     create_R_data_files(model, data, n_chains)
     _stan_sample(model, n_chains; 
       output_base = output_base, 
-      rm_samples = rm_samples,
-      settings = sampler_settings)
+      rm_samples = rm_samples)
 end
 
 function _stan_sample(model::StanModel,
                     n_chains::Integer;
                     output_base = default_output_base(model),
-                    rm_samples = true,
-                    settings = sampler_settings)
+                    rm_samples = true,)
     #println("Using StanSample version of stan_sample.\n")
     exec_path = StanRun.ensure_executable(model)
     rm_samples && rm.(StanRun.find_samples(model))
