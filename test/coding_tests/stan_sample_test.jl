@@ -19,10 +19,9 @@ if isdir(stanmodel.tmpdir)
     end
 end
 
-stan_sample(stanmodel, bernoulli_init, bernoulli_data, 4)
+stan_sample(stanmodel, bernoulli_data, 4)
 
 @test isfile(joinpath(stanmodel.tmpdir, "bernoulli_data_4.R"))
-@test isfile(joinpath(stanmodel.tmpdir, "bernoulli_init_4.R"))
 
 if isdir(stanmodel.tmpdir)
   for i in 1:4
@@ -33,8 +32,7 @@ if isdir(stanmodel.tmpdir)
     end
 end
 
-stan_sample(stanmodel, bernoulli_init, test_fname, 4)
+stan_sample(stanmodel, test_fname, 4)
 
 @test isfile(joinpath(ProjDir, "tmp", "bernoulli_data_4.R"))
-@test isfile(joinpath(ProjDir, "tmp", "bernoulli_init_4.R"))
 

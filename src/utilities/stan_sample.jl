@@ -54,14 +54,6 @@ function stan_sample(model::CmdStanSampleModel, data::T, n_chains::Integer;
     
 end
 
-function stan_sample(model::CmdStanSampleModel, init::S, n_chains::Integer;
-  rm_samples = true) where {S <: init_union, T <: data_union}
-        
-    update_R_files(model, init, n_chains, "init")
-    
-    _stan_sample(model, n_chains;  rm_samples = rm_samples)
-    
-end
 
 function stan_sample(model::CmdStanSampleModel, n_chains::Integer;
   rm_samples = true) where {S <: init_union, T <: data_union}
@@ -104,7 +96,7 @@ function update_R_files(model, input, n_chains, fname_part="data")
     end
   elseif typeof(input) <: AbstractString && length(input) > 0
     for i in 1:n_chains
-      cp(input, "$(model.name)_$(i).$(fname_part).R", force=true)
+      cp(input, "$(model.output_base)_$(fname_part)_$i.R", force=true)
       append!(model_field, [model.output_base*"_$(fname_part)_$i.R",])
     end
   end
