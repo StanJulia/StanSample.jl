@@ -13,22 +13,39 @@ Create a CmdStanSampleModel.
 
 ### Optional arguments
 ```julia
-* `method::AbstractStanMethod`  : See ?Method (default: Sample())
-* `random::Random`              : Random seed settings
+* `method::AbstractStanMethod`         : See ?Method (default: Sample())
+* `random::Random`                     : Random seed settings
 * `output::Output`              : File output options
-* `tmpdir::AbstractString`      : Directory where output files are stored
-* `summary=true`                : Create computed stan summary
-* `printsummary=true`           : Show computed stan summary
+* `init::Init`                         : Default interval bound for parameters
+* `tmpdir::AbstractString`             : Directory where output files are stored
+* `output_base::AbstractString`        : Base name for output files
+* `exec_path::AbstractString`          : Path to cmdstan executable
+* `data_file::vector{AbstractString}`  : Path to per chain data file
+* `init_file::Vector{AbstractString}`  : Path to per chain init file
+* `cmds::Vector{Cmd}`                  : Path to per chain init file
+* `sample_file::Vector{String}         : Path to per chain samples file
+* `log_file::Vector{String}            : Path to per chain log file
+* `summary=true`                       : Create computed stan summary
+* `printsummary=true`                  : Show computed stan summary
+* `sm::StanRun.StanModel`              : StanRun.StanModel
 ```
 
 """
-mutable struct CmdStanSampleModel
+struct CmdStanSampleModel
   name::AbstractString
   model::AbstractString
   method::AbstractStanMethod
   random::Random
+  init::Init
   output::Output
   tmpdir::AbstractString
+  output_base::AbstractString
+  exec_path::AbstractString
+  data_file::Vector{String}
+  init_file::Vector{String}
+  cmds::Vector{Cmd}
+  sample_file::Vector{String}
+  log_file::Vector{String}
   summary::Bool
   printsummary::Bool
   sm::StanRun.StanModel
@@ -39,6 +56,7 @@ function CmdStanSampleModel(
   model::AbstractString;
   method = Sample(),
   random = Random(),
+  init = Init(),
   output = Output(),
   tmpdir = mktempdir())
   
@@ -47,11 +65,14 @@ function CmdStanSampleModel(
   update_model_file(joinpath(tmpdir, "$(name).stan"), strip(model))
   sm = StanModel(joinpath(tmpdir, "$(name).stan"))
   
-  output.output_base = default_output_base(sm)
+  output_base = default_output_base(sm)
+  exec_path = StanRun.ensure_executable(sm)
   
   stan_compile(sm)
   
-  CmdStanSampleModel(name, model, method, random, output, tmpdir, false, false, sm)
+  CmdStanSampleModel(name, model, method, random, init, output,
+    tmpdir, output_base, exec_path, String[], String[], 
+    Cmd[], String[], String[], false, false, sm)
 end
 
 function model_show(io::IO, m::CmdStanSampleModel, compact::Bool)
@@ -61,15 +82,7 @@ function model_show(io::IO, m::CmdStanSampleModel, compact::Bool)
   println("    diagnostics_file =        \"$(m.output.diagnostic_file)\"")
   println("    refresh =                 $(m.output.refresh)")
   println("  tmpdir =                 \"$(m.tmpdir)\"")
-  if isa(m.method, Sample)
-    sample_show(io, m.method, compact)
-  elseif isa(m.method, Optimize)
-    optimize_show(io, m.method, compact)
-  elseif isa(m.method, Variational)
-    variational_show(io, m.method, compact)
-  else
-    diagnose_show(io, m.method, compact)
-  end
+  sample_show(io, m.method, compact)
 end
 
 show(io::IO, m::CmdStanSampleModel) = model_show(io, m, false)

@@ -15,19 +15,53 @@ import Base: show
 """ 
 abstract type AbstractStanMethod end
 
-mutable struct Random
+"""
+
+# Random
+
+Random number generator seed value
+
+### Method
+```julia
+Random(;seed=-1)
+```
+### Optional arguments
+```julia
+* `seed::Int`           : Starting seed value
+```
+""" 
+struct Random
   seed::Int64
 end
 Random(;seed::Number=-1) = Random(seed)
 
+"""
+
+# Init
+
+Default bound for parameter initial value interval (if not found in init file)
+
+### Method
+```julia
+Init(;bound=2)
+```
+### Optional arguments
+```julia
+* `bound::Number`           : Set interval to [-bound, bound]
+```
+""" 
+struct Init
+  bound::Int64
+end
+Init(;bound::Int=2) = Init(bound)
+
 mutable struct Output
-  output_base::AbstractString
-  file::AbstractString
-  diagnostic_file::AbstractString
+  file::String
+  diagnostic_file::String
   refresh::Int64
 end
-Output(;output_base="", file="", diagnostic_file="", refresh=100) =
-  Output(output_base, file, diagnostic_file, refresh)
+Output(;file="", diagnostic_file="", refresh=100) =
+  Output(file, diagnostic_file, refresh)
 
 """
 
@@ -73,7 +107,7 @@ Nuts(;max_depth=10)
 ?Engine                         : Engine for Hamiltonian Monte Carlo
 ```
 """
-mutable struct Nuts <: Engine
+struct Nuts <: Engine
   max_depth::Int64
 end
 Nuts(;max_depth::Number=10) = Nuts(max_depth)
@@ -99,7 +133,7 @@ Static(;int_time=2 * pi)
 ?Engine                        : Engine for Hamiltonian Monte Carlo
 ```
 """
-mutable struct Static <: Engine
+struct Static <: Engine
   int_time::Float64
 end
 Static(;int_time::Number=2 * pi) = Static(int_time)
@@ -118,11 +152,11 @@ Geometry of base manifold
 ```
 """ 
 abstract type Metric end
-mutable struct unit_e <: Metric
+struct unit_e <: Metric
 end
-mutable struct dense_e <: Metric
+struct dense_e <: Metric
 end
-mutable struct diag_e <: Metric
+struct diag_e <: Metric
 end
 
 
@@ -158,7 +192,7 @@ Hmc(;
 ?Metric                        : Base manifold geometries
 ```
 """
-mutable struct Hmc <: SamplingAlgorithm
+struct Hmc <: SamplingAlgorithm
   engine::Engine
   metric::Metric
   stepsize::Float64
@@ -189,7 +223,7 @@ Fixed_param()
 ?Metric                        : Base manifold geometries
 ```
 """
-mutable struct Fixed_param <: SamplingAlgorithm end
+struct Fixed_param <: SamplingAlgorithm end
   
 """
 
@@ -227,7 +261,7 @@ Adapt(;
 ?Sample                        : Sampling settings
 ```
 """
-mutable struct Adapt
+struct Adapt
   engaged::Bool
   gamma::Float64
   delta::Float64
@@ -278,7 +312,7 @@ Sample(;
 ?SamplingAlgorithm
 ```
 """
-mutable struct Sample <: AbstractStanMethod
+struct Sample <: AbstractStanMethod
   num_samples::Int64
   num_warmup::Int64
   save_warmup::Bool
