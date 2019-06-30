@@ -53,7 +53,7 @@ Init(;bound=2)
 struct Init
   bound::Int64
 end
-Init(;bound::Int=2) = Init(bound)
+Init(;bound::Int64=2) = Init(bound)
 
 mutable struct Output
   file::String

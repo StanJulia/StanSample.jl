@@ -25,14 +25,11 @@ using CmdStan: update_model_file, convert_a3d
 import StanRun: stan_cmd_and_paths, default_output_base
 import StanRun: stan_sample
 
-include("utilities/sample_types.jl")
-include("model/CmdStanSampleModel.jl")
-#include("utilities/create_R_data_files.jl")
-#include("utilities/create_R_init_files.jl")
-include("utilities/read_stanrun_samples.jl")
-include("utilities/cmdline.jl")
-include("utilities/stan_sample.jl")
-include("utilities/stan_cmd_and_paths.jl")
+include("stanmodel/sample_types.jl")
+include("stanmodel/CmdStanSampleModel.jl")
+include("stanrun/cmdline.jl")
+include("stanrun/stan_sample.jl")
+include("stansamples/read_stanrun_samples.jl")
 
 export  CmdStanSampleModel,
   Sample, Adapt,

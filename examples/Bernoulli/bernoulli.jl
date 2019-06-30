@@ -26,7 +26,7 @@ cd(ProjDir) #do
     tmpdir = tmpdir,
     method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
   
-  stan_sample(stanmodel, bernoulli_data, 4)
+  stan_sample(stanmodel, bernoulli_data, 4, diagnostics=true)
   
   #=
   @show stan_sample(stanmodel.sm, bernoulli_nt, 4)

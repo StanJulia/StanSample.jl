@@ -25,6 +25,7 @@ Create a CmdStanSampleModel.
 * `cmds::Vector{Cmd}`                  : Path to per chain init file
 * `sample_file::Vector{String}         : Path to per chain samples file
 * `log_file::Vector{String}            : Path to per chain log file
+* `diagnostic_file::Vector{String}    : Path to per chain diagnostic file
 * `summary=true`                       : Create computed stan summary
 * `printsummary=true`                  : Show computed stan summary
 * `sm::StanRun.StanModel`              : StanRun.StanModel
@@ -46,6 +47,7 @@ struct CmdStanSampleModel
   cmds::Vector{Cmd}
   sample_file::Vector{String}
   log_file::Vector{String}
+  diagnostic_file::Vector{String}
   summary::Bool
   printsummary::Bool
   sm::StanRun.StanModel
@@ -72,7 +74,7 @@ function CmdStanSampleModel(
   
   CmdStanSampleModel(name, model, method, random, init, output,
     tmpdir, output_base, exec_path, String[], String[], 
-    Cmd[], String[], String[], false, false, sm)
+    Cmd[], String[], String[], String[], false, false, sm)
 end
 
 function model_show(io::IO, m::CmdStanSampleModel, compact::Bool)

@@ -56,7 +56,7 @@ function cmdline(m, id)
     if length(getfield(m, :output).file) > 0
       cmd = `$cmd file=$(string(getfield(m, :output).file))`
     end
-    if length(getfield(m, :output).diagnostic_file) > 0
+    if length(m.diagnostic_file) > 0
       cmd = `$cmd diagnostic_file=$(string(getfield(m, :output).diagnostic_file))`
     end
     cmd = `$cmd refresh=$(string(getfield(m, :output).refresh))`
