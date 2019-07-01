@@ -79,7 +79,7 @@ end
 """
 $(SIGNATURES)
 
-Make a Stan command. Internal, not exported.
+Run a Stan command. Internal, not exported.
 """
 function stan_cmd_and_paths(model::CmdStanSampleModel, id::Integer)
   

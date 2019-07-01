@@ -1,34 +1,35 @@
 using StanSample, Test
 
-#=
-@testset "Bernoulli" begin
-  include(joinpath(@__DIR__, "../examples/Bernoulli/bernoulli.jl"))
-  s = summarize(chns)
-  @test s[:theta, :mean][1] ≈ 0.34 atol=0.1
-  @test stanmodel.settings.adapt[:delta] ≈ 0.85 atol=0.01
+TestDir = @__DIR__
+tmpdir = joinpath(TestDir, "tmp")
+if isdir(tmpdir)
+  rm(tmpdir, recursive=true)
+  mkdir(tmpdir)
 end
-=#
 
-#@testset "Create subcmd" begin
-  ProjDir = @__DIR__
-  cd(ProjDir) #do
+basic_run_tests = [
+  "test_basic_runs/test_bernoulli_dict.jl",
+  "test_basic_runs/test_bernoulli_nt.jl",
+]
 
-    bernoulli_model = "
-    data { 
-      int<lower=1> N; 
-      int<lower=0,upper=1> y[N];
-    } 
-    parameters {
-      real<lower=0,upper=1> theta;
-    } 
-    model {
-      theta ~ beta(1,1);
-      y ~ bernoulli(theta);
-    }
-    ";
+sample_settings_tests = [
+  "test_sample_settings/test_bernoulli.jl"
+]
 
-  bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
-  
-  cssm = CmdStanSampleModel("bernoulli", bernoulli_model)
+@testset "Bernoulli basic runs" begin
+  for test in basic_run_tests
+    println("\nTesting: $test.\n")
+    include(joinpath(TestDir, test))
+    @test sdf[:theta, :mean][1] ≈ 0.34 atol=0.1
+  end
+  println()
+end
 
-  #end
+@testset "Bernoulli Sample() settings" begin
+  for test in sample_settings_tests
+    println("\nTesting: $test.\n")
+    include(joinpath(TestDir, test))
+    @test stanmodel.method.adapt.delta ≈ 0.85 atol=0.01
+  end
+  println()
+end

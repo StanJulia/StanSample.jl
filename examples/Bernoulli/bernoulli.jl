@@ -3,7 +3,7 @@
 using StanSample
 
 ProjDir = @__DIR__
-cd(ProjDir) #do
+cd(ProjDir) do
 
   bernoulli_model = "
   data { 
@@ -20,7 +20,8 @@ cd(ProjDir) #do
   ";
 
   bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
-
+  
+  # Keep tmpdir identical across multiple runs to prevent re-compilation
   tmpdir = joinpath(ProjDir, "tmp")
   stanmodel = CmdStanSampleModel("bernoulli", bernoulli_model;
     tmpdir = tmpdir,
@@ -28,21 +29,21 @@ cd(ProjDir) #do
   
   stan_sample(stanmodel, bernoulli_data, 4, diagnostics=true)
   
-  #=
-  @show stan_sample(stanmodel.sm, bernoulli_nt, 4)
-  println()
-  @show stan_sample(stanmodel.sm, bernoulli_data[1], 4)  
-  println()
-  @show stan_sample(stanmodel.sm, bernoulli_data, 4)  
-  println()
-  @show stan_sample(stanmodel.sm, bernoulli_data[1:3], 4)  
-  println()
-  
+  # Use StanSamples to read the chains in NamedTupla format
   nt = read_samples(stanmodel.output_base*"_chain_1.csv")
   
+  # Convert to an MCMCChains.Chains object
   a3d, cnames = read_stanrun_samples(stanmodel.output_base, "_chain")
   global chns = convert_a3d(a3d, cnames, Val(:mcmcchains); start=1)
-  cdf = describe(chns)
-  =#
   
-  #end # cd
+  # Describe the MCMCChains using MCMCChains statistics
+  global cdf = describe(chns)
+  display(cdf)
+  
+  # Show the output of the stansummary executable
+  stan_summary(stanmodel, printsummary=true)
+  
+  # Show the same output in DataFrame format
+  read_summary(stanmodel)
+  
+end # cd
