@@ -3,7 +3,7 @@ language: julia
 dist: xenial
 os:
   - linux
-#  - osx
+  - osx
 env:
   - JULIA_CMDSTAN_HOME="$HOME/cmdstan-2.19.1/"
 before_install:
@@ -15,6 +15,7 @@ before_install:
   - cd $OLDWD
 julia:
   - 1.1
+  - 1.2
   - nightly
 notifications:
   email: false
@@ -23,9 +24,9 @@ git:
 
 ## uncomment the following lines to allow failures on nightly julia
 ## (tests will run but not make your overall status red)
-#matrix:
-#  allow_failures:
-#  - julia: nightly
+matrix:
+  allow_failures:
+  - julia: nightly
 
 ## uncomment following lines to deploy documentation
 # jobs:
@@ -37,6 +38,7 @@ git:
 #         - julia --project=docs -e 'using Pkg; Pkg.instantiate(); Pkg.develop(PackageSpec(path=pwd()))'
 #         - julia --project=docs --color=yes docs/make.jl
 #       after_success: skip
+
 after_success:
   - julia --project=test/coverage -e 'using Pkg; Pkg.instantiate()'
   - julia --project=test/coverage test/coverage/coverage.jl
