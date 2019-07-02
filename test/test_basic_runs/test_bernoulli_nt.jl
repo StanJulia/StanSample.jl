@@ -26,8 +26,7 @@ stanmodel = CmdStanSampleModel(
 stan_sample(stanmodel, bernoulli_data)
 
 # Convert to an MCMCChains.Chains object
-a3d, cnames = read_stanrun_samples(stanmodel.output_base, "_chain")
-chns = convert_a3d(a3d, cnames, Val(:mcmcchains); start=1)
+chns = read_stanrun_samples(stanmodel.output_base, "_chain")
 
 # Show the output of the stansummary executable
 stan_summary(stanmodel, printsummary=true)

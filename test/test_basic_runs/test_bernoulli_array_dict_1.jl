@@ -24,16 +24,14 @@ bernoulli_data = [
 ]
 
 # Keep tmpdir identical across multiple runs to prevent re-compilation
-tmpdir = joinpath(@__DIR__, "tmp")
-stanmodel = CmdStanSampleModel("bernoulli", bernoulli_model;
-  tmpdir = tmpdir,
-  method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
+stanmodel = CmdStanSampleModel(
+  "bernoulli", bernoulli_model; tmpdir = tmpdir,
+  method =  StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
 
 stan_sample(stanmodel, bernoulli_data, diagnostics=true)
 
 # Convert to an MCMCChains.Chains object
-a3d, cnames = read_stanrun_samples(stanmodel.output_base, "_chain")
-chns = convert_a3d(a3d, cnames, Val(:mcmcchains); start=1)
+chns = read_stanrun_samples(stanmodel.output_base, "_chain")
 
 # Describe the MCMCChains using MCMCChains statistics
 cdf = describe(chns)

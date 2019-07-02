@@ -17,9 +17,20 @@ read_summary(m::CmdStanSampleModel)
 ```
 
 """
-function read_summary(m::CmdStanSampleModel)
-
-  instream = open(joinpath(m.tmpdir, "$(m.name)_summary.csv"))
+function read_summary(m::CmdStanSampleModel;
+  printsummary=false)
+  
+  StanSample.stan_summary(m)
+  
+  file_path = "$(m.tmpdir)/$(m.name)_summary.csv"
+  if isfile(file_path)
+    println("File $(file_path) found")
+    instream = open(file_path, "r")
+  else
+    println("File $(file_path) not found")
+    error("Summary file $(file_path) not found.")
+  end
+  
   skipchars(isspace, instream, linecomment='#')
   #
   # First non-comment line contains names of variables
