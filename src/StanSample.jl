@@ -36,6 +36,7 @@ include("stansamples/read_summary.jl")
 
 export
   CmdStanSampleModel,
-  read_summary
+  read_summary,
+  stan_summary
 
 end # module

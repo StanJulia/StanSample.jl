@@ -26,7 +26,7 @@ stanmodel = CmdStanSampleModel(
 stan_sample(stanmodel, bernoulli_data)
 
 # Convert to an MCMCChains.Chains object
-chns = read_stanrun_samples(stanmodel.output_base, "_chain")
+chns = read_samples(stanmodel)
 
 # Show the output of the stansummary executable
 stan_summary(stanmodel, printsummary=true)

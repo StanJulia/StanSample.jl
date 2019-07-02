@@ -41,6 +41,7 @@ cd(ProjDir) do
   display(cdf)
   
   # Show the same output in DataFrame format
+  stan_summary(stanmodel)
   global sdf = read_summary(stanmodel)
   display(sdf)
   println()

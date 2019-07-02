@@ -37,14 +37,14 @@ stan_summary(
 ```
 """
 function stan_summary(
-  model::CmdStanSampleModel, n_chains=4; 
+  model::CmdStanSampleModel; 
   printsummary=false)
   
-  local res
+  local csvfile
+  n_chains = model.n_chains
   
   cd(model.tmpdir) do
     samplefiles = String[]
-    local csvfile
     for i in 1:n_chains
       push!(samplefiles, "$(model.name)_chain_$(i).csv")
     end
@@ -59,6 +59,6 @@ function stan_summary(
       println(e)
     end
   end
-  return csvfile
+  return
 end
 
