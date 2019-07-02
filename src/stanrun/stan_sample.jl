@@ -18,7 +18,7 @@ init_file_path(output_base::AbstractString, id::Int) = output_base * "_init_$(id
 """
 $(SIGNATURES)
 
-Sample `n_chains` from `model` using `data` and `init`.
+Sample `model.n_chains` from `model` using `data` and `init`.
 
 Return the full paths of the sample files and logs as pairs.
 
@@ -35,41 +35,42 @@ to an existing file which will be copied to the output directory unless the leng
 When `rm_samples` (default: `true`), remove potential pre-existing sample files after
 compiling the model.
 """
-function stan_sample(model::CmdStanSampleModel, init::S, data::T, n_chains::Integer;
-  rm_samples = true, diagnostics = false) where {S <: init_union, T <: data_union}
+function stan_sample(model::CmdStanSampleModel, init::S, data::T;
+  rm_samples = true,
+  diagnostics = false) where {S <: init_union, T <: data_union}
         
-    update_R_files(model, init, n_chains, "init")
-    update_R_files(model, data, n_chains, "data")
-    diagnostics && setup_diagnostics(model, n_chains)
+    update_R_files(model, init, model.n_chains, "init")
+    update_R_files(model, data, model.n_chains, "data")
+    diagnostics && setup_diagnostics(model, model.n_chains)
     
-    _stan_sample(model, n_chains;  rm_samples = rm_samples)
+    _stan_sample(model;  rm_samples = rm_samples)
     
 end
 
-function stan_sample(model::CmdStanSampleModel, data::T, n_chains::Integer;
+function stan_sample(model::CmdStanSampleModel, data::T;
   rm_samples = true, diagnostics = false) where {T <: data_union}
         
-    update_R_files(model, data, n_chains, "data")
-    diagnostics && setup_diagnostics(model, n_chains)
+    update_R_files(model, data, model.n_chains, "data")
+    diagnostics && setup_diagnostics(model, model.n_chains)
     
-    _stan_sample(model, n_chains;  rm_samples = rm_samples)
+    _stan_sample(model;  rm_samples = rm_samples)
     
 end
 
 
-function stan_sample(model::CmdStanSampleModel, n_chains::Integer;
+function stan_sample(model::CmdStanSampleModel;
   rm_samples = true, diagnostics = false)
     
-    diagnostics && setup_diagnostics(model, n_chains)
-    _stan_sample(model, n_chains;  rm_samples = rm_samples)
+    diagnostics && setup_diagnostics(model, model.n_chains)
+    _stan_sample(model;  rm_samples = rm_samples)
     
 end
 
-function _stan_sample(model::CmdStanSampleModel, n_chains::Integer;
+function _stan_sample(model::CmdStanSampleModel;
                     rm_samples = true)
     rm_samples && rm.(StanRun.find_samples(model.sm))
     cmds_and_paths = [stan_cmd_and_paths(model, id)
-                      for id in 1:n_chains]
+                      for id in 1:model.n_chains]
     pmap(cmds_and_paths) do cmd_and_path
         cmd, (sample_path, log_path) = cmd_and_path
         success(cmd) ? sample_path : nothing, log_path
@@ -101,7 +102,7 @@ function update_R_files(model, input, n_chains, fname_part="data")
       stan_dump(model.output_base*"_$(fname_part)_$i.R", input, force=true)
       append!(model_field, [model.output_base*"_$(fname_part)_$i.R"])
     end
-  elseif typeof(input) <: Vector{NamedTuple} || typeof(input) <: Vector{Dict}
+  elseif  typeof(input) <: Vector{Dict{String, Any}}
     if length(input) == n_chains
       for (i, d) in enumerate(input)
         stan_dump(model.output_base*"_$(fname_part)_$i.R", d, force=true)
@@ -110,7 +111,7 @@ function update_R_files(model, input, n_chains, fname_part="data")
     else
       @info "Data vector length does not match number of chains,"
       @info "only first element in data vector will be used,"
-      for i in 1:nchains
+      for i in 1:n_chains
         stan_dump(model.output_base*"_$(fname_part)_$i.R", input[1], force=true)
         append!(model_field, [model.output_base*"_$(fname_part)_$i.R"])
       end
@@ -120,6 +121,8 @@ function update_R_files(model, input, n_chains, fname_part="data")
       cp(input, "$(model.output_base)_$(fname_part)_$i.R", force=true)
       append!(model_field, [model.output_base*"_$(fname_part)_$i.R"])
     end
+  else
+    error("\nUnrecognized data or init specified\n")
   end
 end
 

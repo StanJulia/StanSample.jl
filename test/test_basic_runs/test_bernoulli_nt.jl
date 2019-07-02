@@ -23,7 +23,7 @@ stanmodel = CmdStanSampleModel(
   "bernoulli", bernoulli_model; tmpdir = tmpdir,
   method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
 
-stan_sample(stanmodel, bernoulli_data, 4)
+stan_sample(stanmodel, bernoulli_data)
 
 # Convert to an MCMCChains.Chains object
 a3d, cnames = read_stanrun_samples(stanmodel.output_base, "_chain")

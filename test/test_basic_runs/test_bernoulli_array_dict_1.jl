@@ -16,17 +16,20 @@ model {
 }
 ";
 
-bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
+bernoulli_data = [
+  Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1]),
+  Dict("N" => 10, "y" => [0, 1, 0, 0, 1, 0, 0, 0, 0, 1]),
+  Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 1, 0]),
+  Dict("N" => 10, "y" => [0, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
+]
 
 # Keep tmpdir identical across multiple runs to prevent re-compilation
+tmpdir = joinpath(@__DIR__, "tmp")
 stanmodel = CmdStanSampleModel("bernoulli", bernoulli_model;
   tmpdir = tmpdir,
   method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
 
 stan_sample(stanmodel, bernoulli_data, diagnostics=true)
-
-# Use StanSamples to read the chains in NamedTupla format
-nt = read_samples(stanmodel.output_base*"_chain_1.csv")
 
 # Convert to an MCMCChains.Chains object
 a3d, cnames = read_stanrun_samples(stanmodel.output_base, "_chain")

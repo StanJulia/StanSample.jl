@@ -35,6 +35,7 @@ Create a CmdStanSampleModel.
 struct CmdStanSampleModel
   name::AbstractString
   model::AbstractString
+  n_chains::Int64
   method::AbstractStanMethod
   random::Random
   init::Init
@@ -55,7 +56,8 @@ end
 
 function CmdStanSampleModel(
   name::AbstractString,
-  model::AbstractString;
+  model::AbstractString,
+  n_chains=4;
   method = Sample(),
   random = Random(),
   init = Init(),
@@ -72,13 +74,14 @@ function CmdStanSampleModel(
   
   stan_compile(sm)
   
-  CmdStanSampleModel(name, model, method, random, init, output,
+  CmdStanSampleModel(name, model, n_chains, method, random, init, output,
     tmpdir, output_base, exec_path, String[], String[], 
     Cmd[], String[], String[], String[], false, false, sm)
 end
 
 function model_show(io::IO, m::CmdStanSampleModel, compact::Bool)
   println("  name =                    \"$(m.name)\"")
+  println("  n_chains =                $(m.n_chains)")
   println("  output =                  Output()")
   println("    file =                    \"$(m.output.file)\"")
   println("    diagnostics_file =        \"$(m.output.diagnostic_file)\"")

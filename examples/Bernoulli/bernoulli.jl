@@ -27,9 +27,9 @@ cd(ProjDir) do
     tmpdir = tmpdir,
     method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
   
-  stan_sample(stanmodel, bernoulli_data, 4, diagnostics=true)
+  stan_sample(stanmodel, bernoulli_data, diagnostics=true)
   
-  # Use StanSamples to read the chains in NamedTupla format
+  # Use StanSamples to read a chain in NamedTupla format
   nt = read_samples(stanmodel.output_base*"_chain_1.csv")
   
   # Convert to an MCMCChains.Chains object
