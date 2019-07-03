@@ -35,33 +35,14 @@ to an existing file which will be copied to the output directory unless the leng
 When `rm_samples` (default: `true`), remove potential pre-existing sample files after
 compiling the model.
 """
-function stan_sample(model::CmdStanSampleModel, init::S, data::T;
-  rm_samples = true,
+function stan_sample(model::CmdStanSampleModel; 
+  init::S = Dict(), data::T = Dict(), rm_samples = true,
   diagnostics = false) where {S <: init_union, T <: data_union}
         
-    update_R_files(model, init, model.n_chains, "init")
-    update_R_files(model, data, model.n_chains, "data")
+    init !== Dict() && update_R_files(model, init, model.n_chains, "init")
+    data !== Dict() && update_R_files(model, data, model.n_chains, "data")
     diagnostics && setup_diagnostics(model, model.n_chains)
     
-    _stan_sample(model;  rm_samples = rm_samples)
-    
-end
-
-function stan_sample(model::CmdStanSampleModel, data::T;
-  rm_samples = true, diagnostics = false) where {T <: data_union}
-        
-    update_R_files(model, data, model.n_chains, "data")
-    diagnostics && setup_diagnostics(model, model.n_chains)
-    
-    _stan_sample(model;  rm_samples = rm_samples)
-    
-end
-
-
-function stan_sample(model::CmdStanSampleModel;
-  rm_samples = true, diagnostics = false)
-    
-    diagnostics && setup_diagnostics(model, model.n_chains)
     _stan_sample(model;  rm_samples = rm_samples)
     
 end

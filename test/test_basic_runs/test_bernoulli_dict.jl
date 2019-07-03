@@ -23,10 +23,10 @@ stanmodel = CmdStanSampleModel(
   "bernoulli", bernoulli_model; tmpdir = tmpdir,
   method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
 
-stan_sample(stanmodel, bernoulli_data, diagnostics=true)
+stan_sample(stanmodel, data=bernoulli_data, diagnostics=true)
 
 # Use StanSamples to read the chains in NamedTupla format
-nt = read_samples(stanmodel.output_base*"_chain_1.csv")
+nt = read_samples(stanmodel.sm)
 
 # Convert to an MCMCChains.Chains object
 chns = read_samples(stanmodel)

@@ -76,7 +76,6 @@ function stan_summary(
     csvfile = "$(model.output_base)_summary.csv"
     isfile(csvfile) && rm(csvfile)
     cmd = `$(pstring) --csv_file=$(csvfile) $(par(samplefiles))`
-    println(cmd)
     if printsummary
       resfile = open(cmd; read=true)
       print(read(resfile, String))
@@ -86,6 +85,7 @@ function stan_summary(
   catch e
     println(e)
   end
+  sleep(1)
   return
 end
 

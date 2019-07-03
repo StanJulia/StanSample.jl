@@ -1,38 +1,48 @@
 using StanSample, Test
 
+data_union = Union{Dict, NamedTuple, Vector, AbstractString}
+init_union = Union{Dict, NamedTuple, Vector, AbstractString, StanSample.Init}
+
 TestDir = @__DIR__
 cd(TestDir)
 
-include(joinpath("..", "..", "examples", "Bernoulli", "bernoulli.jl"))
-bernoulli_init = (N = 10, y = [0, 1, 0, 1, 0, 0, 0, 0, 0, 1],)
-test_fname = joinpath(TestDir, "stan_sample_test_data.R")
+bernoulli_model = "
+data { 
+  int<lower=1> N; 
+  int<lower=0,upper=1> y[N];
+} 
+parameters {
+  real<lower=0,upper=1> theta;
+} 
+model {
+  theta ~ beta(1,1);
+  y ~ bernoulli(theta);
+}
+";
 
-ProjDir = joinpath("..", "..", "examples", "Bernoulli")
-!isdir(ProjDir*"/tmp") && mkdir(ProjDir*"/tmp")
+bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
-if isdir(stanmodel.tmpdir)
-  for i in 1:4
-    isfile(joinpath(stanmodel.tmpdir, "bernoulli_data_$i.R")) &&
-      rm(joinpath(stanmodel.tmpdir, "bernoulli_data_$i.R"))
-    isfile(joinpath(stanmodel.tmpdir, "bernoulli_init_$i..R")) &&
-      rm(joinpath(stanmodel.tmpdir, "bernoulli_init_$i..R"))
-    end
+tmpdir = joinpath(TestDir, "tmp")
+
+function args(model::CmdStanSampleModel; 
+  data::T=Dict(), init::S=Dict())  where {T <: data_union, S <: init_union}
+  if !(data == Dict())
+    println(data)
+  else
+    println("Input data not present.")
+  end
+  if !(init == Dict())
+    println(init)
+  else
+    println("Input init not present.")
+  end
+  data
 end
 
-stan_sample(stanmodel, bernoulli_data, 4)
+stanmodel = CmdStanSampleModel("bernoulli", bernoulli_model; tmpdir=tmpdir)
 
-@test isfile(joinpath(stanmodel.tmpdir, "bernoulli_data_4.R"))
-
-if isdir(stanmodel.tmpdir)
-  for i in 1:4
-    isfile(joinpath(stanmodel.tmpdir, "bernoulli_data_$i.R")) &&
-      rm(joinpath(stanmodel.tmpdir, "bernoulli_data_$i.R"))
-    isfile(joinpath(stanmodel.tmpdir, "bernoulli_init_$i..R")) &&
-      rm(joinpath(stanmodel.tmpdir, "bernoulli_init_$i..R"))
-    end
-end
-
-stan_sample(stanmodel, test_fname, 4)
-
-@test isfile(joinpath(ProjDir, "tmp", "bernoulli_data_4.R"))
-
+@test args(stanmodel, data=bernoulli_data) == bernoulli_data
+println()
+@test args(stanmodel, init=bernoulli_data) == Dict()
+println()
+@test args(stanmodel) == Dict()

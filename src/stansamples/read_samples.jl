@@ -22,18 +22,18 @@ read_samples(model::CmdStanSampleModel; start=1)
 ```
 
 """
-function read_samples(model::CmdStanSampleModel; 
-  start=1)
+function read_samples(model::CmdStanSampleModel;  start=1)
 
   local a3d, monitors, index, idx, indvec, ftype, noofsamples
+  
   output_base =model.output_base
   name_base ="_chain"
-  
-  # Todo: handle save_warmuo
-  nsamples = model.method. num_samples
-  
+  n_samples = model.method. num_samples  
   n_chains = model.n_chains
-
+  
+  # Handle save_warmup
+  start = model.method.save_warmup ? model.method.num_warmup+1 : start
+  
   # a3d will contain the samples such that a3d[s, i, c] where
 
   #   s: num_samples
@@ -59,12 +59,12 @@ function read_samples(model::CmdStanSampleModel;
       indvec = 1:length(index)
       
       if i == 1
-        a3d = fill(0.0, nsamples, length(indvec), n_chains)
+        a3d = fill(0.0, n_samples, length(indvec), n_chains)
       end
       
       #println(size(a3d))
       skipchars(isspace, instream, linecomment='#')
-      for j in 1:nsamples
+      for j in 1:n_samples
         skipchars(isspace, instream, linecomment='#')
         line = Unicode.normalize(readline(instream), newline2lf=true)
         if eof(instream) && length(line) < 2
@@ -83,6 +83,10 @@ function read_samples(model::CmdStanSampleModel;
   chns = convert_a3d(a3d, cnames, Val(:mcmcchains); start=start)
 
 end   # end of read_samples
+
+function read_samples(model::StanModel; chain=1)
+  read_samples(default_output_base(model)*"_chain_$(chain).csv")
+end
 
 """
 

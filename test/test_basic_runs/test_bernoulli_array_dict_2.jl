@@ -24,10 +24,9 @@ bernoulli_data = [
 
 # Keep tmpdir identical across multiple runs to prevent re-compilation
 stanmodel = CmdStanSampleModel("bernoulli", bernoulli_model;
-  tmpdir = tmpdir,
   method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
 
-stan_sample(stanmodel, bernoulli_data, diagnostics=true)
+stan_sample(stanmodel, data=bernoulli_data, diagnostics=true)
 
 # Convert to an MCMCChains.Chains object
 chns = read_samples(stanmodel)
