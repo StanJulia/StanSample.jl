@@ -38,9 +38,6 @@ chns = read_samples(stanmodel)
 cdf = describe(chns)
 display(cdf)
 
-# Create stansummary .csv file
-#stan_summary(stanmodel)
-
 # Show the same output in DataFrame format
 sdf = read_summary(stanmodel)
 display(sdf)

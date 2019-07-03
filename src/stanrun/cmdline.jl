@@ -20,6 +20,7 @@ cmdline(m)
 ```
 """
 function cmdline(m, id)
+  
   #=
   `./bernoulli3 sample num_samples=1000 num_warmup=1000 
     save_warmup=0 thin=1 adapt engaged=1 gamma=0.05 delta=0.8 kappa=0.75 
@@ -93,6 +94,8 @@ function cmdline(m, id)
       end
     end
   end
+  
   cmd
+  
 end
 

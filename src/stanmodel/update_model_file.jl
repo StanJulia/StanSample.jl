@@ -19,6 +19,7 @@ StanSample.update_model_file(
 
 """
 function update_model_file(file::AbstractString, str::AbstractString)
+  
   str2 = ""
   if isfile(file)
     resfile = open(file, "r")
@@ -31,4 +32,5 @@ function update_model_file(file::AbstractString, str::AbstractString)
     write(strmout, str)
     close(strmout)
   end
+  
 end

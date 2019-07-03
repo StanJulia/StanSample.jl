@@ -85,7 +85,9 @@ function stan_summary(
   catch e
     println(e)
   end
-  sleep(1)
+  sleep(1) # ???? Almost seems run(cmd) is not waiting for completion
+  
   return
+  
 end
 
