@@ -43,21 +43,23 @@ function stan_summary(
   local csvfile
   n_chains = model.n_chains
   
-  cd(model.tmpdir) do
-    samplefiles = String[]
-    for i in 1:n_chains
-      push!(samplefiles, "$(model.name)_chain_$(i).csv")
-    end
-    try
-      pstring = joinpath("$(model.sm.cmdstan_home)", "bin", "stansummary")
-      csvfile = "$(model.name)_summary.csv"
-      isfile(csvfile) && rm(csvfile)
-      cmd = `$(pstring) --csv_file=$(csvfile) $(par(samplefiles))`
+  samplefiles = String[]
+  for i in 1:n_chains
+    push!(samplefiles, "$(model.output_base)_chain_$(i).csv")
+  end
+  try
+    pstring = joinpath("$(model.sm.cmdstan_home)", "bin", "stansummary")
+    csvfile = "$(model.output_base)_summary.csv"
+    isfile(csvfile) && rm(csvfile)
+    cmd = `$(pstring) --csv_file=$(csvfile) $(par(samplefiles))`
+    if printsummary
       resfile = open(cmd; read=true)
-      printsummary && print(read(resfile, String))
-    catch e
-      println(e)
+      print(read(resfile, String))
+    else
+      run(cmd)
     end
+  catch e
+    println(e)
   end
   return
 end

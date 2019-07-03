@@ -86,7 +86,7 @@ function model_show(io::IO, m::CmdStanSampleModel, compact::Bool)
   println("    file =                    \"$(m.output.file)\"")
   println("    diagnostics_file =        \"$(m.output.diagnostic_file)\"")
   println("    refresh =                 $(m.output.refresh)")
-  println("  tmpdir =                 \"$(m.tmpdir)\"")
+  println("  tmpdir =                  \"$(m.tmpdir)\"")
   sample_show(io, m.method, compact)
 end
 

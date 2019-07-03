@@ -37,9 +37,6 @@ chns = read_samples(stanmodel)
 cdf = describe(chns)
 display(cdf)
 
-# Show the output of the stansummary executable
-stan_summary(stanmodel, printsummary=true)
-
 # Fetch the same output in the `sdf` ChainDataFrame
 sdf = read_summary(stanmodel)
   
