@@ -20,7 +20,6 @@ using Reexport
 @reexport using Parameters
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
-using CmdStan: update_model_file
 
 import StanRun: stan_cmd_and_paths, default_output_base
 import StanRun: stan_sample
@@ -28,6 +27,7 @@ import StanSamples: read_samples
 
 include("stanmodel/sample_types.jl")
 include("stanmodel/CmdStanSampleModel.jl")
+include("stanmodel/update_model_file.jl")
 include("stanrun/cmdline.jl")
 include("stanrun/stan_sample.jl")
 include("stansamples/read_samples.jl")

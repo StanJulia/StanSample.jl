@@ -22,10 +22,7 @@ function read_summary(model::CmdStanSampleModel)
   df = DataFrame()
   
   file_path = "$(model.output_base)_summary.csv"
-  if !isfile(file_path) 
-    stan_summary(model)
-    #sleep(1)
-  end
+  !isfile(file_path) && stan_summary(model)
 
   if isfile(file_path)
     instream = open(file_path)

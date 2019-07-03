@@ -4,7 +4,6 @@ authors = ["Rob J Goedman <goedman@icloud.com>"]
 version = "0.0.1"
 
 [deps]
-CmdStan = "593b3428-ca2f-500c-ae53-031589ec8ddd"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
