@@ -25,19 +25,6 @@ stanmodel = CmdStanSampleModel(
 
 stan_sample(stanmodel, data=bernoulli_data, n_chains=6, diagnostics=true)
 
-# Use StanSamples to read the chains in NamedTupla format
-nt = read_samples(stanmodel.sm)
-
-# Convert to an MCMCChains.Chains object
-chns = read_samples(stanmodel)
-
-# Describe the MCMCChains using MCMCChains statistics
-cdf = describe(chns)
-display(cdf)
-
-# Show the output of the stansummary executable
-stan_summary(stanmodel, printsummary=true)
-
 # Fetch the same output in the `sdf` ChainDataFrame
 sdf = read_summary(stanmodel)
   

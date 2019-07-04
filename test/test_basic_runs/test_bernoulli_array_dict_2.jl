@@ -28,13 +28,6 @@ stanmodel = CmdStanSampleModel("bernoulli", bernoulli_model;
 
 stan_sample(stanmodel, data=bernoulli_data, diagnostics=true)
 
-# Convert to an MCMCChains.Chains object
-chns = read_samples(stanmodel)
-
-# Describe the MCMCChains using MCMCChains statistics
-cdf = describe(chns)
-display(cdf)
-
 # Fetch the same output in the `sdf` ChainDataFrame
 sdf = read_summary(stanmodel)
   

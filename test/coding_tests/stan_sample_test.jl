@@ -26,7 +26,7 @@ end
 
 method1(m1)
 method1(m2, data=(z=12,))
-method1(m1; data = (x=2,))
+method1(m1; data = (x=2, z=13))
 method1(m1; init = (v=2,))
 method1(m1; init = (v=2,), data = (y=3,))
 

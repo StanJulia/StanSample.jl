@@ -26,7 +26,7 @@ basic_run_tests = [
 
 @testset "Bernoulli basic runs" begin
   for test in basic_run_tests
-    println("\nTesting: $test.\n")
+    println("\nTesting: $test.")
     include(joinpath(TestDir, test))
     @test sdf[:theta, :mean][1] ≈ 0.34 atol=0.1
   end

@@ -76,11 +76,9 @@ function stan_summary(
     csvfile = "$(model.output_base)_summary.csv"
     isfile(csvfile) && rm(csvfile)
     cmd = `$(pstring) --csv_file=$(csvfile) $(par(samplefiles))`
+    resfile = open(cmd; read=true)
     if printsummary
-      resfile = open(cmd; read=true)
       print(read(resfile, String))
-    else
-      run(cmd)
     end
   catch e
     println(e)
