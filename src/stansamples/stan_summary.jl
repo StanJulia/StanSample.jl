@@ -65,7 +65,7 @@ function stan_summary(
   printsummary=false)
   
   local csvfile
-  n_chains = model.n_chains
+  n_chains = get_n_chains(model)
   
   samplefiles = String[]
   for i in 1:n_chains

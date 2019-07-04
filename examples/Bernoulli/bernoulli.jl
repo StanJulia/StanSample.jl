@@ -26,7 +26,7 @@ stanmodel = CmdStanSampleModel(
   method = StanSample.Sample(save_warmup=true, 
     adapt = StanSample.Adapt(delta = 0.85)))
 
-stan_sample(stanmodel, data=bernoulli_data)
+stan_sample(stanmodel; data=bernoulli_data)
 
 # Use StanSamples to read a chain in NamedTupla format
 nt = read_samples(stanmodel.sm; chain = 3)

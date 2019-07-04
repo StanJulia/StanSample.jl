@@ -1,4 +1,4 @@
-######### CmdStan sample example  ###########
+######### StanSample example  ###########
 
 using StanSample
 
@@ -23,7 +23,7 @@ stanmodel = CmdStanSampleModel(
   "bernoulli", bernoulli_model; tmpdir = tmpdir,
   method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
 
-stan_sample(stanmodel, data=bernoulli_data, diagnostics=true)
+stan_sample(stanmodel, data=bernoulli_data, n_chains=6, diagnostics=true)
 
 # Use StanSamples to read the chains in NamedTupla format
 nt = read_samples(stanmodel.sm)

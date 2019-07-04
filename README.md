@@ -27,7 +27,7 @@ You need a working [CmdStan](https://mc-stan.org/users/interfaces/cmdstan.html) 
 ENV["JULIA_CMDSTAN_HOME"] = expanduser("~/src/cmdstan-2.19.1/") # replace with your path
 ```
 
-This package is derived from Tamas Papp's [StanRun.jl]() package.
+This package is derived from Tamas Papp's [StanRun.jl](https://github.com/tpapp/StanRun.jl) package. It also uses StanDump.jl and StanSamples.jl. 
 
 ## Usage
 

@@ -13,6 +13,7 @@ Create a CmdStanSampleModel.
 
 ### Optional arguments
 ```julia
+* `n_chains::Vector{Int64}=[4]`        : Optionally updated in stan_sample()
 * `method::AbstractStanMethod`         : See ?Method (default: Sample())
 * `random::Random`                     : Random seed settings
 * `output::Output`              : File output options
@@ -35,7 +36,7 @@ Create a CmdStanSampleModel.
 struct CmdStanSampleModel
   name::AbstractString
   model::AbstractString
-  n_chains::Int64
+  n_chains::Vector{Int64}
   method::AbstractStanMethod
   random::Random
   init::Init
@@ -57,7 +58,7 @@ end
 function CmdStanSampleModel(
   name::AbstractString,
   model::AbstractString,
-  n_chains=4;
+  n_chains=[4];
   method = Sample(),
   random = Random(),
   init = Init(),
@@ -81,7 +82,7 @@ end
 
 function model_show(io::IO, m::CmdStanSampleModel, compact::Bool)
   println("  name =                    \"$(m.name)\"")
-  println("  n_chains =                $(m.n_chains)")
+  println("  n_chains =                $(get_n_chains(m))")
   println("  output =                  Output()")
   println("    file =                    \"$(m.output.file)\"")
   println("    diagnostics_file =        \"$(m.output.diagnostic_file)\"")

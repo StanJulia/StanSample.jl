@@ -21,13 +21,13 @@ using Reexport
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
-import StanRun: stan_cmd_and_paths, default_output_base
-import StanRun: stan_sample
+import StanRun: stan_sample, stan_cmd_and_paths, default_output_base
 import StanSamples: read_samples
 
 include("stanmodel/sample_types.jl")
 include("stanmodel/CmdStanSampleModel.jl")
 include("stanmodel/update_model_file.jl")
+include("stanmodel/number_of_chains.jl")
 include("stanrun/cmdline.jl")
 include("stanrun/stan_sample.jl")
 include("stansamples/read_samples.jl")

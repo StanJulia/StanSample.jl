@@ -1,48 +1,34 @@
-using StanSample, Test
+abstract type AbstractModels end
 
-data_union = Union{Dict, NamedTuple, Vector, AbstractString}
-init_union = Union{Dict, NamedTuple, Vector, AbstractString, StanSample.Init}
+struct Model1 <: AbstractModels end
+struct Model2 <: AbstractModels end
 
-TestDir = @__DIR__
-cd(TestDir)
+m1 = Model1()
+m2 = Model2()
 
-bernoulli_model = "
-data { 
-  int<lower=1> N; 
-  int<lower=0,upper=1> y[N];
-} 
-parameters {
-  real<lower=0,upper=1> theta;
-} 
-model {
-  theta ~ beta(1,1);
-  y ~ bernoulli(theta);
-}
-";
+data_union = Union{Missing, AbstractString, Dict, Array{T, 1} where T, NamedTuple}
+init_union = Union{Missing, AbstractString, Dict, Array{T, 1} where T, NamedTuple}
 
-bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
-
-tmpdir = joinpath(TestDir, "tmp")
-
-function args(model::CmdStanSampleModel; 
-  data::T=Dict(), init::S=Dict())  where {T <: data_union, S <: init_union}
-  if !(data == Dict())
-    println(data)
-  else
-    println("Input data not present.")
-  end
-  if !(init == Dict())
-    println(init)
-  else
-    println("Input init not present.")
-  end
-  data
+function method2(model, data::Union{NamedTuple, Dict})
+  
+  println("Method 2 called.\n")
 end
 
-stanmodel = CmdStanSampleModel("bernoulli", bernoulli_model; tmpdir=tmpdir)
+function method1(model::AbstractModels; kwargs...)
+    println("Method 1 called.")
+    :init in keys(kwargs) && println("$(kwargs[:init])")
+    :init in keys(kwargs) && println("$(kwargs[:init].v)")
+    :data in keys(kwargs) && println("$(kwargs[:data])")
+    :data in keys(kwargs) && println("$(kwargs.data)")
+    println()
+end
 
-@test args(stanmodel, data=bernoulli_data) == bernoulli_data
-println()
-@test args(stanmodel, init=bernoulli_data) == Dict()
-println()
-@test args(stanmodel) == Dict()
+
+method1(m1)
+method1(m2, data=(z=12,))
+method1(m1; data = (x=2,))
+method1(m1; init = (v=2,))
+method1(m1; init = (v=2,), data = (y=3,))
+
+method2(m2, (x=2,))
+method2(m1, Dict(:x=>2))

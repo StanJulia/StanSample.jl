@@ -1,5 +1,5 @@
-data_union = Union{Dict, NamedTuple, Vector, AbstractString}
-init_union = Union{Dict, NamedTuple, Vector, AbstractString, Init}
+data_union = Union{Nothing, AbstractString, Dict, Array{T, 1} where T}
+init_union = Union{Nothing, StanSample.Init, AbstractString, Dict, Array{T, 1} where T}
 
 """
 $(SIGNATURES)
@@ -35,15 +35,23 @@ to an existing file which will be copied to the output directory unless the leng
 When `rm_samples` (default: `true`), remove potential pre-existing sample files after
 compiling the model.
 """
-function stan_sample(model::CmdStanSampleModel; 
-  init::S = Dict(), data::T = Dict(), rm_samples = true,
-  diagnostics = false) where {S <: init_union, T <: data_union}
-        
-    init !== Dict() && update_R_files(model, init, model.n_chains, "init")
-    data !== Dict() && update_R_files(model, data, model.n_chains, "data")
-    diagnostics && setup_diagnostics(model, model.n_chains)
+function stan_sample(model::CmdStanSampleModel; kwargs...)
+  n_chains = 4
+  rm_samples = true
+  diagnostics = false
     
-    _stan_sample(model;  rm_samples = rm_samples)
+  if :n_chains in keys(kwargs) 
+    n_chains = kwargs[:n_chains]
+    set_n_chains(model, n_chains)
+  end
+  :init in keys(kwargs) && update_R_files(model, kwargs[:init], n_chains, "init")
+  :data in keys(kwargs) && update_R_files(model, kwargs[:data], n_chains, "data")
+  if :diagnostics in keys(kwargs)
+    diagnostics = kwargs[:diagnostics]
+    setup_diagnostics(model, n_chains)
+  end
+  
+  _stan_sample(model;  rm_samples = rm_samples)
     
 end
 
@@ -51,7 +59,7 @@ function _stan_sample(model::CmdStanSampleModel; rm_samples = true)
   
     rm_samples && rm.(StanRun.find_samples(model.sm))
     cmds_and_paths = [stan_cmd_and_paths(model, id)
-                      for id in 1:model.n_chains]
+                      for id in 1:get_n_chains(model)]
     pmap(cmds_and_paths) do cmd_and_path
         cmd, (sample_path, log_path) = cmd_and_path
         success(cmd) ? sample_path : nothing, log_path

@@ -26,10 +26,10 @@ function read_samples(model::CmdStanSampleModel;  start=1)
 
   local a3d, monitors, index, idx, indvec, ftype, noofsamples
   
-  output_base =model.output_base
+  output_base = model.output_base
   name_base ="_chain"
   n_samples = model.method. num_samples  
-  n_chains = model.n_chains
+  n_chains = get_n_chains(model)
   
   # Handle save_warmup
   start = model.method.save_warmup ? model.method.num_warmup+1 : start
