@@ -35,7 +35,7 @@ to an existing file which will be copied to the output directory unless the leng
 When `rm_samples` (default: `true`), remove potential pre-existing sample files after
 compiling the model.
 """
-function stan_sample(model::CmdStanSampleModel; kwargs...)
+function stan_sample(model::CmdStanModel; kwargs...)
   n_chains = 4
   rm_samples = true
   diagnostics = false
@@ -55,7 +55,7 @@ function stan_sample(model::CmdStanSampleModel; kwargs...)
     
 end
 
-function _stan_sample(model::CmdStanSampleModel; rm_samples = true)
+function _stan_sample(model::CmdStanModel; rm_samples = true)
   
     rm_samples && rm.(StanRun.find_samples(model.sm))
     cmds_and_paths = [stan_cmd_and_paths(model, id)
@@ -72,7 +72,7 @@ $(SIGNATURES)
 
 Run a Stan command. Internal, not exported.
 """
-function stan_cmd_and_paths(model::CmdStanSampleModel, id::Integer)
+function stan_cmd_and_paths(model::CmdStanModel, id::Integer)
   
     append!(model.sample_file, [StanRun.sample_file_path(model.output_base, id)])
     model.output.file = model.sample_file[id]

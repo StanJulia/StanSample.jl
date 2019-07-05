@@ -1,5 +1,8 @@
 import Base: show
 
+abstract type CmdStanModel end
+
+
 """
 # CmdStanSampleModel 
 
@@ -33,7 +36,7 @@ Create a CmdStanSampleModel.
 ```
 
 """
-struct CmdStanSampleModel
+struct CmdStanSampleModel <: CmdStanModel
   name::AbstractString
   model::AbstractString
   n_chains::Vector{Int64}
