@@ -12,7 +12,7 @@ original_stanrun_tests = [
 ]
 
 for test in original_stanrun_tests
-  println("\nTesting: $test.\n")
+  println("\nTesting: $test.")
   include(test)
 end
 println()
@@ -39,7 +39,7 @@ sample_settings_tests = [
 
 @testset "Bernoulli Sample() settings" begin
   for test in sample_settings_tests
-    println("\nTesting: $test.\n")
+    println("\nTesting: $test.")
     include(joinpath(TestDir, test))
     @test stanmodel.method.adapt.delta ≈ 0.85 atol=0.01
   end

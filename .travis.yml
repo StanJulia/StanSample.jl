@@ -1,11 +1,15 @@
 ## Documentation: http://docs.travis-ci.com/user/languages/julia/
 language: julia
+
 dist: xenial
+
 os:
   - linux
   - osx
+  
 env:
   - JULIA_CMDSTAN_HOME="$HOME/cmdstan-2.19.1/"
+  
 before_install:
   - OLDWD=`pwd`
   - cd ~
@@ -13,20 +17,22 @@ before_install:
   - tar -xzpf cmdstan-2.19.1.tar.gz
   - make -C $JULIA_CMDSTAN_HOME build
   - cd $OLDWD
+  
 julia:
   - 1.1
   - 1.2
   - nightly
+  
 notifications:
   email: false
+  
 git:
   depth: 99999999
 
-## uncomment the following lines to allow failures on nightly julia
-## (tests will run but not make your overall status red)
 matrix:
   allow_failures:
   - julia: nightly
+  - os: osx
 
 ## uncomment following lines to deploy documentation
 # jobs:
