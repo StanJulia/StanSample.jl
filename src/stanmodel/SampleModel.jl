@@ -1,12 +1,9 @@
 import Base: show
 
-abstract type CmdStanModel end
-
-
 """
-# CmdStanSampleModel 
+# SampleModel 
 
-Create a CmdStanSampleModel. 
+Create a SampleModel. 
 
 ### Required arguments
 ```julia
@@ -33,32 +30,16 @@ Create a CmdStanSampleModel.
 * `summary=true`                       : Create computed stan summary
 * `printsummary=true`                  : Show computed stan summary
 * `sm::StanRun.StanModel`              : StanRun.StanModel
+* `method::Any                         : Will be Sample()  
 ```
 
 """
-struct CmdStanSampleModel <: CmdStanModel
-  name::AbstractString
-  model::AbstractString
-  n_chains::Vector{Int64}
-  method::AbstractStanMethod
-  random::Random
-  init::Init
-  output::Output
-  tmpdir::AbstractString
-  output_base::AbstractString
-  exec_path::AbstractString
-  data_file::Vector{String}
-  init_file::Vector{String}
-  cmds::Vector{Cmd}
-  sample_file::Vector{String}
-  log_file::Vector{String}
-  diagnostic_file::Vector{String}
-  summary::Bool
-  printsummary::Bool
-  sm::StanRun.StanModel
+struct SampleModel <: CmdStanModel
+  @shared_fields_stanmodel
+  method::Any
 end
 
-function CmdStanSampleModel(
+function SampleModel(
   name::AbstractString,
   model::AbstractString,
   n_chains=[4];
@@ -78,20 +59,20 @@ function CmdStanSampleModel(
   
   stan_compile(sm)
   
-  CmdStanSampleModel(name, model, n_chains, method, random, init, output,
+  SampleModel(name, model, n_chains, method, random, init, output,
     tmpdir, output_base, exec_path, String[], String[], 
-    Cmd[], String[], String[], String[], false, false, sm)
+    Cmd[], String[], String[], String[], false, false, sm, method)
 end
 
-function model_show(io::IO, m::CmdStanSampleModel, compact::Bool)
+function model_show(io::IO, m::SampleModel, compact::Bool)
   println("  name =                    \"$(m.name)\"")
   println("  n_chains =                $(get_n_chains(m))")
   println("  output =                  Output()")
-  println("    file =                    \"$(m.output.file)\"")
-  println("    diagnostics_file =        \"$(m.output.diagnostic_file)\"")
+  println("    file =                    \"$(split(m.output.file, "/")[end])\"")
+  println("    diagnostics_file =        \"$(split(m.output.diagnostic_file, "/")[end])\"")
   println("    refresh =                 $(m.output.refresh)")
   println("  tmpdir =                  \"$(m.tmpdir)\"")
   sample_show(io, m.method, compact)
 end
 
-show(io::IO, m::CmdStanSampleModel) = model_show(io, m, false)
+show(io::IO, m::SampleModel) = model_show(io, m, false)

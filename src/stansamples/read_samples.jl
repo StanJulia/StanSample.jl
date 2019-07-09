@@ -8,12 +8,12 @@ This method is added to StanRun's read_sample function.
 
 ### Method
 ```julia
-read_samples(model::CmdStanSampleModel; start=1)
+read_samples(model::SampleModel; start=1)
 ```
 
 ### Required arguments
 ```julia
-* `model`                    : CmdStanSampleModel
+* `model`                    : SampleModel
 ```
 
 ### Optional arguments
@@ -22,7 +22,7 @@ read_samples(model::CmdStanSampleModel; start=1)
 ```
 
 """
-function read_samples(model::CmdStanSampleModel;  start=1)
+function read_samples(model::SampleModel;  start=1)
 
   local a3d, monitors, index, idx, indvec, ftype, noofsamples
   
