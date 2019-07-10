@@ -24,7 +24,7 @@ bernoulli_data = [
 ]
 
 # Keep tmpdir identical across multiple runs to prevent re-compilation
-stanmodel = CmdStanSampleModel(
+stanmodel = SampleModel(
   "bernoulli", bernoulli_model; tmpdir = tmpdir,
   method =  StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
 

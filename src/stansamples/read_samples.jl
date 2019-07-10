@@ -29,7 +29,7 @@ function read_samples(model::SampleModel;  start=1)
   output_base = model.output_base
   name_base ="_chain"
   n_samples = model.method. num_samples  
-  n_chains = get_n_chains(model)
+  n_chains = StanBase.get_n_chains(model)
   
   # Handle save_warmup
   start = model.method.save_warmup ? model.method.num_warmup+1 : start

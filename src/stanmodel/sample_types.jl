@@ -218,7 +218,7 @@ Adapt(;engaged::Bool=true, gamma::Number=0.05, delta::Number=0.8,
 
 # Sample type and constructor
 
-Settings for method=Sample() in CmdStanSampleModel. 
+Settings for method=Sample() in SampleModel. 
 
 ### Method
 ```julia
@@ -249,7 +249,7 @@ Sample(;
 ?SamplingAlgorithm
 ```
 """
-struct Sample <: AbstractStanMethod
+struct Sample
   num_samples::Int64
   num_warmup::Int64
   save_warmup::Bool

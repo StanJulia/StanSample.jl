@@ -18,6 +18,7 @@ using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
 import StanRun: stan_sample, stan_cmd_and_paths, default_output_base
 import StanSamples: read_samples
+import StanBase: cmdline
 
 include("stanmodel/sample_types.jl")
 include("stanmodel/SampleModel.jl")

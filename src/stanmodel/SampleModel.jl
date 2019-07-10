@@ -14,8 +14,7 @@ Create a SampleModel.
 ### Optional arguments
 ```julia
 * `n_chains::Vector{Int64}=[4]`        : Optionally updated in stan_sample()
-* `method::AbstractStanMethod`         : See ?Method (default: Sample())
-* `random::Random`                     : Random seed settings
+* `seed::RandomSeed`                   : Random seed settings
 * `output::Output`              : File output options
 * `init::Init`                         : Default interval bound for parameters
 * `tmpdir::AbstractString`             : Directory where output files are stored
@@ -34,8 +33,8 @@ Create a SampleModel.
 ```
 
 """
-struct SampleModel <: CmdStanModel
-  @shared_fields_stanmodel
+mutable struct SampleModel <: CmdStanModels
+  @shared_fields_stanmodels
   method::Any
 end
 
@@ -44,29 +43,29 @@ function SampleModel(
   model::AbstractString,
   n_chains=[4];
   method = Sample(),
-  random = Random(),
-  init = Init(),
-  output = Output(),
+  seed = StanBase.RandomSeed(),
+  init = StanBase.Init(),
+  output = StanBase.Output(),
   tmpdir = mktempdir())
   
   !isdir(tmpdir) && mkdir(tmpdir)
   
-  update_model_file(joinpath(tmpdir, "$(name).stan"), strip(model))
+  StanBase.update_model_file(joinpath(tmpdir, "$(name).stan"), strip(model))
   sm = StanModel(joinpath(tmpdir, "$(name).stan"))
   
-  output_base = default_output_base(sm)
+  output_base = StanRun.default_output_base(sm)
   exec_path = StanRun.ensure_executable(sm)
   
   stan_compile(sm)
   
-  SampleModel(name, model, n_chains, method, random, init, output,
+  SampleModel(name, model, n_chains, seed, init, output,
     tmpdir, output_base, exec_path, String[], String[], 
     Cmd[], String[], String[], String[], false, false, sm, method)
 end
 
 function model_show(io::IO, m::SampleModel, compact::Bool)
   println("  name =                    \"$(m.name)\"")
-  println("  n_chains =                $(get_n_chains(m))")
+  println("  n_chains =                $(StanBase.get_n_chains(m))")
   println("  output =                  Output()")
   println("    file =                    \"$(split(m.output.file, "/")[end])\"")
   println("    diagnostics_file =        \"$(split(m.output.diagnostic_file, "/")[end])\"")
