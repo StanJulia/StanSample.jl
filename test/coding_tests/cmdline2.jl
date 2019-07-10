@@ -14,12 +14,11 @@ cmdline(m)
 * `m::CmdStanSampleModel`                : CmdStanSampleModel
 ```
 
-### Related help
-```julia
-?CmdStanSampleModel                      : Create a CmdStanSampleModel
-```
+This cmdline method needs to handle struct: SampleMode
+and sub-strcts: Sample, Adapt, Hmc, Engine, StanBase.RandomSeed}
+ 
 """
-function cmdline(m::Union{SampleModel, Sample, Adapt, Hmc, Engine, StanBase.RandomSeed}, id)
+function cmdline2(m::SampleModel, id)
   
   #=
   `./bernoulli3 sample num_samples=1000 num_warmup=1000 
@@ -35,10 +34,11 @@ function cmdline(m::Union{SampleModel, Sample, Adapt, Hmc, Engine, StanBase.Rand
     cmd = `$(m.exec_path)`
 
     # Sample() specific portion of the model
-    cmd = `$cmd $(cmdline(getfield(m, :method), id))`
+    println(typeof(getfield(m, :method)))
+    cmd = `$cmd $(cmdline2(getfield(m, :method), id))`
     
     # Common to all models
-    cmd = `$cmd $(cmdline(getfield(m, :seed), id))`
+    cmd = `$cmd $(cmdline2(getfield(m, :seed), cmd, id))`
     
     # Init file required?
     if length(m.init_file) > 0 && isfile(m.init_file[id])
@@ -62,19 +62,25 @@ function cmdline(m::Union{SampleModel, Sample, Adapt, Hmc, Engine, StanBase.Rand
     end
     cmd = `$cmd refresh=$(string(getfield(m, :output).refresh))`
     
-  else
+  end
     
+  function cmdline2(m::StanBase.RandomSeed, cmd, id)
+    cmd = `$cmd random`
+    for name in fieldnames(typeof(m))
+      cmd = `$cmd $(name)=$(getfield(m, name))`
+    end
+    cmd
+  end
+  
+  function cmdline2(m::StanSample.Sample, id)
+  
     # The 'recursive' part
     if isa(m, SamplingAlgorithm)
       cmd = `$cmd algorithm=$(split(lowercase(string(typeof(m))), '.')[end])`
     elseif isa(m, Engine)
       cmd = `$cmd engine=$(split(lowercase(string(typeof(m))), '.')[end])`
     else
-      if typeof(m) == StanBase.RandomSeed
-        cmd = `$cmd random`
-      else
-        cmd = `$cmd $(split(lowercase(string(typeof(m))), '.')[end])`
-      end
+      cmd = `$cmd $(split(lowercase(string(typeof(m))), '.')[end])`
     end
     for name in fieldnames(typeof(m))
       if  isa(getfield(m, name), String) || isa(getfield(m, name), Tuple)
@@ -94,7 +100,7 @@ function cmdline(m::Union{SampleModel, Sample, Adapt, Hmc, Engine, StanBase.Rand
           end
         end
       else
-        cmd = `$cmd $(cmdline(getfield(m, name), id))`
+        cmd = `$cmd $(cmdline2(getfield(m, name), id))`
       end
     end
   end

@@ -101,13 +101,13 @@ end
 
 # Hmc type and constructor
 
-Settings for algorithm=CmdStan.Hmc() in Sample(). 
+Settings for algorithm=StanSample.Hmc() in Sample(). 
 
 ### Method
 ```julia
 Hmc(;
-  engine=CmdStan.Nuts(),
-  metric=CmdStan.diag_e,
+  engine=StanSample.Nuts(),
+  metric=StanSample.diag_e,
   stepsize=1.0,
   stepsize_jitter=1.0
 )
