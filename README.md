@@ -11,9 +11,7 @@
 
 ## Important note
 
-### This is not a package being tested for release. If succesful, it might be used in CmdStan.jl v6 or as a support package underlying CmdStan.jl,
-
-### Maybe this is an ok approach.
+### Refactoring CmdStan.jl v6. Maybe this is an ok approach.
 
 ## Installation
 
