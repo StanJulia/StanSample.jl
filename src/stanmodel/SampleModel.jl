@@ -29,13 +29,13 @@ Create a SampleModel.
 * `summary=true`                       : Create computed stan summary
 * `printsummary=true`                  : Show computed stan summary
 * `sm::StanRun.StanModel`              : StanRun.StanModel
-* `method::Any                         : Will be Sample()  
+* `method::Sample                         : Will be Sample()  
 ```
 
 """
 mutable struct SampleModel <: CmdStanModels
   @shared_fields_stanmodels
-  method::Any
+  method::Sample
 end
 
 function SampleModel(
