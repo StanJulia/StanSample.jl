@@ -203,7 +203,7 @@ run(`awk 'NR > 14 && NR < 115 {sum += $9} END {print sum}' $(sfile)`)
 # This run generates the R dump files
 
 CMDSTAN_HOME_BOB="/Users/rob/Projects/StanSupport/cmdstan_bob"
-set_cmdstan_home!(CMDSTAN_HOME_BOB)
+isdir(CMDSTAN_HOME_BOB) && set_cmdstan_home!(CMDSTAN_HOME_BOB)
 @time stanmodel1 = SampleModel("LBA", LBA;
   method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
 (sample_file1, log_file1) = stan_sample(stanmodel1; data=LBA_data, n_chains=4)
@@ -219,7 +219,7 @@ run(`awk 'NR > 14 && NR < 115 {sum += $9} END {print sum}' $(sfile)`)
 # Switch to a different build of cmdstan
 
 CMDSTAN_HOME_MICHAEL="/Users/rob/Projects/StanSupport/cmdstan_michael"
-set_cmdstan_home!(CMDSTAN_HOME_MICHAEL)
+isdir(CMDSTAN_HOME_MICHAEL) && set_cmdstan_home!(CMDSTAN_HOME_MICHAEL)
 stanmodel2 = SampleModel("LBA", LBA;
   method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
 
