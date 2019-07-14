@@ -1,6 +1,6 @@
-"""
-
 # read_samples
+
+"""
 
 Read sample output files created by StanSample.jl.
 
