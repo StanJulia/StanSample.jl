@@ -182,9 +182,14 @@ LBA_data = (Nc = 3, N = 200, rt = [
   2,1,2,3,2,3,2,2,1,1,3,2,3,2,3,3,1,1,3,2,2,3,3,2,2,1,2,3,1,1,3,2,3,2,3,3,3,3,2,2,3,3,3,3,3,3,2,2,2,2,2,3,3,2,3]
 );
 
+# First 2 runs are using the standard 2.19.1 version of cmdstan
+
+# This run tests passing a data file name as data in the stan_sample() call
 
 set_cmdstan_home!(CMDSTAN_HOME)
-stanmodel = SampleModel("LBA", LBA);
+@time stanmodel = SampleModel("LBA", LBA; 
+  method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
+
 (sample_file, log_file) = stan_sample(stanmodel; data="LBA.R", n_chains=4)
 
 sdf = StanSample.read_summary(stanmodel)
@@ -195,8 +200,12 @@ run(`awk 'NR > 5 && NR < 15 {print $0}' $(sfile)`)
 run(`awk 'NR > 14 && NR < 115 {sum += $8} END {print sum}' $(sfile)`)
 run(`awk 'NR > 14 && NR < 115 {sum += $9} END {print sum}' $(sfile)`)
 
-set_cmdstan_home!(CMDSTAN_HOME)
-stanmodel1 = SampleModel("LBA", LBA);
+# This run generates the R dump files
+
+CMDSTAN_HOME_BOB="/Users/rob/Projects/StanSupport/cmdstan_bob"
+set_cmdstan_home!(CMDSTAN_HOME_BOB)
+@time stanmodel1 = SampleModel("LBA", LBA;
+  method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
 (sample_file1, log_file1) = stan_sample(stanmodel1; data=LBA_data, n_chains=4)
 
 sdf1 = StanSample.read_summary(stanmodel1)
@@ -207,13 +216,17 @@ run(`awk 'NR > 5 && NR < 15 {print $0}' $(sfile)`)
 run(`awk 'NR > 14 && NR < 115 {sum += $8} END {print sum}' $(sfile)`)
 run(`awk 'NR > 14 && NR < 115 {sum += $9} END {print sum}' $(sfile)`)
 
+# Switch to a different build of cmdstan
+
 CMDSTAN_HOME_MICHAEL="/Users/rob/Projects/StanSupport/cmdstan_michael"
 set_cmdstan_home!(CMDSTAN_HOME_MICHAEL)
-stanmodel2 = SampleModel("LBA", LBA)
+stanmodel2 = SampleModel("LBA", LBA;
+  method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
 
 (sample2_file, log_file2) = stan_sample(stanmodel2; data=LBA_data, n_chains=4)
 
 sdf2 = StanSample.read_summary(stanmodel2)
+display(sdf2)
 
 sfile = stanmodel2.output_base*"_summary.csv"
 run(`awk 'NR > 5 && NR < 15 {print $0}' $(sfile)`)

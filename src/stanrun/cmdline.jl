@@ -19,7 +19,7 @@ cmdline(m)
 ?CmdStanSampleModel                      : Create a CmdStanSampleModel
 ```
 """
-function cmdline(m::Union{SampleModel, Sample, Adapt, Hmc, Engine, StanBase.RandomSeed}, id)
+function cmdline(m::Union{SampleModel, Sample, Adapt, Hmc, Engine}, id)
   
   #=
   `./bernoulli3 sample num_samples=1000 num_warmup=1000 
@@ -38,7 +38,7 @@ function cmdline(m::Union{SampleModel, Sample, Adapt, Hmc, Engine, StanBase.Rand
     cmd = `$cmd $(cmdline(getfield(m, :method), id))`
     
     # Common to all models
-    cmd = `$cmd $(cmdline(getfield(m, :seed), id))`
+    cmd = `$cmd random seed=$(getfield(m, :seed).seed)`
     
     # Init file required?
     if length(m.init_file) > 0 && isfile(m.init_file[id])
@@ -70,11 +70,7 @@ function cmdline(m::Union{SampleModel, Sample, Adapt, Hmc, Engine, StanBase.Rand
     elseif isa(m, Engine)
       cmd = `$cmd engine=$(split(lowercase(string(typeof(m))), '.')[end])`
     else
-      if typeof(m) == StanBase.RandomSeed
-        cmd = `$cmd random`
-      else
-        cmd = `$cmd $(split(lowercase(string(typeof(m))), '.')[end])`
-      end
+      cmd = `$cmd $(split(lowercase(string(typeof(m))), '.')[end])`
     end
     for name in fieldnames(typeof(m))
       if  isa(getfield(m, name), String) || isa(getfield(m, name), Tuple)
