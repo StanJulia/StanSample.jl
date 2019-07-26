@@ -1,5 +1,5 @@
 using StanSample
-using CmdStan: CMDSTAN_HOME, set_cmdstan_home!
+using StanBase: CMDSTAN_HOME, set_cmdstan_home!
 
 cd(@__DIR__)
 
@@ -187,14 +187,15 @@ LBA_data = (Nc = 3, N = 200, rt = [
 # This run tests passing a data file name as data in the stan_sample() call
 
 set_cmdstan_home!(CMDSTAN_HOME)
-@time stanmodel = SampleModel("LBA", LBA; 
+stanmodel = SampleModel("LBA", LBA; 
   method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
 
-(sample_file, log_file) = stan_sample(stanmodel; data="LBA.R", n_chains=4)
+@time (sample_file, log_file) = stan_sample(stanmodel; data="LBA.R", n_chains=4)
 
-sdf = StanSample.read_summary(stanmodel)
+@time sdf = StanSample.read_summary(stanmodel)
 display(sdf)
 
+#=
 sfile = stanmodel.output_base*"_summary.csv"
 run(`awk 'NR > 5 && NR < 15 {print $0}' $(sfile)`)
 run(`awk 'NR > 14 && NR < 115 {sum += $8} END {print sum}' $(sfile)`)
@@ -215,21 +216,4 @@ sfile = stanmodel1.output_base*"_summary.csv"
 run(`awk 'NR > 5 && NR < 15 {print $0}' $(sfile)`)
 run(`awk 'NR > 14 && NR < 115 {sum += $8} END {print sum}' $(sfile)`)
 run(`awk 'NR > 14 && NR < 115 {sum += $9} END {print sum}' $(sfile)`)
-
-# Switch to a different build of cmdstan
-
-CMDSTAN_HOME_MICHAEL="/Users/rob/Projects/StanSupport/cmdstan_michael"
-isdir(CMDSTAN_HOME_MICHAEL) && set_cmdstan_home!(CMDSTAN_HOME_MICHAEL)
-stanmodel2 = SampleModel("LBA", LBA;
-  method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
-
-(sample2_file, log_file2) = stan_sample(stanmodel2; data=LBA_data, n_chains=4)
-
-sdf2 = StanSample.read_summary(stanmodel2)
-display(sdf2)
-
-sfile = stanmodel2.output_base*"_summary.csv"
-run(`awk 'NR > 5 && NR < 15 {print $0}' $(sfile)`)
-run(`awk 'NR > 14 && NR < 115 {sum += $8} END {print sum}' $(sfile)`)
-run(`awk 'NR > 14 && NR < 115 {sum += $9} END {print sum}' $(sfile)`)
-
+=#
