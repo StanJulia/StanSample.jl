@@ -215,7 +215,6 @@ Adapt(;engaged::Bool=true, gamma::Number=0.05, delta::Number=0.8,
 
 
 """
-
 # Sample type and constructor
 
 Settings for method=Sample() in SampleModel. 
@@ -227,7 +226,7 @@ Sample(;
   num_warmup=1000,
   save_warmup=false,
   thin=1,
-  adapt=CmdStan.Adapt(),
+  adapt=StanSample.Adapt(),
   algorithm=SamplingAlgorithm()
 )
 ```
@@ -242,12 +241,6 @@ Sample(;
 
 ```
 
-### Related help
-```julia
-?CmdStanSampleModel             : Create a StanModel
-?Adapt
-?SamplingAlgorithm
-```
 """
 struct Sample
   num_samples::Int64
