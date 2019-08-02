@@ -1,7 +1,7 @@
 name = "StanSample"
 uuid = "c1514b29-d3a0-5178-b312-660c88baa699"
 authors = ["Rob J Goedman <goedman@icloud.com>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
