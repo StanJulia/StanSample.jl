@@ -23,6 +23,7 @@ bernoulli_model = "
 ";
 
 tmpdir = ProjDir*"/tmp"
+!isdir(tmpdir) && mkdir(tmpdir)
 StanBase.update_model_file(tmpdir*"/test.stan", bernoulli_model)
 model = open(f -> read(f, String), tmpdir*"/test.stan")
 println(model)
