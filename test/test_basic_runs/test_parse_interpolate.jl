@@ -8,8 +8,8 @@ shared_file = "shared_funcs.stan"
 bernoulli_model = "
   functions{
   
-    #include $(shared_file)
-    //#include shared_funcs.stan // a comment
+    //#include $(shared_file)
+    #include shared_funcs.stan // a comment
     //#include shared_funcs.stan // a comment
     //#include /Users/rob/shared_funcs.stan // a comment
   
