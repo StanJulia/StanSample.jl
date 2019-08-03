@@ -3,21 +3,10 @@ using StanSample
 ProjDir = @__DIR__
 cd(ProjDir)
 
-shared_file = "shared_funcs.stan"
-
 bernoulli_model = "
   functions{
-  
-    //#include $(shared_file)
-    #include shared_funcs.stan // a comment
-    //#include shared_funcs.stan // a comment
-    //#include /Users/rob/shared_funcs.stan // a comment
-  
-    void model_specific_function(){
-        real x = 1.0;
-        return;
-    }
-  
+    #include model_specific_funcs.stan
+    #include shared_funcs.stan // a comment  
   }
   data { 
     int<lower=1> N; 
@@ -33,8 +22,20 @@ bernoulli_model = "
   }
 ";
 
-stanmodel = SampleModel("bernoulli", bernoulli_model)
+tmpdir = ProjDir*"/tmp"
+StanBase.update_model_file(tmpdir*"/test.stan", bernoulli_model)
+model = open(f -> read(f, String), tmpdir*"/test.stan")
+println(model)
+println()
 
+try
+  stanmodel = SampleModel("bernoulli", bernoulli_model, tmpdir=tmpdir)
+catch e
+  println(e)
+  model = open(f -> read(f, String), tmpdir*"/bernoulli.stan")
+  println(model)
+  println()
+end  
 observeddata = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 (sample_file, log_file) = stan_sample(stanmodel, data=observeddata)
