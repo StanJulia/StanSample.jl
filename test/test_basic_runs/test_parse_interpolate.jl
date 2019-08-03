@@ -3,7 +3,7 @@ using StanSample
 ProjDir = @__DIR__
 cd(ProjDir)
 
-shared_file = "../../examples/Parse_and_Interpolate_Example/shared_funcs.stan"
+shared_file = "shared_funcs.stan"
 
 bernoulli_model = "
   functions{
