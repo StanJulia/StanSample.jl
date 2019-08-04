@@ -29,5 +29,6 @@ stan_sample(stanmodel, data=bernoulli_data)
 chns = read_samples(stanmodel)
 
 # Show the same output in DataFrame format
+stan_summary(stanmodel)
 sdf = read_summary(stanmodel)
   

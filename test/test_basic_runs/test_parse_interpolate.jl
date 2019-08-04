@@ -22,21 +22,10 @@ bernoulli_model = "
   }
 ";
 
-tmpdir = ProjDir*"/tmp"
-!isdir(tmpdir) && mkdir(tmpdir)
-StanBase.update_model_file(tmpdir*"/test.stan", bernoulli_model)
-model = open(f -> read(f, String), tmpdir*"/test.stan")
-println(model)
-println()
+#tmpdir = ProjDir*"/tmp"
+tmpdir = mktempdir()
+stanmodel = SampleModel("bernoulli", bernoulli_model, tmpdir=tmpdir)
 
-try
-  stanmodel = SampleModel("bernoulli", bernoulli_model, tmpdir=tmpdir)
-catch e
-  println(e)
-  model = open(f -> read(f, String), tmpdir*"/bernoulli.stan")
-  println(model)
-  println()
-end  
 observeddata = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 (sample_file, log_file) = stan_sample(stanmodel, data=observeddata)
@@ -50,6 +39,7 @@ if sample_file !== Nothing
   display(cdf)
 
   # Show cmdstan summary in DataFrame format
+  stan_summary(stanmodel)
   sdf = read_summary(stanmodel)
   display(sdf)
   println()

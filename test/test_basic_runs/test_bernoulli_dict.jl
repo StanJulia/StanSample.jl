@@ -26,5 +26,6 @@ stanmodel = SampleModel(
 stan_sample(stanmodel, data=bernoulli_data, n_chains=6, diagnostics=true)
 
 # Fetch the same output in the `sdf` ChainDataFrame
+stan_summary(stanmodel)
 sdf = read_summary(stanmodel)
   

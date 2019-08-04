@@ -32,5 +32,6 @@ stan_sample(stanmodel, data=bernoulli_data, diagnostics=true)
 # Convert to an MCMCChains.Chains object
 chns = read_samples(stanmodel)
 # Fetch the same output in the `sdf` ChainDataFrame
+stan_summary(stanmodel)
 sdf = read_summary(stanmodel)
   
