@@ -39,7 +39,6 @@ if sample_file !== Nothing
   display(cdf)
 
   # Show cmdstan summary in DataFrame format
-  stan_summary(stanmodel)
   sdf = read_summary(stanmodel)
   display(sdf)
   println()

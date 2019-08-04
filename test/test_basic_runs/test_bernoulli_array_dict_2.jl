@@ -29,6 +29,5 @@ stanmodel = SampleModel("bernoulli", bernoulli_model;
 stan_sample(stanmodel, data=bernoulli_data, diagnostics=true)
 
 # Fetch the same output in the `sdf` ChainDataFrame
-stan_summary(stanmodel)
 sdf = read_summary(stanmodel)
   

@@ -40,7 +40,6 @@ if !(sample_file == Nothing)
   display(cdf)
 
   # Show the same output in DataFrame format
-  stan_summary(stanmodel)
   sdf = StanSample.read_summary(stanmodel)
   display(sdf)
 end
