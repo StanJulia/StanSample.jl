@@ -192,8 +192,22 @@ stanmodel = SampleModel("LBA", LBA;
 
 @time (sample_file, log_file) = stan_sample(stanmodel; data="LBA.R", n_chains=4)
 
-@time sdf = StanSample.read_summary(stanmodel)
-display(sdf)
+if !(sample_file == Nothing)
+  # Use StanSamples to read a chain in NamedTupla format
+  nt = read_samples(stanmodel.sm; chain = 3)
+
+  # Convert to an MCMCChains.Chains object
+  chns = read_samples(stanmodel)
+  
+  # Describe the MCMCChains using MCMCChains statistics
+  cdf = describe(chns)
+  display(cdf)
+
+  # Show the same output in DataFrame format
+  stan_summary(stanmodel)
+  sdf = StanSample.read_summary(stanmodel)
+  display(sdf)
+end
 
 #=
 sfile = stanmodel.output_base*"_summary.csv"

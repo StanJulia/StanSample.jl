@@ -26,22 +26,21 @@ stanmodel = SampleModel(
   method = StanSample.Sample(save_warmup=true, 
     adapt = StanSample.Adapt(delta = 0.85)))
 
-stan_sample(stanmodel; data=bernoulli_data)
+(sample_file, log_file) = stan_sample(stanmodel; data=bernoulli_data)
 
-# Use StanSamples to read a chain in NamedTupla format
-nt = read_samples(stanmodel.sm; chain = 3)
+if !(sample_file == Nothing)
+  # Use StanSamples to read a chain in NamedTupla format
+  nt = read_samples(stanmodel.sm; chain = 3)
 
-# Convert to an MCMCChains.Chains object
-chns = read_samples(stanmodel)
+  # Convert to an MCMCChains.Chains object
+  chns = read_samples(stanmodel)
+  
+  # Describe the MCMCChains using MCMCChains statistics
+  cdf = describe(chns)
+  display(cdf)
 
-# Describe the MCMCChains using MCMCChains statistics
-cdf = describe(chns)
-display(cdf)
-
-# Show the same output in DataFrame format
-sdf = read_summary(stanmodel)
-display(sdf)
-println()
-
-# Retrieve mean value of theta from the summary
-sdf[:theta, :mean]
+  # Show the same output in DataFrame format
+  stan_summary(stanmodel)
+  sdf = StanSample.read_summary(stanmodel)
+  display(sdf)
+end
