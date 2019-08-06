@@ -12,7 +12,7 @@ module StanSample
 
 using Reexport
 
-@reexport using StanBase, CSV
+@reexport using StanBase
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
