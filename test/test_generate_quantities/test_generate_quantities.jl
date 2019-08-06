@@ -32,16 +32,5 @@ stanmodel = SampleModel("Generate_quantities", gq);
 (sample_file, log_file) = stan_sample(stanmodel; data=gq_data)
 
 if !(sample_file == Nothing)
-  # Convert to an MCMCChains.Chains object
-  chns = read_samples(stanmodel)
-  
-  # Describe the MCMCChains using MCMCChains statistics
-  cdf = describe(chns)
-  display(cdf)
-
-  # Show the same output in DataFrame format
-  sdf = StanSample.read_summary(stanmodel)
-  display(sdf)
-  
   stan_generate_quantities(stanmodel, 1)
 end

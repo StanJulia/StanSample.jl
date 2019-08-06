@@ -1,11 +1,8 @@
 using StanSample, Test
 
 TestDir = @__DIR__
-tmpdir = joinpath(TestDir, "tmp")
-if isdir(tmpdir)
-  rm(tmpdir, recursive=true)
-  mkdir(tmpdir)
-end
+
+tmpdir = mktempdir()
 
 original_stanrun_tests = [
   "original_stanrun_test/test_stanrun.jl",
@@ -22,11 +19,10 @@ basic_run_tests = [
   "test_basic_runs/test_bernoulli_nt.jl",
   "test_basic_runs/test_bernoulli_array_dict_1.jl",
   "test_basic_runs/test_bernoulli_array_dict_2.jl",
-  "test_basic_runs/test_parse_interpolate.jl",
-  "test_basic_runs/test_generated_quantities.jl"
+  "test_basic_runs/test_parse_interpolate.jl"
 ]
 
-@testset "Bernoulli basic runs" begin
+@testset "Bernoulli basic run tests" begin
   for test in basic_run_tests
     println("\nTesting: $test.")
     include(joinpath(TestDir, test))
@@ -39,11 +35,23 @@ sample_settings_tests = [
   "test_sample_settings/test_bernoulli.jl"
 ]
 
-@testset "Bernoulli Sample() settings" begin
+@testset "Bernoulli Sample() settings tests" begin
   for test in sample_settings_tests
     println("\nTesting: $test.")
     include(joinpath(TestDir, test))
     @test stanmodel.method.adapt.delta ≈ 0.85 atol=0.01
+  end
+  println()
+end
+
+generate_quantities_tests = [
+  "test_generate_quantities/test_generate_quantities.jl"
+]
+
+@testset "Generate_quantities tests" begin
+  for test in generate_quantities_tests
+    println("\nTesting: $test.")
+    include(joinpath(TestDir, test))
   end
   println()
 end
