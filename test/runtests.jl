@@ -23,7 +23,7 @@ basic_run_tests = [
   "test_basic_runs/test_bernoulli_array_dict_1.jl",
   "test_basic_runs/test_bernoulli_array_dict_2.jl",
   "test_basic_runs/test_parse_interpolate.jl",
-  "test_generated_quantities.jl"
+  "test_basic_runs/test_generated_quantities.jl"
 ]
 
 @testset "Bernoulli basic runs" begin
