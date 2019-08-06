@@ -12,7 +12,7 @@ module StanSample
 
 using Reexport
 
-@reexport using StanBase
+@reexport using StanBase, CSV
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
@@ -23,9 +23,11 @@ import StanBase: cmdline
 include("stanmodel/sample_types.jl")
 include("stanmodel/SampleModel.jl")
 include("stanrun/cmdline.jl")
+include("stanrun/stan_generate_quantities.jl")
 include("stansamples/read_samples.jl")
 
 export
-  SampleModel
+  SampleModel,
+  stan_generate_quantities
 
 end # module
