@@ -1,6 +1,8 @@
 using CSV
 
 function stan_generate_quantities(m::SampleModel, id::Int64; kwargs...)
+  
+  local fname
     
   cmd = ``
   if isa(m, SampleModel)
@@ -18,13 +20,16 @@ function stan_generate_quantities(m::SampleModel, id::Int64; kwargs...)
     if length(m.data_file) > 0 && isfile(m.data_file[id])
       fname = m.data_file[id]
       cmd = `$cmd data file=$fname`
-    end    
+    end
+    
+    fname = "$(m.output_base)_generated_quantities_$id.csv"
+    cmd = `$cmd output file=$fname`
   end 
   
   cd(m.tmpdir) do
-    run(cmd)
+    run(pipeline(cmd, stdout="$(m.output_base)_generated_quantities_$id.log"))
   end
   
-  CSV.read("$(m.tmpdir)/output.csv", delim=",", comment="#")
+  CSV.read(fname, delim=",", comment="#")
   
 end

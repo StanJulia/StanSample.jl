@@ -1,4 +1,4 @@
-using StanSample
+using StanSample, Test
 
 ProjDir = @__DIR__
 cd(ProjDir)
@@ -45,5 +45,3 @@ if !(sample_file == Nothing)
   
   stan_generate_quantities(stanmodel, 1)
 end
-
-
