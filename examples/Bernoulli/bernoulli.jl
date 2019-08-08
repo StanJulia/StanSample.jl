@@ -3,13 +3,13 @@
 using StanSample
 
 bernoulli_model = "
-data { 
-  int<lower=1> N; 
+data {
+  int<lower=1> N;
   int<lower=0,upper=1> y[N];
-} 
+}
 parameters {
   real<lower=0,upper=1> theta;
-} 
+}
 model {
   theta ~ beta(1,1);
   y ~ bernoulli(theta);
@@ -23,7 +23,7 @@ tmpdir = joinpath(@__DIR__, "tmp")
 
 stanmodel = SampleModel(
   "bernoulli", bernoulli_model; tmpdir = tmpdir,
-  method = StanSample.Sample(save_warmup=true, 
+  method = StanSample.Sample(save_warmup=true,
     adapt = StanSample.Adapt(delta = 0.85)))
 
 (sample_file, log_file) = stan_sample(stanmodel; data=bernoulli_data)
@@ -34,7 +34,7 @@ if !(sample_file == Nothing)
 
   # Convert to an MCMCChains.Chains object
   chns = read_samples(stanmodel)
-  
+
   # Describe the MCMCChains using MCMCChains statistics
   cdf = describe(chns)
   display(cdf)
