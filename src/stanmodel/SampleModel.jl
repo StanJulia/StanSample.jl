@@ -7,15 +7,15 @@ Create a SampleModel.
 
 ### Required arguments
 ```julia
-* `name::AbstractString`        : Name for the model
-* `model::AbstractString`       : Stan model source
+* `name::AbstractString`               : Name for the model
+* `model::AbstractString`              : Stan model source
 ```
 
 ### Optional arguments
 ```julia
 * `n_chains::Vector{Int64}=[4]`        : Optionally updated in stan_sample()
 * `seed::RandomSeed`                   : Random seed settings
-* `output::Output`              : File output options
+* `output::Output`                     : File output options
 * `init::Init`                         : Default interval bound for parameters
 * `tmpdir::AbstractString`             : Directory where output files are stored
 * `output_base::AbstractString`        : Base name for output files
@@ -25,11 +25,11 @@ Create a SampleModel.
 * `cmds::Vector{Cmd}`                  : Path to per chain init file
 * `sample_file::Vector{String}         : Path to per chain samples file
 * `log_file::Vector{String}            : Path to per chain log file
-* `diagnostic_file::Vector{String}    : Path to per chain diagnostic file
+* `diagnostic_file::Vector{String}     : Path to per chain diagnostic file
 * `summary=true`                       : Create computed stan summary
 * `printsummary=true`                  : Show computed stan summary
 * `sm::StanRun.StanModel`              : StanRun.StanModel
-* `method::Sample                         : Will be Sample()  
+* `method::Sample                      : Will be Sample()  
 ```
 
 """
