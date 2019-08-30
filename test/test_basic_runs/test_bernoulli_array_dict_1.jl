@@ -1,4 +1,4 @@
-######### CmdStan sample example  ###########
+######### StanSample example  ###########
 
 using StanSample
 
@@ -25,7 +25,7 @@ bernoulli_data = [
 
 # Keep tmpdir identical across multiple runs to prevent re-compilation
 stanmodel = SampleModel(
-  "bernoulli", bernoulli_model; tmpdir = tmpdir,
+  "bernoulli", bernoulli_model;
   method =  StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
 
 stan_sample(stanmodel, data=bernoulli_data, diagnostics=true)
