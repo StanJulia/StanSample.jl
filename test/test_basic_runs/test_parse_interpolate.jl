@@ -24,9 +24,7 @@ bernoulli_model = "
   }
 ";
 
-tmpdir = ProjDir*"/tmp"
-#tmpdir = mktempdir()
-stanmodel = SampleModel("bernoulli", bernoulli_model, tmpdir=tmpdir)
+stanmodel = SampleModel("bernoulli", bernoulli_model)
 
 observeddata = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
