@@ -1,5 +1,7 @@
 using StanSample
 
+#StanBase.set_cmdstan_home!(homedir() * "/Projects/StanSupport/cmdstan_stanc3")
+
 ProjDir = @__DIR__
 cd(ProjDir)
 
@@ -22,8 +24,8 @@ bernoulli_model = "
   }
 ";
 
-#tmpdir = ProjDir*"/tmp"
-tmpdir = mktempdir()
+tmpdir = ProjDir*"/tmp"
+#tmpdir = mktempdir()
 stanmodel = SampleModel("bernoulli", bernoulli_model, tmpdir=tmpdir)
 
 observeddata = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
