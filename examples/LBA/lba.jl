@@ -1,9 +1,11 @@
-using StanSample
+using StanSample, Random
 using StanBase: CMDSTAN_HOME, set_cmdstan_home!
+
+Random.seed!(123)
 
 cd(@__DIR__)
 
-LBA = "
+LBA_stan = "
 functions{
 
      real lba_pdf(real t, real b, real A, real v, real s){
@@ -187,7 +189,7 @@ LBA_data = (Nc = 3, N = 200, rt = [
 # This run tests passing a data file name as data in the stan_sample() call
 
 set_cmdstan_home!(CMDSTAN_HOME)
-stanmodel = SampleModel("LBA", LBA; 
+stanmodel = SampleModel("LBA", LBA_stan; 
   method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
 
 @time (sample_file, log_file) = stan_sample(stanmodel; data="LBA.R", n_chains=4)
