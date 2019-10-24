@@ -9,6 +9,7 @@ bernoulli_model = "
   functions{
     #include model_specific_funcs.stan
     #include shared_funcs.stan // a comment  
+    //#include shared_funcs.stan // a comment  
   }
   data { 
     int<lower=1> N; 
@@ -24,6 +25,7 @@ bernoulli_model = "
   }
 ";
 
+tmpdir = joinpath(ProjDir, "tmp")
 stanmodel = SampleModel("bernoulli", bernoulli_model)
 
 observeddata = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
