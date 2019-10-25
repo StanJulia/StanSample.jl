@@ -200,9 +200,9 @@ version = "0.6.2"
 
 [[FillArrays]]
 deps = ["LinearAlgebra", "Random", "SparseArrays"]
-git-tree-sha1 = "a2e22cd210dfa3ad1e1e6291fb733741dfabcc9f"
+git-tree-sha1 = "de38b0253ade98340fabaf220f368f6144541938"
 uuid = "1a297f60-69ca-5386-bcde-b61e274b549b"
-version = "0.7.3"
+version = "0.7.4"
 
 [[FixedPointNumbers]]
 git-tree-sha1 = "d14a6fa5890ea3a7e5dcab6811114f132fec2b4b"
@@ -510,7 +510,7 @@ version = "0.7.2"
 
 [[StanBase]]
 deps = ["CSV", "DataFrames", "DelimitedFiles", "Distributed", "DocStringExtensions", "MCMCChains", "NamedTupleTools", "Parameters", "Random", "Reexport", "StanDump", "StanRun", "StanSamples", "Unicode"]
-git-tree-sha1 = "8cc9d232a2748053b0197e698ffc6e5cc7bbb93d"
+git-tree-sha1 = "d8cae1d8d3645075ae8599e1872d08644431e0e8"
 repo-rev = "master"
 repo-url = "https://github.com/StanJulia/StanBase.jl.git"
 uuid = "d0ee94f6-a23d-54aa-bbe9-7f572d6da7f5"
