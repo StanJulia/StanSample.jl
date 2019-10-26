@@ -46,10 +46,10 @@ uuid = "9e28174c-4ba2-5203-b857-d8d62c4213ee"
 version = "0.8.10"
 
 [[BinaryProvider]]
-deps = ["Libdl", "Logging", "SHA"]
-git-tree-sha1 = "c7361ce8a2129f20b0e05a89f7070820cfed6648"
+deps = ["Libdl", "SHA"]
+git-tree-sha1 = "29995a7b317bbd06be147e1974a3541ce2502dca"
 uuid = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
-version = "0.5.6"
+version = "0.5.7"
 
 [[CSTParser]]
 deps = ["Tokenize"]
@@ -511,8 +511,6 @@ version = "0.7.2"
 [[StanBase]]
 deps = ["CSV", "DataFrames", "DelimitedFiles", "Distributed", "DocStringExtensions", "MCMCChains", "NamedTupleTools", "Parameters", "Random", "Reexport", "StanDump", "StanRun", "StanSamples", "Unicode"]
 git-tree-sha1 = "d8cae1d8d3645075ae8599e1872d08644431e0e8"
-repo-rev = "master"
-repo-url = "https://github.com/StanJulia/StanBase.jl.git"
 uuid = "d0ee94f6-a23d-54aa-bbe9-7f572d6da7f5"
 version = "1.0.0"
 
