@@ -36,8 +36,14 @@ if !(sample_file == Nothing)
   chns = read_samples(stanmodel)
 
   # Describe the MCMCChains using MCMCChains statistics
+  # By default, just show the `parameters` section.
+  # Use `chns.name_map` to see all sections.
   cdf = describe(chns)
   display(cdf)
+
+  # Describe the `internals` section statistics
+  icdf = describe(chns, sections=[:internals])
+  display(icdf)
 
   # Show the same output in DataFrame format
   sdf = StanSample.read_summary(stanmodel)
