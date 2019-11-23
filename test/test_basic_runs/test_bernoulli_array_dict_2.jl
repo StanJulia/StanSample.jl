@@ -26,7 +26,7 @@ bernoulli_data = [
 stanmodel = SampleModel("bernoulli", bernoulli_model;
   method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
 
-stan_sample(stanmodel, data=bernoulli_data, diagnostics=true)
+stan_sample(stanmodel, data=bernoulli_data)
 
 # Fetch the same output in the `sdf` ChainDataFrame
 sdf = read_summary(stanmodel)

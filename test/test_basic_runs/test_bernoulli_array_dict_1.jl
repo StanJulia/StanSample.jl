@@ -28,9 +28,11 @@ stanmodel = SampleModel(
   "bernoulli", bernoulli_model;
   method =  StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
 
-stan_sample(stanmodel, data=bernoulli_data, diagnostics=true)
+stan_sample(stanmodel, data=bernoulli_data)
+
 # Convert to an MCMCChains.Chains object
 chns = read_samples(stanmodel)
+
 # Fetch the same output in the `sdf` ChainDataFrame
 sdf = read_summary(stanmodel)
   
