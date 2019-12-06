@@ -1,7 +1,7 @@
 name = "StanSample"
 uuid = "c1514b29-d3a0-5178-b312-660c88baa699"
 authors = ["Rob J Goedman <goedman@icloud.com>"]
-version = "1.0.2"
+version = "1.1.0"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
@@ -20,18 +20,18 @@ StanSamples = "52d0d7a9-b304-5f31-a727-b234d0b606ff"
 Unicode = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 
 [compat]
-CSV = "^0.5"
-DataFrames = "^0.19"
-DocStringExtensions = "^0.8"
-MCMCChains = "^0.3, 0.4"
-NamedTupleTools = "^0.11, 0.12"
-Parameters = "^0.12"
+CSV = "0.5"
+DataFrames = "0.19"
+DocStringExtensions = "0.8"
+MCMCChains = "0.4"
+NamedTupleTools = "0.11, 0.12"
+Parameters = "0.12"
 Reexport = "0.2"
-StanBase = "^1.0"
+StanBase = "1.1"
 StanDump = "0.2"
 StanRun = "0.2"
-StanSamples = "^0.1"
-julia = "^1"
+StanSamples = "0.1"
+julia = "1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
