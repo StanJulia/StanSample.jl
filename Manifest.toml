@@ -83,9 +83,9 @@ version = "0.5.1"
 
 [[CategoricalArrays]]
 deps = ["Compat", "DataAPI", "Future", "JSON", "Missings", "Printf", "Reexport", "Unicode"]
-git-tree-sha1 = "4d85a015093760ff23b20f3e25fa195b4cb76794"
+git-tree-sha1 = "9c3fd1ebb503d271943c4ea94332d55ea900c9cb"
 uuid = "324d7699-5711-5eae-9e2f-1d82baa6b597"
-version = "0.7.3"
+version = "0.7.4"
 
 [[CommonSubexpressions]]
 deps = ["Test"]
