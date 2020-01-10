@@ -1,12 +1,7 @@
 """
+$(SIGNATURES)
+
 Helper infrastructure to compile and sample models using `cmdstan`.
-
-[`StanModel`](@ref) wraps a model definition (source code), while [`stan_sample`](@ref) can
-be used to sample from it.
-
-[`stan_compile`](@ref) can be used to pre-compile a model without sampling. A
-[`StanModelError`](@ref) is thrown if this fails, which contains the error messages from
-`stanc`.
 """
 module StanSample
 

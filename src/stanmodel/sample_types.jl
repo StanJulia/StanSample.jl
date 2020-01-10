@@ -4,6 +4,8 @@ import Base: show
 
 # Engine types
 
+$(SIGNATURES)
+
 Engine for Hamiltonian Monte Carlo
 
 ### Types defined
@@ -26,6 +28,8 @@ abstract type SamplingAlgorithm end
 """
 
 # Nuts type and constructor
+
+$(SIGNATURES)
 
 Settings for engine=Nuts() in Hmc(). 
 
@@ -53,6 +57,8 @@ Nuts(;max_depth::Number=10) = Nuts(max_depth)
 
 # Static type and constructor
 
+$(SIGNATURES)
+
 Settings for engine=Static() in Hmc(). 
 
 ### Method
@@ -79,6 +85,8 @@ Static(;int_time::Number=2 * pi) = Static(int_time)
 
 # Metric types
 
+$(SIGNATURES)
+
 Geometry of base manifold
 
 ### Types defined
@@ -102,6 +110,8 @@ end
 # Hmc type and constructor
 
 Settings for algorithm=StanSample.Hmc() in Sample(). 
+
+$(SIGNATURES)
 
 ### Method
 ```julia
@@ -146,6 +156,8 @@ Hmc(engine::Engine) = Hmc(engine, diag_e(), 1.0, 1.0)
 
 Settings for algorithm=CmdStan.Fixed_param() in Sample(). 
 
+$(SIGNATURES)
+
 ### Method
 ```julia
 Fixed_param()
@@ -165,6 +177,8 @@ struct Fixed_param <: SamplingAlgorithm end
 """
 
 # Adapt type and constructor
+
+$(SIGNATURES)
 
 Settings for adapt=CmdStan.Adapt() in Sample(). 
 
@@ -218,6 +232,8 @@ Adapt(;engaged::Bool=true, gamma::Number=0.05, delta::Number=0.8,
 # Sample type and constructor
 
 Settings for method=Sample() in SampleModel. 
+
+$(SIGNATURES)
 
 ### Method
 ```julia

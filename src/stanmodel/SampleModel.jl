@@ -3,7 +3,9 @@ import Base: show
 """
 # SampleModel 
 
-Create a SampleModel. 
+Create a SampleModel.
+
+$(SIGNATURES)
 
 ### Required arguments
 ```julia
