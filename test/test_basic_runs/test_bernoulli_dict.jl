@@ -27,7 +27,7 @@ stanmodel = SampleModel(
   method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)),
   tmpdir=tmpdir)
 
-rc = stan_sample(stanmodel, data=bernoulli_data, n_chains=6)
+rc = stan_sample(stanmodel, data=bernoulli_data, n_chains=4, debug=true)
 
 # Fetch the same output in the `sdf` ChainDataFrame
 if success(rc)
