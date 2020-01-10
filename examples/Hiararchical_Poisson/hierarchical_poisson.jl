@@ -37,9 +37,9 @@ hp_data = Dict(:N =>N, :y => y, :Ns => Ns, :idx => idx, :x => x)
 stanmodel = SampleModel("Hierachical_Poisson", HP; 
   method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.8)));
 
-(sample_file, log_file) = stan_sample(stanmodel; data=hp_data, n_chains=4)
+rc = stan_sample(stanmodel; data=hp_data, n_chains=4)
 
-if !(sample_file == Nothing)
+if success(rc)
   # Convert to an MCMCChains.Chains object
   chns = read_samples(stanmodel)
   

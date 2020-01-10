@@ -52,14 +52,16 @@ function cmdline(m::Union{SampleModel, Sample, Adapt, Hmc, Engine}, id)
       cmd = `$cmd id=$(id) data file=$(m.data_file[id])`
     end
     
-    # Output options
+    # Output files
     cmd = `$cmd output`
-    if length(getfield(m, :output).file) > 0
-      cmd = `$cmd file=$(string(getfield(m, :output).file))`
+    if length(m.sample_file[id]) > 0
+      cmd = `$cmd file=$(m.sample_file[id])`
     end
     if length(m.diagnostic_file) > 0
-      cmd = `$cmd diagnostic_file=$(string(getfield(m, :output).diagnostic_file))`
+      cmd = `$cmd diagnostic_file=$(m.diagnostic_file[id])`
     end
+
+    # Refresh rate
     cmd = `$cmd refresh=$(string(getfield(m, :output).refresh))`
     
   else

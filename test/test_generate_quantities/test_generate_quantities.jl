@@ -29,8 +29,8 @@ gq_data = Dict(
 
 stanmodel = SampleModel("Generate_quantities", gq);
 
-(sample_file, log_file) = stan_sample(stanmodel; data=gq_data)
+rc = stan_sample(stanmodel; data=gq_data)
 
-if !(sample_file == Nothing)
+if success(rc)
   stan_generate_quantities(stanmodel, 1)
 end

@@ -1,6 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
-using StanSample
+using StanSample, MCMCChains
 
 bernoulli_model = "
 data {
@@ -19,33 +19,31 @@ model {
 bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 # Keep tmpdir across multiple runs to prevent re-compilation
-tmpdir = joinpath(@__DIR__, "tmp")
+#tmpdir = joinpath(@__DIR__, "tmp")
 
-stanmodel = SampleModel(
-  "bernoulli", bernoulli_model; tmpdir = tmpdir,
+sm = SampleModel("bernoulli", bernoulli_model;
   method = StanSample.Sample(save_warmup=true,
-    adapt = StanSample.Adapt(delta = 0.85)))
+    adapt = StanSample.Adapt(delta = 0.85)),
+  #tmpdir = tmpdir,
+)
 
-(sample_file, log_file) = stan_sample(stanmodel; data=bernoulli_data)
+rc = stan_sample(sm; data=bernoulli_data)
 
-if !(sample_file == Nothing)
-  # Use StanSamples to read a chain in NamedTupla format
-  nt = read_samples(stanmodel.sm; chain = 3)
-
+if success(rc)
   # Convert to an MCMCChains.Chains object
-  chns = read_samples(stanmodel)
+  chns = read_samples(sm)
 
   # Describe the MCMCChains using MCMCChains statistics
   # By default, just show the `parameters` section.
   # Use `chns.name_map` to see all sections.
-  cdf = describe(chns)
-  display(cdf)
+  cdf = show(chns)
 
   # Describe the `internals` section statistics
   icdf = describe(chns, sections=[:internals])
   display(icdf)
 
   # Show the same output in DataFrame format
-  sdf = StanSample.read_summary(stanmodel)
+  #stan_summary(sm)
+  sdf = read_summary(sm)
   display(sdf)
 end

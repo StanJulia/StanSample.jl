@@ -20,7 +20,6 @@ model {
 
 simulateGaussian(; μ=0, σ=1, Nd, kwargs...) = (y=rand(Normal(μ, σ), Nd), N=Nd)
 
-tmpdir = joinpath(@__DIR__, "tmp")
 count = 0;
 iter = 0
 
@@ -29,11 +28,11 @@ while iter < 100
   gaussian_data = Dict("N" => N, "y" => y)
 
   # Keep tmpdir across multiple runs to prevent re-compilation
-  stanmodel = SampleModel("gaussian", gaussian_model; tmpdir=tmpdir)
+  stanmodel = SampleModel("gaussian", gaussian_model)
 
-  (sample_file, log_file) = stan_sample(stanmodel; data=gaussian_data)
+  rc = stan_sample(stanmodel; data=gaussian_data)
 
-  if !(sample_file == Nothing)
+  if success(rc)
     global iter += 1
     # Convert to an MCMCChains.Chains object
     chns = read_samples(stanmodel)

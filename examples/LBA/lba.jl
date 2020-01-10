@@ -192,9 +192,9 @@ set_cmdstan_home!(CMDSTAN_HOME)
 stanmodel = SampleModel("LBA", LBA_stan; 
   method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
 
-@time (sample_file, log_file) = stan_sample(stanmodel; data="LBA.R", n_chains=4)
+@time rc = stan_sample(stanmodel; data="LBA.R", n_chains=4)
 
-if !(sample_file == Nothing)
+if success(rc)
   # Use StanSamples to read a chain in NamedTupla format
   nt = read_samples(stanmodel.sm; chain = 3)
 

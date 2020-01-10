@@ -1,22 +1,11 @@
 using StanSample, Test
 
 TestDir = @__DIR__
-
 tmpdir = mktempdir()
-
-original_stanrun_tests = [
-  "original_stanrun_test/test_stanrun.jl",
-]
-
-for test in original_stanrun_tests
-  println("\nTesting: $test.")
-  include(test)
-end
 println()
 
 basic_run_tests = [
   "test_basic_runs/test_bernoulli_dict.jl",
-  "test_basic_runs/test_bernoulli_nt.jl",
   "test_basic_runs/test_bernoulli_array_dict_1.jl",
   "test_basic_runs/test_bernoulli_array_dict_2.jl",
   "test_basic_runs/test_parse_interpolate.jl"
