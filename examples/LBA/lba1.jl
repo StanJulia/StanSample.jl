@@ -141,9 +141,9 @@ v = [1.0, 1.5]
 Nc = length(v)
 data = simulateLBA(;Nd=N,v=v,A=.8,k=.2,tau=.4)  
 
-@time (sample_file, log_file) = stan_sample(stanmodel; data=data, n_chains=4)
+@time rc = stan_sample(stanmodel; data=data, n_chains=4)
 
-if !(sample_file == Nothing)
+if success(rc)
   # Use StanSamples to read a chain in NamedTupla format
   nt = read_samples(stanmodel.sm; chain = 3)
 
