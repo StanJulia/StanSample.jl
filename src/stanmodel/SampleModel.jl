@@ -64,7 +64,7 @@ function SampleModel(
                        stderr = error_output))
   end
   if !is_ok
-      throw(StanModelError(model, String(take!(error_output))))
+      throw(StanModelError(name, String(take!(error_output))))
   end
 
   SampleModel(name, model, n_chains, seed, init, output,

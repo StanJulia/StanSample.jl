@@ -36,6 +36,6 @@ if success(rc)
   chns = read_samples(stanmodel)
 
   # Fetch the same output in the `sdf` ChainDataFrame
-  sdf = read_summary(stanmodel)
+  df = read_summary(stanmodel)
   
 end

@@ -10,7 +10,7 @@ using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
 import StanBase: stan_sample, get_cmdstan_home
 import StanBase: cmdline, read_summary, stan_summary
-import StanBase: RandomSeed, Init, Output
+import StanBase: RandomSeed, Init, Output, StanModelError
 
 include("stanmodel/sample_types.jl")
 include("stanmodel/SampleModel.jl")
@@ -20,6 +20,7 @@ include("stansamples/read_samples.jl")
 
 export
   SampleModel,
+  StanModelError,
   stan_sample,
   read_samples,
   read_summary,

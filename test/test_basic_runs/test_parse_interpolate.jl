@@ -41,10 +41,10 @@ if success(rc)
   display(cdf)
 
   # Show cmdstan summary in DataFrame format
-  sdf = read_summary(stanmodel)
-  display(sdf)
+  df = read_summary(stanmodel)
+  display(df)
   println()
 
   # Retrieve mean value of theta from the summary
-  sdf[:theta, :mean]
+  df[df.parameters .== :theta, :mean][1]
 end

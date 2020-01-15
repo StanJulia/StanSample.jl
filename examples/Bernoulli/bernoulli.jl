@@ -24,10 +24,10 @@ bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 sm = SampleModel("bernoulli", bernoulli_model;
   method = StanSample.Sample(save_warmup=true,
     adapt = StanSample.Adapt(delta = 0.85)),
-  #tmpdir = tmpdir,
-)
+    #tmpdir = tmpdir,
+);
 
-rc = stan_sample(sm; data=bernoulli_data)
+rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
   # Convert to an MCMCChains.Chains object
@@ -43,7 +43,7 @@ if success(rc)
   display(icdf)
 
   # Show the same output in DataFrame format
-  #stan_summary(sm)
+  #sdf = read_summary(sm, true)
   sdf = read_summary(sm)
   display(sdf)
 end

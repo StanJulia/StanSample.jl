@@ -31,5 +31,5 @@ rc = stan_sample(stanmodel, data=bernoulli_data, n_chains=4, debug=true)
 
 # Fetch the same output in the `sdf` ChainDataFrame
 if success(rc)
-	sdf = read_summary(stanmodel)
+	df = read_summary(stanmodel)
 end
