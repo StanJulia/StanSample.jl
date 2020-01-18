@@ -23,8 +23,6 @@ read_samples(model::SampleModel; start=1)
 * `start=1`                  : First draw saved in MCMCHains.Chains object
 ```
 
-using Unicode, DelimitedFiles
-
 """
 function read_samples(model::SampleModel;  start=1)
 
