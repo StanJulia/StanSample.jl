@@ -15,7 +15,7 @@ basic_run_tests = [
   for test in basic_run_tests
     println("\nTesting: $test.")
     include(joinpath(TestDir, test))
-    @test df[df.parameters .== :theta, :mean][1] ≈ 0.34 atol=0.1
+    @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
   end
   println()
 end
