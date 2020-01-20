@@ -5,7 +5,7 @@ Helper infrastructure to compile and sample models using `cmdstan`.
 """
 module StanSample
 
-using StanBase
+using StanBase, StanSamples
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
 import StanBase: stan_sample, get_cmdstan_home
@@ -25,6 +25,7 @@ export
   read_samples,
   read_summary,
   stan_summary,
-  stan_generate_quantities
+  stan_generate_quantities,
+  read_generated_quantities
 
 end # module

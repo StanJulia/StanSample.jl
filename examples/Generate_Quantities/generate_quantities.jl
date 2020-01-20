@@ -27,23 +27,12 @@ gq_data = Dict(
   "y" => [100, 950, 450]
 );
 
-stanmodel = SampleModel("Generate_quantities", gq);
+sm = SampleModel("Generate_quantities", gq);
 
-rc = stan_sample(stanmodel; data=gq_data)
+rc = stan_sample(sm; data=gq_data)
 
 if success(rc)
-  # Convert to an MCMCChains.Chains object
-  chns = read_samples(stanmodel)
-  
-  # Describe the MCMCChains using MCMCChains statistics
-  cdf = describe(chns)
-  display(cdf)
-
-  # Show the same output in DataFrame format
-  sdf = StanSample.read_summary(stanmodel)
-  display(sdf)
-  
-  stan_generate_quantities(stanmodel, 1)
+  stan_generate_quantities(sm, 1)
+  ypreds = read_generated_quantities(sm)
+  ypreds[1].y_pred |> display
 end
-
-

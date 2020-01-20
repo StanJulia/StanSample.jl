@@ -22,14 +22,17 @@ bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 #tmpdir=joinpath(@__DIR__, "tmp")
 tmpdir=mktempdir()
 
-stanmodel = SampleModel(
+sm = SampleModel(
   "bernoulli", bernoulli_model;
   method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)),
   tmpdir=tmpdir)
 
-rc = stan_sample(stanmodel, data=bernoulli_data, n_chains=4, debug=true)
+rc = stan_sample(sm, data=bernoulli_data, n_chains=4)
 
-# Fetch the same output in the `sdf` ChainDataFrame
+# Fetch the cmdstan summary in sdf`
 if success(rc)
-	df = read_summary(stanmodel)
+	sdf = read_summary(sm)
+
+	@test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
+
 end

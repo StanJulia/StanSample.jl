@@ -30,5 +30,8 @@ rc = stan_sample(stanmodel, data=bernoulli_data)
 
 # Fetch the same output in the `sdf` ChainDataFrame
 if success(rc)
-	df = read_summary(stanmodel)
+	sdf = read_summary(stanmodel)
+
+  @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
+
 end

@@ -36,6 +36,8 @@ if success(rc)
   chns = read_samples(stanmodel)
 
   # Fetch the same output in the `sdf` ChainDataFrame
-  df = read_summary(stanmodel)
+  sdf = read_summary(stanmodel)
+
+  @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
   
 end

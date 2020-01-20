@@ -33,27 +33,22 @@ bernoulli_model = "
   }
 ";
 
-tmpdir = joinpath(@__DIR__, "tmp")
+#tmpdir = joinpath(@__DIR__, "tmp")
 
-stanmodel = SampleModel("bernoulli", bernoulli_model, tmpdir=tmpdir)
+sm = SampleModel("bernoulli", bernoulli_model)
 
 observeddata = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
-rc = stan_sample(stanmodel, data=observeddata)
+rc = stan_sample(sm, data=observeddata)
 
 if success(rc)
-  # Convert to an MCMCChains.Chains object
-  chns = read_samples(stanmodel)
-
-  # Describe the MCMCChains using MCMCChains statistics
-  cdf = describe(chns)
-  display(cdf)
+  samples = read_samples(sm)
 
   # Show cmdstan summary in DataFrame format
-  sdf = read_summary(stanmodel)
+  sdf = read_summary(sm)
   display(sdf)
   println()
 
   # Retrieve mean value of theta from the summary
-  sdf[:theta, :mean]
+  sdf[sdf.parameters .== :theta, :mean]
 end

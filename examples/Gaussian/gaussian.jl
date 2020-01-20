@@ -23,7 +23,7 @@ simulateGaussian(; μ=0, σ=1, Nd, kwargs...) = (y=rand(Normal(μ, σ), Nd), N=N
 count = 0;
 iter = 0
 
-while iter < 100
+while iter < 3
   (y, N) = simulateGaussian(; Nd=5000)
   gaussian_data = Dict("N" => N, "y" => y)
 
@@ -34,18 +34,15 @@ while iter < 100
 
   if success(rc)
     global iter += 1
-    # Convert to an MCMCChains.Chains object
-    chns = read_samples(stanmodel)
+    samples = read_samples(stanmodel)
 
-    # Describe the MCMCChains using MCMCChains statistics
-    cdf = describe(chns)
-
-    # Show the same output in DataFrame format
+    # Show the cmdstan summary output in DataFrame format
     sdf = StanSample.read_summary(stanmodel)
-    if sdf[:mu, :ess][1] >= 3999.0 || sdf[:sigma, :ess][1] >= 3999.0
+    if sdf[sdf.parameters .== :mu, :ess][1] >= 3999.0 ||
+        sdf[sdf.parameters .== :sigma, :ess][1] >= 3999.0
       global count += 1
-      println("$(iter), $(count) : mu_ess=$(sdf[:mu, :ess][1]), sigma_ess=$(sdf[:sigma, :ess][1])")
-      display(cdf)
+      println("$(iter), $(count) : mu_ess=$(sdf[sdf.parameters .== :mu, :ess][1]),
+          sigma_ess=$(sdf[sdf.parameters .== :sigma, :ess][1])")
     end
   end
 end

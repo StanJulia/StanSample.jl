@@ -27,10 +27,14 @@ gq_data = Dict(
   "y" => [100, 950, 450]
 );
 
-stanmodel = SampleModel("Generate_quantities", gq);
+sm = SampleModel("Generate_quantities", gq);
 
-rc = stan_sample(stanmodel; data=gq_data)
+rc = stan_sample(sm; data=gq_data)
 
 if success(rc)
-  stan_generate_quantities(stanmodel, 1)
+  for i in 1:sm.n_chains[1]
+    stan_generate_quantities(sm, i)
+  end
+
+  gq = read_generated_quantities(sm)
 end

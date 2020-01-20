@@ -1,6 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
-using StanSample, MCMCChains
+using StanSample
 
 bernoulli_model = "
 data {
@@ -30,20 +30,5 @@ sm = SampleModel("bernoulli", bernoulli_model;
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  # Convert to an MCMCChains.Chains object
-  chns = read_samples(sm)
-
-  # Describe the MCMCChains using MCMCChains statistics
-  # By default, just show the `parameters` section.
-  # Use `chns.name_map` to see all sections.
-  cdf = show(chns)
-
-  # Describe the `internals` section statistics
-  icdf = describe(chns, sections=[:internals])
-  display(icdf)
-
-  # Show the same output in DataFrame format
-  #sdf = read_summary(sm, true)
-  sdf = read_summary(sm)
-  display(sdf)
+  samples = read_samples(sm)
 end

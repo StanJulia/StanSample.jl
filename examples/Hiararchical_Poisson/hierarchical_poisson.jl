@@ -40,14 +40,5 @@ stanmodel = SampleModel("Hierachical_Poisson", HP;
 rc = stan_sample(stanmodel; data=hp_data, n_chains=4)
 
 if success(rc)
-  # Convert to an MCMCChains.Chains object
-  chns = read_samples(stanmodel)
-  
-  # Describe the MCMCChains using MCMCChains statistics
-  cdf = describe(chns)
-  display(cdf)
-
-  # Show the same output in DataFrame format
-  sdf = StanSample.read_summary(stanmodel)
-  display(sdf)
+  samples = read_samples(stanmodel)
 end

@@ -1,7 +1,6 @@
 using StanSample, Random
-using StanBase: CMDSTAN_HOME, set_cmdstan_home!
 
-Random.seed!(123)
+#Random.seed!(123)
 
 cd(@__DIR__)
 
@@ -184,51 +183,17 @@ LBA_data = (Nc = 3, N = 200, rt = [
   2,1,2,3,2,3,2,2,1,1,3,2,3,2,3,3,1,1,3,2,2,3,3,2,2,1,2,3,1,1,3,2,3,2,3,3,3,3,2,2,3,3,3,3,3,3,2,2,2,2,2,3,3,2,3]
 );
 
-# First 2 runs are using the standard 2.19.1 version of cmdstan
-
 # This run tests passing a data file name as data in the stan_sample() call
 
-set_cmdstan_home!(CMDSTAN_HOME)
-stanmodel = SampleModel("LBA", LBA_stan; 
+sm = SampleModel("LBA", LBA_stan; 
   method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
 
-@time rc = stan_sample(stanmodel; data="LBA.R", n_chains=4)
+@time rc = stan_sample(sm; data="LBA.R")
 
 if success(rc)
-  # Use StanSamples to read a chain in NamedTupla format
-  nt = read_samples(stanmodel.sm; chain = 3)
-
-  # Convert to an MCMCChains.Chains object
-  chns = read_samples(stanmodel)
-  
-  # Describe the MCMCChains using MCMCChains statistics
-  cdf = describe(chns)
-  display(cdf)
+  samples = read_samples(sm)
 
   # Show the same output in DataFrame format
-  sdf = StanSample.read_summary(stanmodel)
+  sdf = StanSample.read_summary(sm)
   display(sdf)
 end
-
-#=
-sfile = stanmodel.output_base*"_summary.csv"
-run(`awk 'NR > 5 && NR < 15 {print $0}' $(sfile)`)
-run(`awk 'NR > 14 && NR < 115 {sum += $8} END {print sum}' $(sfile)`)
-run(`awk 'NR > 14 && NR < 115 {sum += $9} END {print sum}' $(sfile)`)
-
-# This run generates the R dump files
-
-CMDSTAN_HOME_BOB="/Users/rob/Projects/StanSupport/cmdstan_bob"
-isdir(CMDSTAN_HOME_BOB) && set_cmdstan_home!(CMDSTAN_HOME_BOB)
-@time stanmodel1 = SampleModel("LBA", LBA;
-  method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.95)));
-(sample_file1, log_file1) = stan_sample(stanmodel1; data=LBA_data, n_chains=4)
-
-sdf1 = StanSample.read_summary(stanmodel1)
-display(sdf1)
-
-sfile = stanmodel1.output_base*"_summary.csv"
-run(`awk 'NR > 5 && NR < 15 {print $0}' $(sfile)`)
-run(`awk 'NR > 14 && NR < 115 {sum += $8} END {print sum}' $(sfile)`)
-run(`awk 'NR > 14 && NR < 115 {sum += $9} END {print sum}' $(sfile)`)
-=#
