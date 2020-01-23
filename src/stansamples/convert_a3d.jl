@@ -45,6 +45,8 @@ Option 2 is provided by the package StanMamba, option 3 is provided by StanMCMCC
 """
 convert_a3d(a3d_array, cnames, ::Val{:array}; start=1) = a3d_array
 
+using DataFrames
+
 """
 
 # convert_a3d

@@ -32,7 +32,16 @@ rc = stan_sample(sm, data=bernoulli_data, n_chains=4)
 # Fetch the cmdstan summary in sdf`
 if success(rc)
 	sdf = read_summary(sm)
-
 	@test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
+
+  # Included return formats
+
+  samples = read_samples(sm)          # Return ElasticArray object
+  a3d = read_samples(sm, :array)      # Return an a3d object
+  df = read_samples(sm, :dataframes)  # Return a DataFrame object
+
+  # If (and only if) MCMCChains is loaded:
+  # chns = read_samples(sm, :mcmcchains)
+  # See examples in directory `examples_mcmcchains`
 
 end
