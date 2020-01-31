@@ -28,14 +28,16 @@ Method called is based on the output_format defined in the stanmodel, e.g.:
    stanmodel = Stanmodel(`num_samples`=1200, thin=2, name="bernoulli", 
      model=bernoullimodel, `output_format`=:mcmcchains);
 
-Current formats supported are:
+Current formats supported for conversion are:
 
-1. :elasticarrays (DEFAULT: ElasticArrays.ElasticArray format)
-2. :array (a3d_array format)
-3. :mcmcchains (MCMCChains.Chains object)
-4. :dataframes (DataFrames.DataFrame object)
+1. :array (DEFAULT: a3d_array format)
+2. :dataframe (DataFrames.DataFrame object, chains appended)
+3. :dataframes (Vector{DataFrames.DataFrame} object)
+4. :mcmcchains (MCMCChains.Chains object)
+5. :particles (Dict{MonteCarloMeasurements.Particles})
 
-Option 2 is provided by the package StanMamba, option 3 is provided by StanMCMCChains.
+The glue code for options 2 to 5 are enabled by Requires.jl if respectively
+DataFrames, MCMCChains and MonteCarloMeasurements are loaded.
 ```
 
 ### Return values
@@ -43,21 +45,4 @@ Option 2 is provided by the package StanMamba, option 3 is provided by StanMCMCC
 * `res`                       : Draws converted to the specified format.
 ```
 """
-convert_a3d(a3d_array, cnames, ::Val{:array}; start=1) = a3d_array
-
-using DataFrames
-
-"""
-
-# convert_a3d
-
-# Convert the output file created by cmdstan to a DataFrame.
-
-$(SIGNATURES)
-
-"""
-function convert_a3d(a3d_array, cnames, ::Val{:dataframes}; start=1)
-  snames = [Symbol(cnames[i]) for i in 1: length(cnames)]
-  [DataFrame(a3d_array[:,:,i], snames) for i in 1:size(a3d_array, 3)]
-end
-
+convert_a3d(a3d_array, cnames, ::Val{:array}; kwargs...) = a3d_array

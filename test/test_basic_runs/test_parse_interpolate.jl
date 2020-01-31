@@ -35,10 +35,7 @@ cd(ProjDir) do
   if success(rc)
     # Convert to an MCMCChains.Chains object
     samples = read_samples(sm)
-
-    for i in sm.n_chains[1]
-      @test sum(samples[i].theta)/1000 ≈ 0.33 rtol=0.05
-    end
+    @test sum(samples)/length(samples) ≈ 0.33 rtol=0.05
   end
 
 end

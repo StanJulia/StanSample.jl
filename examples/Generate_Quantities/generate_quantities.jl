@@ -27,12 +27,14 @@ gq_data = Dict(
   "y" => [100, 950, 450]
 );
 
-sm = SampleModel("Generate_quantities", gq);
+sm = SampleModel("Generate_quantities", gq;
+  #tmpdir=joinpath(@__DIR__, "tmp")
+  );
 
 rc = stan_sample(sm; data=gq_data)
 
 if success(rc)
   stan_generate_quantities(sm, 1)
-  ypreds = read_generated_quantities(sm)
-  ypreds[1].y_pred |> display
+  (ypreds, parameters) = read_generated_quantities(sm)
+  ypreds |> display
 end

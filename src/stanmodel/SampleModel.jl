@@ -24,8 +24,8 @@ $(SIGNATURES)
 * `exec_path::AbstractString`          : Path to cmdstan executable
 * `data_file::vector{AbstractString}`  : Path to per chain data file
 * `init_file::Vector{AbstractString}`  : Path to per chain init file
-* `cmds::Vector{Cmd}`                  : Path to per chain init file
 * `sample_file::Vector{String}         : Path to per chain samples file
+* `cmds::Vector{Cmd}`                  : Path to per chain init file
 * `log_file::Vector{String}            : Path to per chain log file
 * `diagnostic_file::Vector{String}     : Path to per chain diagnostic file
 * `summary=true`                       : Create computed stan summary
