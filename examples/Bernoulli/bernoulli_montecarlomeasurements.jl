@@ -1,6 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
-using StanSample, MonteCarloMeasurements
+using StanSample, DataFrames, MonteCarloMeasurements
 
 bernoulli_model = "
 data {
@@ -26,5 +26,7 @@ sm = SampleModel("bernoulli", bernoulli_model);
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  samples = read_samples(sm; output_format=:particles)
+  dict = read_samples(sm; output_format=:particles)
+  println()
+  dict |> display
 end
