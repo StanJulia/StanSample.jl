@@ -5,8 +5,6 @@ import Base: show
 
 Create a SampleModel.
 
-$(SIGNATURES)
-
 ### Required arguments
 ```julia
 * `name::AbstractString`               : Name for the model
