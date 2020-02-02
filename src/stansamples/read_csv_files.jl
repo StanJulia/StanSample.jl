@@ -72,6 +72,6 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
 
   res = convert_a3d(a3d[:, indices, :], snames, Val(output_format); kwargs...)
 
-  (res, Symbol.(snames)) 
+  (res, snames) 
 
 end   # end of read_samples
