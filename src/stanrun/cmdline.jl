@@ -1,8 +1,10 @@
 """
 
-# cmdline 
+Recursively parse the model to construct command line.
 
-Recursively parse the model to construct command line. 
+$(SIGNATURES)
+
+# Extended help
 
 ### Method
 ```julia

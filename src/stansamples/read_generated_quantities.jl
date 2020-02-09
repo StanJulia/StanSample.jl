@@ -6,6 +6,8 @@ Read generated_quantities output files created by StanSample.jl.
 
 $(SIGNATURES)
 
+# Extended help
+
 ### Required arguments
 ```julia
 * `model`                    : SampleModel

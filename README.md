@@ -11,9 +11,6 @@
 
 ## Important note
 
-### Refactoring CmdStan.jl v6. Maybe this is an ok approach.
-
-
 ## Installation
 
 This package is registered. Install with

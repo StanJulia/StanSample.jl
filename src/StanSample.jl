@@ -1,7 +1,22 @@
 """
+
+Helper infrastructure to compile and sample models using Stan's cmdstan binary.
+
 $(SIGNATURES)
 
-Helper infrastructure to compile and sample models using `cmdstan`.
+# Extended help
+
+Exports:
+```Julia
+* `SampleModel`                        : Model structure to sample a Stan language model
+* `StanModelError`                     : Exception error on cmdstan compilation failure
+* `stan_sample`                        : Sample the model
+* `read_samples`                       : Read the samples from .csv files
+* `read_summary`                       : Read the cmdstan summary .csv file
+* `stan_summary`                       : Create the stansummary .csv file
+* `stan_generate_quantities`           : Simulate generated_quantities
+* `read_generated_quantities`          : Read generated_quantities values
+```
 """
 module StanSample
 
@@ -18,13 +33,6 @@ function __init__()
   @require DataFrames="a93c6f00-e57d-5684-b7b6-d8193f3e46c0" include("require_df.jl")
   @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("require_chns.jl")
   @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("require_mcm.jl")
-
-  #=
-  @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" begin
-    @require KernelDensity="5ab0869b-81aa-558d-bb23-cbf5423bbe9b" include("require_mcm.jl")
-  end
-  =#
-
 end
 
 include("stanmodel/sample_types.jl")
@@ -35,7 +43,6 @@ include("stansamples/read_samples.jl")
 include("stansamples/read_csv_files.jl")
 include("stansamples/convert_a3d.jl")
 include("stansamples/read_generated_quantities.jl")
-
 
 export
   SampleModel,

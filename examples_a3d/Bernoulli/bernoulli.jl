@@ -30,9 +30,8 @@ sm = SampleModel("bernoulli", bernoulli_model;
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  samples = read_samples(sm)			# Return ElasticArray object
-  a3d = read_samples(sm, :array)		# Return an a3d object
-  df = read_samples(sm, :dataframes)	# Return a DataFrame object
+  samples = read_samples(sm)			                 # Return a3d object
+  a3d = read_samples(sm, output_format=:array)		 # Return an a3d object
 
   # Fetch cmdstan summary df
   sdf = read_summary(sm)

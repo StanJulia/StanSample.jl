@@ -4,9 +4,11 @@
 
 """
 
-# convert_a3d
+Convert the output file created by cmdstan to the shape of choice
 
-Convert the output file created by cmdstan to the shape of choice.
+$(SIGNATURES)
+
+# Extended help
 
 ### Method
 ```julia

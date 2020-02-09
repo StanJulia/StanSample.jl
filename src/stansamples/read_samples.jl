@@ -7,6 +7,8 @@ The default output_format is :array. Optionally the list of parameter symbols ca
 
 $(SIGNATURES)
 
+# Extended help
+
 ### Required arguments
 ```julia
 * `model`                     : SampleModel

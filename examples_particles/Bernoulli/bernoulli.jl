@@ -1,6 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
-using StanSample
+using StanSample, MonteCarloMeasurements
 
 bernoulli_model = "
 data {
@@ -19,17 +19,16 @@ model {
 bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 # Keep tmpdir across multiple runs to prevent re-compilation
-#tmpdir = joinpath(@__DIR__, "tmp")
+tmpdir = joinpath(@__DIR__, "tmp")
 
-sm = SampleModel("bernoulli", bernoulli_model;
-  method = StanSample.Sample(save_warmup=true,
-    adapt = StanSample.Adapt(delta = 0.85)),
-    #tmpdir = tmpdir,
-);
+sm = SampleModel("bernoulli", bernoulli_model; tmpdir=tmpdir);
 
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  df = read_samples(sm; output_format=:dataframe)
-  df_vector = read_samples(sm; output_format=:dataframes)
+  nt = read_samples(sm; output_format=:particles)	  # Return Particles NamedTuple
+
+  # Fetch cmdstan summary df
+  sdf = read_summary(sm)
+
 end

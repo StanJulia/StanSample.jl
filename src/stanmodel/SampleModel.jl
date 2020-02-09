@@ -1,9 +1,12 @@
 import Base: show
 
 """
-# SampleModel 
 
-Create a SampleModel.
+Create a SampleModel
+
+$(SIGNATURES)
+
+# Extended help
 
 ### Required arguments
 ```julia
@@ -30,13 +33,11 @@ Create a SampleModel.
 * `printsummary=true`                  : Show computed stan summary
 * `method::Sample                      : Will be Sample()  
 ```
-
 """
 mutable struct SampleModel <: CmdStanModels
   @shared_fields_stanmodels
   method::Sample
 end
-
 function SampleModel(
   name::AbstractString,
   model::AbstractString,

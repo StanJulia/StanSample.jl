@@ -2,34 +2,44 @@ import Base: show
 
 """
 
-# Engine types
-
-$(SIGNATURES)
-
 Engine for Hamiltonian Monte Carlo
 
-### Types defined
+$(TYPEDEF)
+
+# Extended help
+
+### Engines defined
 ```julia
-* Nuts       : No-U-Turn sampler
-* Static     : Static integration time
+* `Nuts`                               : No-U-Turn sampler
+* `Static`                             : Static integration time
 ```
+Not exported.
 """ 
 abstract type Engine end
 
 """
 
-# Available sampling algorithms
+Sampling algorithms
 
-Currently limited to Hmc().
+$(TYPEDEF)
 
+# Extended help
+
+### Sampling algorithms defined
+```julia
+* `HMC`                                : Hamiltonian Monte Carlo sampler
+```
+Not exported.
 """ 
 abstract type SamplingAlgorithm end
 
 """
 
-# Nuts type and constructor
+Nuts type and constructor
 
 $(SIGNATURES)
+
+# Extended help
 
 Settings for engine=Nuts() in Hmc(). 
 
@@ -39,14 +49,9 @@ Nuts(;max_depth=10)
 ```
 ### Optional arguments
 ```julia
-* `max_depth::Number`           : Maximum tree depth
+* `max_depth::Number`                  : Maximum tree depth
 ```
-
-### Related help
-```julia
-?Sample                         : Sampling settings
-?Engine                         : Engine for Hamiltonian Monte Carlo
-```
+Not exported
 """
 struct Nuts <: Engine
   max_depth::Int64
@@ -55,9 +60,11 @@ Nuts(;max_depth::Number=10) = Nuts(max_depth)
 
 """
 
-# Static type and constructor
+Static type and constructor
 
 $(SIGNATURES)
+
+# Extended help
 
 Settings for engine=Static() in Hmc(). 
 
@@ -67,14 +74,9 @@ Static(;int_time=2 * pi)
 ```
 ### Optional arguments
 ```julia
-* `;int_time::Number`          : Static integration time
+* `;int_time::Number`                  : Static integration time
 ```
-
-### Related help
-```julia
-?Sample                        : Sampling settings
-?Engine                        : Engine for Hamiltonian Monte Carlo
-```
+Not exported
 """
 struct Static <: Engine
   int_time::Float64
@@ -83,18 +85,21 @@ Static(;int_time::Number=2 * pi) = Static(int_time)
 
 """
 
-# Metric types
+Metric types
 
 $(SIGNATURES)
+
+# Extended help
 
 Geometry of base manifold
 
 ### Types defined
 ```julia
-* unit_e::Metric      : Euclidean manifold with unit metric
-* dense_e::Metric     : Euclidean manifold with dense netric
-* diag_e::Metric      : Euclidean manifold with diag netric
+* unit_e::Metric                       : Euclidean manifold with unit metric
+* dense_e::Metric                      : Euclidean manifold with dense netric
+* diag_e::Metric                       : Euclidean manifold with diag netric
 ```
+Not exported.
 """ 
 abstract type Metric end
 struct unit_e <: Metric
@@ -104,14 +109,25 @@ end
 struct diag_e <: Metric
 end
 
+"""
+# Hmc type
+
+$(FIELDS)
+"""
+struct Hmc <: SamplingAlgorithm
+  engine::Engine
+  metric::Metric
+  stepsize::Float64
+  stepsize_jitter::Float64
+end
 
 """
 
-# Hmc type and constructor
-
-Settings for algorithm=StanSample.Hmc() in Sample(). 
+Hmc constructor
 
 $(SIGNATURES)
+
+# Extended help
 
 ### Method
 ```julia
@@ -124,27 +140,13 @@ Hmc(;
 ```
 ### Optional arguments
 ```julia
-* `engine::Engine`            : Engine for Hamiltonian Monte Carlo
-* `metric::Metric`            : Geometry for base manifold
-* `stepsize::Float64`         : Stepsize for discrete evolutions
-* `stepsize_jitter::Float64`  : Uniform random jitter of the stepsize [%]
+* `engine::Engine`                     : Engine for Hamiltonian Monte Carlo
+* `metric::Metric`                     : Geometry for base manifold
+* `stepsize::Float64`                  : Stepsize for discrete evolutions
+* `stepsize_jitter::Float64`           : Uniform random jitter of the stepsize [%]
 ```
-
-### Related help
-```julia
-?Sample                        : Sampling settings
-?Engine                        : Engine for Hamiltonian Monte Carlo
-?Nuts                          : Settings for Nuts
-?Static                        : Settings for Static
-?Metric                        : Base manifold geometries
-```
+Not exported
 """
-struct Hmc <: SamplingAlgorithm
-  engine::Engine
-  metric::Metric
-  stepsize::Float64
-  stepsize_jitter::Float64
-end
 Hmc(;engine::Engine=Nuts(), metric::DataType=diag_e, 
   stepsize::Number=1.0, stepsize_jitter::Number=1.0) = 
     Hmc(engine, metric(), stepsize, stepsize_jitter)
@@ -152,33 +154,42 @@ Hmc(engine::Engine) = Hmc(engine, diag_e(), 1.0, 1.0)
 
 """
 
-# Fixed_param type and constructor
+Fixed_param type and constructor
 
-Settings for algorithm=CmdStan.Fixed_param() in Sample(). 
-
-$(SIGNATURES)
+$(TYPEDEF)
 
 ### Method
 ```julia
 Fixed_param()
 ```
-
-### Related help
-```julia
-?Sample                        : Sampling settings
-?Engine                        : Engine for Hamiltonian Monte Carlo
-?Nuts                          : Settings for Nuts
-?Static                        : Settings for Static
-?Metric                        : Base manifold geometries
-```
+Not exported
 """
 struct Fixed_param <: SamplingAlgorithm end
+
+"""
+
+# Adapt type
+
+$(FIELDS)
+"""
+struct Adapt
+  engaged::Bool
+  gamma::Float64
+  delta::Float64
+  kappa::Float64
+  t0::Float64
+  init_buffer::Int64
+  term_buffer::Int64
+  window::Int64
+end
   
 """
 
-# Adapt type and constructor
+# Adapt constructor
 
 $(SIGNATURES)
+
+# Extended help
 
 Settings for adapt=CmdStan.Adapt() in Sample(). 
 
@@ -207,21 +218,8 @@ Adapt(;
 * `window::Int64`              : Initial width of slow adaptation interval
 ```
 
-### Related help
-```julia
-?Sample                        : Sampling settings
-```
+Not exported
 """
-struct Adapt
-  engaged::Bool
-  gamma::Float64
-  delta::Float64
-  kappa::Float64
-  t0::Float64
-  init_buffer::Int64
-  term_buffer::Int64
-  window::Int64
-end
 Adapt(;engaged::Bool=true, gamma::Number=0.05, delta::Number=0.8,
   kappa::Number=0.75, t0::Number=10.0,
   init_buffer::Number=75, term_buffer::Number=50, window::Number=25) = 
@@ -229,11 +227,11 @@ Adapt(;engaged::Bool=true, gamma::Number=0.05, delta::Number=0.8,
 
 
 """
-# Sample type and constructor
-
 Settings for method=Sample() in SampleModel. 
 
 $(SIGNATURES)
+
+# Extended help
 
 ### Method
 ```julia
@@ -254,9 +252,8 @@ Sample(;
 * `thin::Int64`                 : Period between saved samples
 * `adapt::Adapt`                : Warmup adaptation settings
 * `algorithm::SamplingAlgorithm`: Sampling algorithm
-
 ```
-
+Not exported
 """
 struct Sample
   num_samples::Int64
