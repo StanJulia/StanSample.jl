@@ -1,5 +1,25 @@
 using Unicode, DelimitedFiles
 
+"""
+
+Create generated_quantities output files created by StanSample.jl.
+
+$(SIGNATURES)
+
+# Extended help
+
+### Required arguments
+```julia
+* `model`                              : SampleModel
+* `output_format`                      : Requested output format
+```
+
+### Optional arguments
+```julia
+* `include_internals`                  : Include internal parameters
+```
+Not exported
+"""
 function read_csv_files(model::SampleModel, output_format::Symbol;
   include_internals=include_internals,
   kwargs...)

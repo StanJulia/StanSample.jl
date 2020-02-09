@@ -2,11 +2,9 @@ import Base: show
 
 """
 
-Engine for Hamiltonian Monte Carlo
+Engines for Hamiltonian Monte Carlo
 
 $(TYPEDEF)
-
-# Extended help
 
 ### Engines defined
 ```julia
@@ -23,8 +21,6 @@ Sampling algorithms
 
 $(TYPEDEF)
 
-# Extended help
-
 ### Sampling algorithms defined
 ```julia
 * `HMC`                                : Hamiltonian Monte Carlo sampler
@@ -33,65 +29,45 @@ Not exported.
 """ 
 abstract type SamplingAlgorithm end
 
+struct Nuts <: Engine
+  max_depth::Int64
+end
+
 """
 
-Nuts type and constructor
+Nuts constructor
 
 $(SIGNATURES)
 
-# Extended help
-
-Settings for engine=Nuts() in Hmc(). 
-
-### Method
-```julia
-Nuts(;max_depth=10)
-```
 ### Optional arguments
 ```julia
 * `max_depth::Number`                  : Maximum tree depth
 ```
 Not exported
 """
-struct Nuts <: Engine
-  max_depth::Int64
-end
 Nuts(;max_depth::Number=10) = Nuts(max_depth)
+
+struct Static <: Engine
+  int_time::Float64
+end
 
 """
 
-Static type and constructor
+Static constructor
 
 $(SIGNATURES)
 
-# Extended help
-
-Settings for engine=Static() in Hmc(). 
-
-### Method
-```julia
-Static(;int_time=2 * pi)
-```
 ### Optional arguments
 ```julia
 * `;int_time::Number`                  : Static integration time
 ```
 Not exported
 """
-struct Static <: Engine
-  int_time::Float64
-end
 Static(;int_time::Number=2 * pi) = Static(int_time)
 
 """
 
-Metric types
-
-$(SIGNATURES)
-
-# Extended help
-
-Geometry of base manifold
+Metric types for geometry of base manifold
 
 ### Types defined
 ```julia
@@ -109,17 +85,16 @@ end
 struct diag_e <: Metric
 end
 
-"""
-# Hmc type
-
-$(FIELDS)
-"""
 struct Hmc <: SamplingAlgorithm
   engine::Engine
   metric::Metric
   stepsize::Float64
   stepsize_jitter::Float64
 end
+
+Hmc(;engine::Engine=Nuts(), metric::DataType=diag_e, 
+  stepsize::Number=1.0, stepsize_jitter::Number=1.0) = 
+    Hmc(engine, metric(), stepsize, stepsize_jitter)
 
 """
 
@@ -147,9 +122,6 @@ Hmc(;
 ```
 Not exported
 """
-Hmc(;engine::Engine=Nuts(), metric::DataType=diag_e, 
-  stepsize::Number=1.0, stepsize_jitter::Number=1.0) = 
-    Hmc(engine, metric(), stepsize, stepsize_jitter)
 Hmc(engine::Engine) = Hmc(engine, diag_e(), 1.0, 1.0)
 
 """
@@ -166,12 +138,6 @@ Not exported
 """
 struct Fixed_param <: SamplingAlgorithm end
 
-"""
-
-# Adapt type
-
-$(FIELDS)
-"""
 struct Adapt
   engaged::Bool
   gamma::Float64
@@ -225,6 +191,14 @@ Adapt(;engaged::Bool=true, gamma::Number=0.05, delta::Number=0.8,
   init_buffer::Number=75, term_buffer::Number=50, window::Number=25) = 
     Adapt(engaged, gamma, delta, kappa, t0, init_buffer, term_buffer, window)
 
+struct Sample
+  num_samples::Int64
+  num_warmup::Int64
+  save_warmup::Bool
+  thin::Int64
+  adapt::Adapt
+  algorithm::SamplingAlgorithm
+end
 
 """
 Settings for method=Sample() in SampleModel. 
@@ -255,14 +229,6 @@ Sample(;
 ```
 Not exported
 """
-struct Sample
-  num_samples::Int64
-  num_warmup::Int64
-  save_warmup::Bool
-  thin::Int64
-  adapt::Adapt
-  algorithm::SamplingAlgorithm
-end
 Sample(;num_samples::Number=1000, num_warmup::Number=1000,
   save_warmup::Bool=false, thin::Number=1, 
   adapt::Adapt=Adapt(), algorithm::SamplingAlgorithm=Hmc()) = 

@@ -1,5 +1,17 @@
 using CSV
 
+"""
+
+Create generated_quantities output files created by StanSample.jl.
+
+$(SIGNATURES)
+
+### Required arguments
+```julia
+* `model`                    : SampleModel
+* `id`                       : Chain id
+```
+"""
 function stan_generate_quantities(m::SampleModel, id::Int64; kwargs...)
   
   local fname

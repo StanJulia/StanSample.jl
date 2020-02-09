@@ -1,5 +1,4 @@
 using .MonteCarloMeasurements
-#using .KernelDensity
 
 import .MonteCarloMeasurements: Particles
 

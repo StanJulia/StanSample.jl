@@ -1,25 +1,15 @@
 """
 
-Recursively parse the model to construct command line.
+Recursively parse the model to construct command line for chain id.
 
 $(SIGNATURES)
 
-# Extended help
-
-### Method
-```julia
-cmdline(m)
-```
-
 ### Required arguments
 ```julia
-* `m::CmdStanSampleModel`                : CmdStanSampleModel
-```
-
-### Related help
-```julia
-?CmdStanSampleModel                      : Create a CmdStanSampleModel
-```
+* `m::CmdStanSampleModel`              : CmdStanSampleModel
+* `id::Int`                            : Chain id
+``` 
+Not exported
 """
 function cmdline(m::Union{SampleModel, Sample, Adapt, Hmc, Engine}, id)
   

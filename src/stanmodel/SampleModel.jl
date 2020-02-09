@@ -1,5 +1,10 @@
 import Base: show
 
+mutable struct SampleModel <: CmdStanModels
+  @shared_fields_stanmodels
+  method::Sample
+end
+
 """
 
 Create a SampleModel
@@ -34,10 +39,6 @@ $(SIGNATURES)
 * `method::Sample                      : Will be Sample()  
 ```
 """
-mutable struct SampleModel <: CmdStanModels
-  @shared_fields_stanmodels
-  method::Sample
-end
 function SampleModel(
   name::AbstractString,
   model::AbstractString,
