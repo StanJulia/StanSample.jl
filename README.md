@@ -43,4 +43,4 @@ Use this package like this:
 using StanSample
 ```
 
-See the docstrings (in particular `?StanSample`) for more.
+See the docstrings (in particular `?StanSample`) for more help.

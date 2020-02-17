@@ -3,10 +3,19 @@ using .MonteCarloMeasurements
 import .MonteCarloMeasurements: Particles
 
 function convert_a3d(a3d_array, cnames, ::Val{:particles};
-    kwargs...)
+    start=1, kwargs...)
   
   df = convert_a3d(a3d_array, cnames, Val(:dataframe))
-  Particles(df)
+  d = Dict{Symbol, typeof(Particles(size(df, 1), Normal(0.0, 1.0)))}()
+
+  for var in names(df)
+    mu = mean(df[:, var])
+    sigma = std(df[:, var])
+    d[var] = Particles(size(df, 1), Normal(mu, sigma))
+  end
+
+  (; d...)
+
 end
 
 function Particles(df::DataFrame)
