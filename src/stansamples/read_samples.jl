@@ -31,8 +31,7 @@ Currently supported formats are:
 4. :particles (Dict{MonteCarloMeasurements.Particles})
 5. :mcmcchains (MCMCChains.Chains object)
 
-The glue code for options 2 to 5 are enabled by Requires.jl if respectively
-DataFrames, MonteCarloMeasurements or MCMCChains are loaded,
+The glue code for option 5 is enabled by Requires.jl if MCMCChains is loaded,
 """
 function read_samples(model::SampleModel;
   output_format=:array,

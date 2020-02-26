@@ -1,6 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
-using StanSample, MonteCarloMeasurements
+using StanSample
 
 bernoulli_model = "
 data {
