@@ -30,8 +30,10 @@ Currently supported formats are:
 3. :dataframes (Vector{DataFrames.DataFrame} object)
 4. :particles (Dict{MonteCarloMeasurements.Particles})
 5. :mcmcchains (MCMCChains.Chains object)
+6. :mambachains (Mamba.Chains object)
 
-The glue code for option 5 is enabled by Requires.jl if MCMCChains is loaded,
+The glue code for option 5 is enabled by Requires.jl if MCMCChains is loaded, option 6 requires
+Mamba to be loaded.
 """
 function read_samples(model::SampleModel;
   output_format=:array,
