@@ -28,13 +28,14 @@ gq_data = Dict(
 );
 
 sm = SampleModel("Generate_quantities", gq;
+  method=StanSample.Sample(num_samples=10000),
   #tmpdir=joinpath(@__DIR__, "tmp")
   );
 
 rc = stan_sample(sm; data=gq_data)
 
 if success(rc)
-  stan_generate_quantities(sm, 1)
-  (ypreds, parameters) = read_generated_quantities(sm)
+  stan_generate_quantities(sm, 1);
+  (ypreds, parameters) = read_generated_quantities(sm);
   ypreds |> display
 end
