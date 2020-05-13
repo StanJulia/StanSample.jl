@@ -35,7 +35,6 @@ $(SIGNATURES)
 * `log_file::Vector{String}            : Path to per chain log file
 * `diagnostic_file::Vector{String}     : Path to per chain diagnostic file
 * `summary=true`                       : Create computed stan summary
-* `printsummary=true`                  : Show computed stan summary
 * `method::Sample                      : Will be Sample()  
 ```
 """

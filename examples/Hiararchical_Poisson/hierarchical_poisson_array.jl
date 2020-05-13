@@ -35,10 +35,13 @@ y, x, idx, N, Ns = simulatePoisson(;Nd=1,Ns=10,a0=1.0,a1=.5,a0_sig=.3)
 hp_data = Dict(:N =>N, :y => y, :Ns => Ns, :idx => idx, :x => x)
 
 stanmodel = SampleModel("Hierachical_Poisson", HP; 
-  method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.8)));
+  method = StanSample.Sample(
+    num_samples=2000,
+    adapt = StanSample.Adapt(delta = 0.8)));
 
 rc = stan_sample(stanmodel; data=hp_data, n_chains=4)
 
 if success(rc)
-  samples = read_samples(stanmodel)
+  sdf = read_summary(stanmodel)
+  sdf |> display
 end
