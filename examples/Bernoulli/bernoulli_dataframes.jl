@@ -16,7 +16,12 @@ model {
 }
 ";
 
-bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
+bernoulli_data = [
+  Dict("N" => 10, "y" => [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]),
+  Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1]),
+  Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 1, 1, 0, 0, 1]),
+  Dict("N" => 10, "y" => [1, 1, 1, 1, 1, 1, 1, 1, 0, 1])
+]
 
 # Keep tmpdir across multiple runs to prevent re-compilation
 
@@ -27,5 +32,9 @@ if success(rc)
   dfa = read_samples(sm;
     output_format=:dataframes,
     include_internals=true
-    )
+  )
+
+  for i in 1:size(dfa, 1)
+    mean(Array(dfa[i]), dims=1) |> display
+  end
 end

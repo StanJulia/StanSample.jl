@@ -21,7 +21,7 @@ bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 # Keep tmpdir across multiple runs to prevent re-compilation
 tmpdir = joinpath(@__DIR__, "tmp")
 
-sm = SampleModel("bernoulli", bernoulli_model;
+sm = SampleModel("bernoulli", bernoulli_model, [6];
   method = StanSample.Sample(
     save_warmup=false,                           # Default
     thin=1,
@@ -30,3 +30,7 @@ sm = SampleModel("bernoulli", bernoulli_model;
 );
 
 rc = stan_sample(sm; data=bernoulli_data);
+
+if success(rc)
+  (samples, cnames) = read_samples(sm)
+end

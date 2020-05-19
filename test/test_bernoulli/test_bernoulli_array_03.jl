@@ -26,7 +26,7 @@ sm = SampleModel("bernoulli", bernoulli_model;
     save_warmup=false,                           # Default
     thin=1,
     adapt = StanSample.Adapt(delta = 0.85)),
-  tmpdir = tmpdir,
+  tmpdir = tmpdir
 );
 
 rc = stan_sample(sm; data=bernoulli_data);
