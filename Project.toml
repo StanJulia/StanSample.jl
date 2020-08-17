@@ -1,7 +1,7 @@
 name = "StanSample"
 uuid = "c1514b29-d3a0-5178-b312-660c88baa699"
 authors = ["Rob J Goedman <goedman@icloud.com>"]
-version = "2.1.7"
+version = "2.2.0"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
@@ -22,7 +22,7 @@ DocStringExtensions = "0.8"
 MonteCarloMeasurements = "0.8, 0.9"
 Reexport = "0.2"
 Requires = "1.0"
-StanBase = "2.0"
+StanBase = "2, 3"
 julia = "1"
 
 [extras]

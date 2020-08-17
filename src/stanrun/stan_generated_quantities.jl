@@ -42,6 +42,6 @@ function stan_generate_quantities(m::SampleModel, id::Int64; kwargs...)
     run(pipeline(cmd, stdout="$(m.output_base)_generated_quantities_$id.log"))
   end
   
-  CSV.read(fname, delim=",", comment="#")
+  CSV.read(fname, DataFrame; delim=",", comment="#")
   
 end
