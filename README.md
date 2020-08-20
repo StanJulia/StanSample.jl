@@ -44,3 +44,14 @@ using StanSample
 ```
 
 See the docstrings (in particular `?StanSample`) for more help.
+
+## Versions
+
+Version 6.0.8
+
+1. Thanks to @yiyuezhuo, a function `extract` has been added to simplify grouping variables into a NamedTuple.
+2. read_sample() output_format argument has been extended with an option to request conversion to a NamedTuple.
+
+Version 6.0.7
+
+1. Dropped the use of pmap in StanBase
