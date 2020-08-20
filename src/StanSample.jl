@@ -45,6 +45,7 @@ include("stansamples/read_csv_files.jl")
 include("stansamples/convert_a3d.jl")
 include("stansamples/read_generated_quantities.jl")
 include("df.jl")
+include("namedtuple.jl")
 include("mcm.jl")
 
 export

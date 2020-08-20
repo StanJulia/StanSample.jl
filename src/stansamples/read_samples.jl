@@ -31,6 +31,7 @@ Currently supported formats are:
 4. :particles (Dict{MonteCarloMeasurements.Particles})
 5. :mcmcchains (MCMCChains.Chains object)
 6. :mambachains (Mamba.Chains object)
+7. :namedtuple (NamedTupla object)
 
 The glue code for option 5 is enabled by Requires.jl if MCMCChains is loaded, option 6 requires
 Mamba to be loaded.
