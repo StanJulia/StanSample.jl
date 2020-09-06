@@ -56,6 +56,7 @@ export
   read_summary,
   stan_summary,
   stan_generate_quantities,
-  read_generated_quantities
+  read_generated_quantities,
+  convert_a3d
 
 end # module
