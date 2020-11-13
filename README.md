@@ -6,7 +6,7 @@
 ![Lifecycle](https://img.shields.io/badge/lifecycle-retired-orange.svg)
 ![Lifecycle](https://img.shields.io/badge/lifecycle-archived-red.svg)
 ![Lifecycle](https://img.shields.io/badge/lifecycle-dormant-blue.svg) -->
-[![Build Status](https://travis-ci.org/StanJulia/StanSample.jl.svg?branch=master)](https://travis-ci.org/StanJulia/StanSample.jl)
+[![Build Status](https://travis-ci.com/StanJulia/StanSample.jl.svg?branch=master)](https://travis-ci.com/StanJulia/StanSample.jl)
 [![codecov.io](http://codecov.io/github/StanJulia/StanSample.jl/coverage.svg?branch=master)](http://codecov.io/github/StanJulia/StanSample.jl?branch=master)
 
 ## Important note
