@@ -32,14 +32,16 @@ Method called is based on the output_format defined in the stanmodel, e.g.:
 
 Current formats supported for conversion are:
 
-1. :array (DEFAULT: a3d_array format)
+1. :array (a3d_array format)
 2. :dataframe (DataFrames.DataFrame object, chains appended)
 3. :dataframes (Vector{DataFrames.DataFrame} object)
 4. :mcmcchains (MCMCChains.Chains object)
 5. :particles (Dict{MonteCarloMeasurements.Particles})
+6. :namedtuple (DEFAULT: NamedTuple, chains appended)
+7. :namedtuples (NamedTuple, Array format)
 
-The glue code for options 2 to 5 are enabled by Requires.jl if respectively
-DataFrames, MCMCChains and MonteCarloMeasurements are loaded.
+The glue code for options 4 and 5 are enabled by Requires.jl if respectively
+MCMCChains and MonteCarloMeasurements are loaded.
 ```
 
 ### Return values
@@ -47,4 +49,4 @@ DataFrames, MCMCChains and MonteCarloMeasurements are loaded.
 * `res`                       : Draws converted to the specified format.
 ```
 """
-convert_a3d(a3d_array, cnames, ::Val{:array}; kwargs...) = a3d_array
+convert_a3d(a3d_array, cnames, ::Val{:namedtuple}; kwargs...) = a3d_array

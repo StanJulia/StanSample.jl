@@ -41,6 +41,21 @@ end
 
 # convert_a3d
 
+# Convert the output file(s) created by cmdstan to a NamedTuple. Append all chains
+
+$(SIGNATURES)
+
+"""
+function convert_a3d(a3d_array, cnames, ::Val{:namedtuple})
+    s, v, c = size(a3d_array)
+    a3df = reshape(a3d_array, s*c, v, 1)
+   extract(a3df, cnames)
+end
+
+"""
+
+# convert_a3d
+
 # Convert the output file(s) created by cmdstan to a NamedTuple.
 
 $(SIGNATURES)

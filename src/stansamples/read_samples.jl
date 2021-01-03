@@ -37,7 +37,7 @@ The glue code for option 5 is enabled by Requires.jl if MCMCChains is loaded, op
 Mamba to be loaded.
 """
 function read_samples(model::SampleModel;
-  output_format=:array,
+  output_format=:namedtuple,
   include_internals=false,
   return_parameters=false,
   kwargs...)

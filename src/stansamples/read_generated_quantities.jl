@@ -12,7 +12,7 @@ $(SIGNATURES)
 ```
 """
 function read_generated_quantities(model::SampleModel, chains=[1];
-    output_format=:array,
+    output_format=:namedtuple,
     kwargs...
   )
 
