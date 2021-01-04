@@ -37,6 +37,31 @@ function extract(chns::Array{Float64,3}, cnames::Vector{String})
     return (;ex_dict...)
 end
 
+function append_namedtuples(nts)
+    dct = Dict()
+    for par in keys(nts)
+        if length(size(nts[par])) > 2
+            println(size(nts[par]))
+            r, s, c = size(nts[par])
+            m = zeros(r, s*c)
+            println(size(m))
+            for i in 1:r
+                m[i, 1:s] = nts.a[i, :, 1]
+                for j in 2:c
+                    k = (j-1)*s + 1
+                    l = j*s
+                    println([i, j, k, l])
+                    m[i, k:l] = nts.a[i, :, j]
+                end
+            end
+            dct[par] = m
+        else
+            dct[par] = nts[par]
+        end
+    end
+    (;dct...)
+end
+
 """
 
 # convert_a3d
@@ -47,9 +72,7 @@ $(SIGNATURES)
 
 """
 function convert_a3d(a3d_array, cnames, ::Val{:namedtuple})
-    s, v, c = size(a3d_array)
-    a3df = reshape(a3d_array, s*c, v, 1)
-   extract(a3df, cnames)
+    append_namedtuples(extract(a3d_array, cnames))
 end
 
 """
@@ -61,6 +84,6 @@ end
 $(SIGNATURES)
 
 """
-function convert_a3d(a3d_array, cnames, ::Val{:namedtuple})
-   extract(a3d_array, cnames)
+function convert_a3d(a3d_array, cnames, ::Val{:namedtuples})
+    extract(a3d_array, cnames)
 end

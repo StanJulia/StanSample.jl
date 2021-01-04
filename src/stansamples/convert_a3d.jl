@@ -49,4 +49,4 @@ MCMCChains and MonteCarloMeasurements are loaded.
 * `res`                       : Draws converted to the specified format.
 ```
 """
-convert_a3d(a3d_array, cnames, ::Val{:namedtuple}; kwargs...) = a3d_array
+convert_a3d(a3d_array, cnames, ::Val{:array}; kwargs...) = a3d_array
