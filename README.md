@@ -47,11 +47,18 @@ See the docstrings (in particular `?StanSample`) for more help.
 
 ## Versions
 
-Version 6.0.8
+### Version 3.0.0
+
+This version is slightly breaking in that the default return van `read_samples` has been update to be a NamedTuple, i.e. `output_format=:namedtuple`, while it used to return a 3 dimensional Array.
+
+1. By default read_samples(model) will return a NamedTuple with all chains appended.
+2. `output_format=:namedtuples` will provide a NamedTuple with separate chains.
+
+### Version 2.2.5
 
 1. Thanks to @yiyuezhuo, a function `extract` has been added to simplify grouping variables into a NamedTuple.
 2. read_sample() output_format argument has been extended with an option to request conversion to a NamedTuple.
 
-Version 6.0.7
+### Version 2.2.4
 
 1. Dropped the use of pmap in StanBase

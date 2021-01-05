@@ -41,22 +41,11 @@ function append_namedtuples(nts)
     dct = Dict()
     for par in keys(nts)
         if length(size(nts[par])) > 2
-            println(size(nts[par]))
             r, s, c = size(nts[par])
-            m = zeros(r, s*c)
-            println(size(m))
-            for i in 1:r
-                m[i, 1:s] = nts.a[i, :, 1]
-                for j in 2:c
-                    k = (j-1)*s + 1
-                    l = j*s
-                    println([i, j, k, l])
-                    m[i, k:l] = nts.a[i, :, j]
-                end
-            end
-            dct[par] = m
+            dct[par] = reshape(nts[par], r, s*c)
         else
-            dct[par] = nts[par]
+            s, c = size(nts[par])
+            dct[par] = reshape(nts[par], s*c)
         end
     end
     (;dct...)

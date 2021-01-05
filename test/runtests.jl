@@ -16,19 +16,21 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
         sdf = read_summary(sm)
         @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
 
-        (samples, parameters) = read_samples(sm; return_parameters=true)
+        (samples, parameters) = read_samples(sm; output_format=:array,
+          return_parameters=true)
         @test size(samples) == (1000, 1, 6)
         @test length(parameters) == 1
 
-        (samples, parameters) = read_samples(sm;
+        (samples, parameters) = read_samples(sm; output_format=:array,
           return_parameters=true, include_internals=true)
         @test size(samples) == (1000, 8, 6)
         @test length(parameters) == 8
 
-        samples = read_samples(sm; include_internals=true)
+        samples = read_samples(sm; output_format=:array,
+          include_internals=true)
         @test size(samples) == (1000, 8, 6)
 
-        samples = read_samples(sm)
+        samples = read_samples(sm; output_format=:array)
         @test size(samples) == (1000, 1, 6)
       end
 
@@ -37,11 +39,13 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
         sdf = read_summary(sm)
         @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
 
-        (samples, parameters) = read_samples(sm; return_parameters=true)
+        (samples, parameters) = read_samples(sm; output_format=:array,
+          return_parameters=true)
         @test size(samples) == (500, 1, 4)
         @test length(parameters) == 1
 
-        samples = read_samples(sm; include_internals=true)
+        samples = read_samples(sm; output_format=:array,
+          include_internals=true)
         @test size(samples) == (500, 8, 4)
       end
   end

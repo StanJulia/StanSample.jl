@@ -32,5 +32,5 @@ sm = SampleModel("bernoulli", bernoulli_model;
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  (samples, cnames) = read_samples(sm)
+  (samples, cnames) = read_samples(sm, output_format=:array)
 end
