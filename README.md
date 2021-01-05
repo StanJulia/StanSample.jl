@@ -19,13 +19,15 @@ This package is registered. Install with
 pkg> add StanSample.jl
 ```
 
+StanSample.jl v3 is slightly breaking in that the default return of `read_samples` has been update to be a NamedTuple, i.e. `output_format=:namedtuple`, while it used to return a 3 dimensional Array.
+
 You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like
 ```julia
 # CmdStan setup
 ENV["JULIA_CMDSTAN_HOME"] = expanduser("~/src/cmdstan-2.19.1/") # replace with your path
 ```
 
-This package is derived from Tamas Papp's [StanRun.jl](https://github.com/tpapp/StanRun.jl) package. It uses StanDump.jl and StanSamples.jl. 
+This package is modeled after Tamas Papp's [StanRun.jl](https://github.com/tpapp/StanRun.jl) package. 
 
 ## Usage
 
@@ -48,8 +50,6 @@ See the docstrings (in particular `?StanSample`) for more help.
 ## Versions
 
 ### Version 3.0.0
-
-This version is slightly breaking in that the default return van `read_samples` has been update to be a NamedTuple, i.e. `output_format=:namedtuple`, while it used to return a 3 dimensional Array.
 
 1. By default read_samples(model) will return a NamedTuple with all chains appended.
 2. `output_format=:namedtuples` will provide a NamedTuple with separate chains.
