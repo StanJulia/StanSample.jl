@@ -54,7 +54,7 @@ function SampleModel(
   StanBase.update_model_file(joinpath(tmpdir, "$(name).stan"), strip(model))
   
   output_base = joinpath(tmpdir, name)
-  exec_path = output_base
+  exec_path = StanBase.executable_path(output_base)
   cmdstan_home = get_cmdstan_home()
 
   error_output = IOBuffer()
