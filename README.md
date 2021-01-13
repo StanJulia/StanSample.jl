@@ -49,6 +49,10 @@ See the docstrings (in particular `?StanSample`) for more help.
 
 ## Versions
 
+### Version 3.0.1
+
+1. Thanks to the help of John Wright (@jwright11) all StanJulia packages have been tested on Windows. Most functionality work, with one exception. Stansummary.exe fails on Windows if warmup samples have been saved.
+
 ### Version 3.0.0
 
 1. By default read_samples(model) will return a NamedTuple with all chains appended.
