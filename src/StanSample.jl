@@ -39,6 +39,7 @@ end
 include("stanmodel/sample_types.jl")
 include("stanmodel/SampleModel.jl")
 include("stanrun/cmdline.jl")
+include("stanrun/diagnose.jl")
 include("stanrun/stan_generated_quantities.jl")
 include("stansamples/read_samples.jl")
 include("stansamples/read_csv_files.jl")
@@ -57,6 +58,7 @@ export
   stan_summary,
   stan_generate_quantities,
   read_generated_quantities,
-  convert_a3d
+  convert_a3d,
+  diagnose
 
 end # module
