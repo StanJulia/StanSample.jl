@@ -1,3 +1,14 @@
+"""
+
+Run Stan's diagnose binary on a model.
+
+$(SIGNATURES)
+
+### Required arguments
+```julia
+* `model`                    : SampleModel
+```
+"""
 function diagnose(model::SampleModel)
   #local csvfile
   n_chains = model.n_chains[1]
