@@ -33,9 +33,9 @@ bernoulli_model = "
   }
 ";
 
-#tmpdir = joinpath(@__DIR__, "tmp")
+tmpdir = joinpath(@__DIR__, "tmp")
 
-sm = SampleModel("bernoulli", bernoulli_model)
+sm = SampleModel("bernoulli", bernoulli_model, tmpdir=tmpdir)
 
 observeddata = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
