@@ -2,6 +2,8 @@
 
 using StanSample
 
+ProjDir = @__DIR__
+
 bernoulli_model = "
 data {
   int<lower=1> N;
@@ -26,7 +28,7 @@ sm = SampleModel("bernoulli", bernoulli_model;
     save_warmup=false,                           # Default
     thin=1,
     adapt = StanSample.Adapt(delta = 0.85)),
-  #tmpdir = tmpdir,
+  tmpdir = tmpdir,
 );
 
 rc = stan_sample(sm; data=bernoulli_data);
@@ -35,3 +37,8 @@ if success(rc)
   nt = read_samples(sm)
   display(nt)
 end
+
+file_name = ProjDir * "/tmp/bernoulli_chain"
+nt1, cnames1 = StanSample.read_csv(file_name, n_chains=4, n_samples=1000)
+
+nt1 |> display
