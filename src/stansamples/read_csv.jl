@@ -1,3 +1,30 @@
+using Unicode, DelimitedFiles
+
+"""
+
+Read output files created by StanSample.jl.
+
+$(SIGNATURES)
+
+# Extended help
+
+### Required arguments
+```julia
+* `file_name`                          : Base part of .csv file name
+* `n_chains = 4`                       : Number fo chains
+* `n_samples = 1000`                   : Number of samples in ech chain
+* `output_format = :namedtuple`        : Requested output format
+```
+
+The `file_name` is extended to `file_name_i.csv` for i in 1:n_chains.
+
+### Optional arguments
+```julia
+* `include_internals`                  : Include internal parameters
+* `start = 1`                          : First draw to collect
+```
+Not exported
+"""
 function read_csv(
     file_name::String,
     n_chains = 4,
