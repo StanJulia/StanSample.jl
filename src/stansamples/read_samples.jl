@@ -3,7 +3,7 @@
 """
 
 Read sample output files created by StanSample.jl and return the requested `output_format`.
-The default output_format is :array. Optionally the list of parameter symbols can be returned.
+The default output_format is :namedtuple. Optionally the list of parameter symbols can be returned.
 
 $(SIGNATURES)
 
@@ -17,7 +17,7 @@ $(SIGNATURES)
 ### Optional arguments
 ```julia
 * `start=1`                   : First sample number
-* `output_format=:array`      : Requested format for samples
+* `output_format=:namedtuple` : Requested format for samples
 * `include_internals=false`   : Include internal Stan paramenters
 * `return_parameters=false`   : Return a tuple of (output_format, parameter_symbols)
 * `kwargs...`                 : Capture all other keyword arguments
