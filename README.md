@@ -11,7 +11,7 @@
 
 ## Installation
 
-This package is registered. Install with
+This package is registered. It can be installed with
 
 ```julia
 pkg> add StanSample.jl
