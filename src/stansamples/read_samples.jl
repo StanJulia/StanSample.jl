@@ -26,16 +26,16 @@ $(SIGNATURES)
 Currently supported formats are:
 
 1. :array (3d array format - [samples, parameters, chains])
-2. :dataframe (DataFrames.DataFrame object, all chains appended)
-3. :dataframes (Vector{DataFrames.DataFrame} object)
-4. :particles (Dict{MonteCarloMeasurements.Particles})
-5. :mcmcchains (MCMCChains.Chains object)
-6. :mambachains (Mamba.Chains object)
-7. :namedtuple (DEFAULT: NamedTuple object, all chains appended)
-8. :namedtuples (NamedTuple object, individual chains)
+2. :namedtuple (DEFAULT: NamedTuple object, all chains appended)
+3. :namedtuples (Vector{NamedTuple} object, individual chains)
+4. :table (Tables object, individual chains)
+5. :tables (Vector{Tables} object, individual chains chains)
+6. :dataframe (DataFrames.DataFrame object, all chains appended)
+7. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
+8. :particles (Dict{MonteCarloMeasurements.Particles})
+9. :mcmcchains (MCMCChains.Chains object)
 
-The glue code for option 5 is enabled by Requires.jl if MCMCChains is loaded, option 6 requires
-Mamba to be loaded.
+The glue code for option 9 is enabled by Requires.jl if MCMCChains is loaded,.
 """
 function read_samples(model::SampleModel;
   output_format=:namedtuple,

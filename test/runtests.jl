@@ -91,6 +91,22 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
     println()
   end
   
+  test_tables_interface = [
+    "test-tables-interface/tables.jl",
+    "test-tables-interface/ex-00.jl",
+    "test-tables-interface/ex-01.jl",
+    "test-tables-interface/ex-02.jl",
+    "test-tables-interface/ex-03.jl",
+    "test-tables-interface/ex-04.jl"
+  ]
+  @testset "Tables.jl interface" begin
+    for test in test_tables_interface
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
 else
   println("\nJULIA_CMDSTAN_HOME not set. Skipping tests")
 end

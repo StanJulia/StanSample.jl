@@ -23,6 +23,7 @@ module StanSample
 using Reexport
 
 @reexport using StanBase, DataFrames, MonteCarloMeasurements
+@reexport using Tables, TableOperations, CSV
 
 using Requires
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
@@ -33,7 +34,6 @@ import StanBase: RandomSeed, Init, Output, StanModelError
 
 function __init__()
   @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("require_chns.jl")
-  @require Mamba="5424a776-8be3-5c5b-a13f-3551f69ba0e6" include("require_mambachains.jl")
 end
 
 include("stanmodel/sample_types.jl")
@@ -49,6 +49,7 @@ include("stansamples/read_generated_quantities.jl")
 include("df.jl")
 include("namedtuple.jl")
 include("mcm.jl")
+include("tables.jl")
 
 export
   SampleModel,
