@@ -17,18 +17,18 @@ $(SIGNATURES)
 ### Optional arguments
 ```julia
 * `include_internals`                  : Include internal parameters
+* `start=1`                            : First sample to include in output
 ```
 Not exported
 """
 function read_csv_files(model::SampleModel, output_format::Symbol;
-  include_internals=include_internals,
+  include_internals=false,
+  chains=1:model.n_chains[1],
+  start=1,
   kwargs...)
 
   local a3d, monitors, index, idx, indvec, ftype, noofsamples
   
-  # First samples number returned
-  start = (:start in keys(kwargs)) ? values(kwargs).start : 1
-
   # File path components of sample files (missing the "_$(i).csv" part)
   output_base = model.output_base
   name_base ="_chain"
@@ -41,11 +41,8 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
     n_samples = floor(Int, model.method.num_samples/model.method.thin)
   end
   
-  # How many chains?
-  n_chains = model.n_chains[1]
-  
   # Read .csv files and return a3d[n_samples, parameters, n_chains]
-  for i in 1:n_chains
+  for i in chains
     if isfile(output_base*name_base*"_$(i).csv")
       instream = open(output_base*name_base*"_$(i).csv")
       
@@ -61,7 +58,7 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
       
       # Allocate a3d as we now know number of parameters
       if i == 1
-        a3d = fill(0.0, n_samples, n_parameters, n_chains)
+        a3d = fill(0.0, n_samples, n_parameters, length(chains))
       end
       
       skipchars(isspace, instream, linecomment='#')
@@ -90,7 +87,7 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
     indices = Vector{Int}(indexin(snames, cnames))
   end 
 
-  res = convert_a3d(a3d[:, indices, :], snames, Val(output_format); kwargs...)
+  res = convert_a3d(a3d[start:end, indices, :], snames, Val(output_format); kwargs...)
 
   (res, snames) 
 

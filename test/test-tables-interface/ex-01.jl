@@ -30,8 +30,6 @@ end
 
 @test Tables.getcolumn(rows, Symbol("b.2")) == df2[:, "b.2"]
 
-bnames = select_block(string.(cnames), "b")
+bt = matrix(st2, :b)
 
-bt = st2 |> TableOperations.select(bnames...) |> Tables.columntable
-
-@test size(DataFrame(bt)) == (10, 2)
+@test size(bt) == (10, 2)

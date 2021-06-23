@@ -51,17 +51,22 @@ function convert_a3d(a3d_array, cnames, ::Val{:table};
     StanTable(Symbol.(p), lookup_dict, mat)
 end
 
-function select_block(n::Vector{String}, sym::Union{Symbol, String})
+import Tables: matrix
+function matrix(st::StanTable, sym::Union{Symbol, String})
+    n = string.(names(st))
+    syms = string(sym)
     sel = String[]
     for (i, s) in enumerate(n)
-        if length(s) > length(sym) && sym == n[i][1:length(sym)] &&
-            n[i][length(sym)+1] in ['[', '.']
+        if length(s) > length(syms) && syms == n[i][1:length(syms)] &&
+            n[i][length(syms)+1] in ['[', '.']
             append!(sel, [n[i]])
         end
     end
-    sel
+    length(sel) == 0 && error("$syms not in $n")
+    tmp = st |> TableOperations.select(sel...) |> Tables.columntable
+    Tables.matrix(tmp)
 end
 
 export
     StanTable,
-    select_block
+    matrix

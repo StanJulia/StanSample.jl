@@ -52,6 +52,8 @@ if success(rc5_1s_t)
 end
 
 st5_1_t = convert_a3d(a5_1s_t, cnames, Val(:table));
-st5_1_t |> display
+@test names(st5_1_t)[end] == Symbol("log_lik.50")
+@test size(DataFrame(st5_1_t)) == (4000, 103)
 
-DataFrame(st5_1_t) |> display
+mu = matrix(st5_1_t, "mu")
+@test size(mu) == (4000, 50)

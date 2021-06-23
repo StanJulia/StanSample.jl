@@ -69,10 +69,12 @@ function read_samples(model::SampleModel;
   output_format=:namedtuple,
   include_internals=false,
   return_parameters=false,
+  chains=1:model.n_chains[1],
+  start=1,
   kwargs...)
 
   (res, names) = read_csv_files(model::SampleModel, output_format;
-    include_internals=include_internals,
+    include_internals=include_internals, start=start, chains=chains,
     kwargs...
   )
 

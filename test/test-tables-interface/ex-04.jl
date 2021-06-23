@@ -63,9 +63,17 @@ a[7]  1.81 0.39  1.22  2.48  3807    1
 if success(rc10_4s)
     nt = read_samples(m10_4s)
     mean(nt.a, dims=2) |> display
-    nts = read_samples(m10_4s)
-    a10_4s, cnames = read_samples(m10_4s; output_format=:array, return_parameters=true);
-end
 
-st10_4 = convert_a3d(a10_4s, cnames, Val(:table));
-st10_4 |> display
+    st10_4 = read_samples(m10_4s; output_format=:table);
+    @test names(st10_4) == [ 
+        Symbol("a.1"),
+        Symbol("a.2"),
+        Symbol("a.3"),
+        Symbol("a.4"),
+        Symbol("a.5"),
+        Symbol("a.6"),
+        Symbol("a.7"),
+        :bp,
+        :bpC
+    ]
+end
