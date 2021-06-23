@@ -11,7 +11,7 @@ $(SIGNATURES)
 ### Required arguments
 ```julia
 * `file_name`                          : Base part of .csv file name
-* `n_chains = 4`                       : Number fo chains
+* `n_chains = 4`                       : Number of chains
 * `n_samples = 1000`                   : Number of samples in ech chain
 * `output_format = :namedtuple`        : Requested output format
 ```

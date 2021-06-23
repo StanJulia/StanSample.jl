@@ -2,7 +2,7 @@
 
 using StanSample, CSV, Test
 
-df = CSV.read(joinpath(@__DIR__, "data", "chimpanzees.csv"), DataFrame);
+df = CSV.read(joinpath(@__DIR__, "..", "..", "data", "chimpanzees.csv"), DataFrame);
 
 # Define the Stan language model
 

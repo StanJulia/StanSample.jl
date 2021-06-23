@@ -1,6 +1,6 @@
 using StanSample, Test
 
-df = CSV.read(joinpath(@__DIR__, "data", "WaffleDivorce.csv"), DataFrame);
+df = CSV.read(joinpath(@__DIR__, "..", "..", "data", "WaffleDivorce.csv"), DataFrame);
 
 stan5_1_t = "
 data {
