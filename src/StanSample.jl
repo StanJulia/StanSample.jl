@@ -33,7 +33,7 @@ import StanBase: cmdline, read_summary, stan_summary
 import StanBase: RandomSeed, Init, Output, StanModelError
 
 function __init__()
-  @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("require_chns.jl")
+  @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("mcmcchains.jl")
 end
 
 include("stanmodel/sample_types.jl")
@@ -43,12 +43,11 @@ include("stanrun/diagnose.jl")
 include("stanrun/stan_generated_quantities.jl")
 include("stansamples/read_samples.jl")
 include("stansamples/read_csv_files.jl")
-include("stansamples/read_csv.jl")
 include("stansamples/convert_a3d.jl")
 include("stansamples/read_generated_quantities.jl")
-include("df.jl")
-include("namedtuple.jl")
-include("mcm.jl")
+include("dataframes.jl")
+include("namedtuples.jl")
+include("particles.jl")
 include("tables.jl")
 
 export

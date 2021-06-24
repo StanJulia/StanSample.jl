@@ -2,7 +2,7 @@ using Unicode, DelimitedFiles
 
 """
 
-Create generated_quantities output files created by StanSample.jl.
+Read .csv output files created by Stan's cmdstan executable.
 
 $(SIGNATURES)
 
@@ -17,6 +17,7 @@ $(SIGNATURES)
 ### Optional arguments
 ```julia
 * `include_internals`                  : Include internal parameters
+* `chains=1:model.n_chains[1]`         : Vector of chain id to include in output
 * `start=1`                            : First sample to include in output
 ```
 Not exported

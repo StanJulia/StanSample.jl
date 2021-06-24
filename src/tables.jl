@@ -51,7 +51,7 @@ function convert_a3d(a3d_array, cnames, ::Val{:table};
     StanTable(Symbol.(p), lookup_dict, mat)
 end
 
-import Tables: matrix
+#import Tables: matrix
 function matrix(st::StanTable, sym::Union{Symbol, String})
     n = string.(names(st))
     syms = string(sym)

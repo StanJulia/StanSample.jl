@@ -37,8 +37,3 @@ if success(rc)
   nt = read_samples(sm)
   display(nt)
 end
-
-file_name = ProjDir * "/tmp/bernoulli_chain"
-nt1, _ = StanSample.read_csv(file_name, n_chains=4, n_samples=1000)
-
-nt1 |> display
