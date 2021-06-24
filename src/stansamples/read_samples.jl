@@ -29,8 +29,8 @@ Currently supported formats are:
 1. :array (3d array format - [samples, parameters, chains])
 2. :namedtuple (DEFAULT: NamedTuple object, all chains appended)
 3. :namedtuples (Vector{NamedTuple} object, individual chains)
-4. :table (Tables object, individual chains)
-5. :tables (Vector{Tables} object, individual chains chains) # Not yet implemented
+4. :table (Tables object, all chains appended)
+5. :tables (Vector{Tables} object, individual chains)
 6. :dataframe (DataFrames.DataFrame object, all chains appended)
 7. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
 8. :particles (Dict{MonteCarloMeasurements.Particles})
@@ -40,13 +40,13 @@ Basically chains can be returned as a NamedTuple, a StanTable, a DataFrame,
 a Particles or an MCMCChains.Chains object.
 
 For NamedTuple, StanTable and DataFrame all chains are appended or can be returned
-a Vector{...} for each chain.
+as a Vector{...} for each chain.
 
 By default all chains will be read in. With the optional keyword argument `chains`
-a subset of chains can be included, e.g. `chains = [2, 4]1.
+a subset of chains can be included, e.g. `chains = [2, 4]`.
 
-The optional keyword argument `start` specifies is any initial (warm-up) samples
-should be removed. 
+The optional keyword argument `start` specifies which initial (warm-up) samples
+should be removed.
 
 Notes:
 1. Use of the Stan `thinning` option will interfere with the value of start.

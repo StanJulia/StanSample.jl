@@ -33,3 +33,8 @@ end
 bt = matrix(st2, :b)
 
 @test size(bt) == (10, 2)
+
+st3 = convert_a3d(a3d_array, cnames, Val(:tables); start=6, chains=1:4)
+rws= [Tables.rows(st3[i]) for i in 1:4]
+
+@test Tables.getcolumn(rws[2], Symbol("b.2")) == a3d_array[6:end, 3, 2]

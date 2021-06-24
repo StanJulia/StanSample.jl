@@ -51,7 +51,30 @@ function convert_a3d(a3d_array, cnames, ::Val{:table};
     StanTable(Symbol.(p), lookup_dict, mat)
 end
 
-#import Tables: matrix
+function convert_a3d(a3d_array, cnames, ::Val{:tables};
+    chains=1:size(a3d_array, 3),
+    start=1,
+    return_internals=false,
+    kwargs...)
+
+    cnames = String.(cnames)
+
+    if !return_internals
+        pi = filter(p -> length(p) > 2 && p[end-1:end] == "__", cnames)
+        p = filter(p -> !(p in  pi), cnames)
+    else
+        p = cnames
+    end
+
+    lookup_dict = Dict{Symbol, Int}()
+    for (idx, name) in enumerate(p)
+        lookup_dict[Symbol(name)] = idx
+    end
+
+    mats = [a3d_array[start:end, :, i] for i in chains]
+    [StanTable(Symbol.(p), lookup_dict, mats[i])  for i in chains]
+end
+
 function matrix(st::StanTable, sym::Union{Symbol, String})
     n = string.(names(st))
     syms = string(sym)
@@ -69,4 +92,5 @@ end
 
 export
     StanTable,
-    matrix
+    matrix,
+    names

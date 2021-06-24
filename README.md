@@ -47,6 +47,18 @@ See the docstrings (in particular `?StanSample`) for more help.
 
 ## Versions
 
+### Version 4.0.0 (under construction)
+
+1. Make read_samples() default output_format=:table
+
+### Version 3.1.0
+
+1. Introduction of Tables.jl interface as an output_format option (`:table`).
+2. Overloading Tables.matrix to group a variable in Stan's output file as a matrix.
+3. Re-used code in read_csv_files() for generated_quantities.
+4. The read_samples() method now consistently applies keyword arguments start and chains.
+5. The table for each chain output_format is :tables.
+6. 
 ### Version 3.0.1
 
 1. Thanks to the help of John Wright (@jwright11) all StanJulia packages have been tested on Windows. Most functionality work, with one exception. Stansummary.exe fails on Windows if warmup samples have been saved.
