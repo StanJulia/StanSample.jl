@@ -78,7 +78,7 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
     end   # read in next file if it exists
   end   # read in file for each chain
   
-  # Filtering of draws before further processing
+  # Filtering of draws, parameters and chains before further processing
   
   cnames = convert.(String, idx[indvec])
   if include_internals
