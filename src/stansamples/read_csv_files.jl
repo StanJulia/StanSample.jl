@@ -78,6 +78,8 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
     end   # read in next file if it exists
   end   # read in file for each chain
   
+  # Filtering of draws before further processing
+  
   cnames = convert.(String, idx[indvec])
   if include_internals
     snames = [Symbol(cnames[i]) for i in 1:length(cnames)]
@@ -88,7 +90,7 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
     indices = Vector{Int}(indexin(snames, cnames))
   end 
 
-  res = convert_a3d(a3d[start:end, indices, :], snames, Val(output_format); kwargs...)
+  res = convert_a3d(a3d[start:end, indices, chains], snames, Val(output_format); kwargs...)
 
   (res, snames) 
 
