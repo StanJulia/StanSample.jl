@@ -16,7 +16,6 @@
 
 [project-status-img]: https://img.shields.io/badge/lifecycle-wip-orange.svg
 
-
 ## Installation
 
 This package is registered. It can be installed with
