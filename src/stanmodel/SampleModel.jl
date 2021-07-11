@@ -26,15 +26,8 @@ $(SIGNATURES)
 * `init::Init`                         : Interval bound for parameters
 * `output::Output`                     : File output options
 * `tmpdir::AbstractString`             : Directory where output files are stored
-* `output_base::AbstractString`        : Base name for output files
-* `exec_path::AbstractString`          : Path to cmdstan executable
-* `data_file::vector{AbstractString}`  : Path to per chain data file
-* `init_file::Vector{AbstractString}`  : Path to per chain init file
-* `sample_file::Vector{String}         : Path to per chain samples file
-* `cmds::Vector{Cmd}`                  : Path to per chain init file
-* `log_file::Vector{String}            : Path to per chain log file
-* `diagnostic_file::Vector{String}     : Path to per chain diagnostic file
-* `summary=true`                       : Create computed stan summary
+* `summary::Bool=true`                 : Create computed stan summary
+* `printsummary::Bool=false`           : Print the summary
 * `method::Sample                      : Will be Sample()  
 ```
 """
@@ -46,6 +39,8 @@ function SampleModel(
   init = StanBase.Init(),
   output = StanBase.Output(),
   tmpdir = mktempdir(),
+  summary::Bool = true,
+  printsummary::Bool = false,
   method = Sample(),
 )
   
@@ -68,7 +63,7 @@ function SampleModel(
 
   SampleModel(name, model, n_chains, seed, init, output,
     tmpdir, output_base, exec_path, String[], String[], 
-    Cmd[], String[], String[], String[], false, false,
+    Cmd[], String[], String[], String[], summary, printsummary,
     cmdstan_home, method)
 end
 
