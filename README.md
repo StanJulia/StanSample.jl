@@ -19,13 +19,15 @@
 ## Installation
 
 This package is registered. It can be installed with:
+
 ```Julia
 pkg> add StanSample.jl
 ```
 
 StanSample.jl v3 is slightly breaking in that the default return of `read_samples` has been update to be a NamedTuple, i.e. `output_format=:namedtuple`, while it used to return a 3 dimensional Array.
 
-You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like
+You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like:
+
 ```Julia
 # CmdStan setup
 ENV["JULIA_CMDSTAN_HOME"] =
@@ -46,11 +48,11 @@ Otherwise, `stan_sample` will use a single process.
 
 Use this package like this:
 
-```julia
+```Julia
 using StanSample
 ```
 
-See the docstrings (in particular `?StanSample`) for more help.
+See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
