@@ -19,7 +19,7 @@
 ## Installation
 
 This package is registered. It can be installed with:
-```
+```Julia
 pkg> add StanSample.jl
 ```
 
@@ -28,7 +28,8 @@ StanSample.jl v3 is slightly breaking in that the default return of `read_sample
 You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like
 ```Julia
 # CmdStan setup
-ENV["JULIA_CMDSTAN_HOME"] = expanduser("~/src/cmdstan-2.19.1/") # replace with your path
+ENV["JULIA_CMDSTAN_HOME"] =
+     expanduser("~/src/cmdstan-2.19.1/") # replace with your path
 ```
 
 This package is modeled after Tamas Papp's [StanRun.jl](https://github.com/tpapp/StanRun.jl) package. 
