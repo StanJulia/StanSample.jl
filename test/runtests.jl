@@ -99,6 +99,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
     "test-tables-interface/ex-04.jl",
     "test-tables-interface/ex-05.jl"
   ]
+
   @testset "Tables.jl interface" begin
     for test in test_tables_interface
       println("\nTesting: $test.")
@@ -106,6 +107,8 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
     end
     println()
   end
+
+  include(joinpath(TestDir, "test_keyedarray", "test_keyedarray.jl"))
 
 else
   println("\nJULIA_CMDSTAN_HOME not set. Skipping tests")

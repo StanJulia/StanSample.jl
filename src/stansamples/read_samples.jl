@@ -34,7 +34,8 @@ Currently supported formats are:
 6. :dataframe (DataFrames.DataFrame object, all chains appended)
 7. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
 8. :particles (Dict{MonteCarloMeasurements.Particles})
-9. :mcmcchains (MCMCChains.Chains object)
+9. :keyedarray (KeyedArray object from AxisDict.jl)
+10. :mcmcchains (MCMCChains.Chains object)
 
 Basically chains can be returned as a NamedTuple, a StanTable, a DataFrame,
 a Particles or an MCMCChains.Chains object.

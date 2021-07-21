@@ -22,8 +22,8 @@ module StanSample
 
 using Reexport
 
-@reexport using StanBase, DataFrames, MonteCarloMeasurements
-@reexport using Tables, TableOperations, CSV
+@reexport using StanBase, DataFrames, MonteCarloMeasurements, CSV
+@reexport using AxisKeys, Tables, TableOperations, CSV
 
 using Requires
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
@@ -49,6 +49,7 @@ include("utils/dataframes.jl")
 include("utils/namedtuples.jl")
 include("utils/particles.jl")
 include("utils/tables.jl")
+include("utils/keyedarray.jl")
 
 export
   SampleModel,
