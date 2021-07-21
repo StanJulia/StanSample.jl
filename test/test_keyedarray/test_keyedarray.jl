@@ -83,6 +83,6 @@ a[7]  1.81 0.39  1.22  2.48  3807    1
         # Test combining vector param 'a'
         ma = matrix(ka, "a");
         rma = reshape(ma, size(ma, 1), 4000);
-        @test mean(rma, dims=2) ≈ [-0.7, 11.0, -1, -1, -0.7, 0.2, 1.8] atol=0.2
+        @test mean(rma, dims=2) ≈ [-0.7, 10.9, -1, -1, -0.7, 0.2, 1.8] atol=0.5
     end
 end
