@@ -8,10 +8,13 @@ $(SIGNATURES)
 
 """
 function convert_a3d(a3d_array, cnames, ::Val{:keyedarray})
-    a3d_array_p = permutedims(a3d_array, [2, 1, 3])
     psymbols= Symbol.(cnames)
-    wrapdims(a3d_array_p, param=psymbols, iteration=1:size(a3d_array_p, 2), 
-      chain=1:size(a3d_array_p, 3))
+    pa = permutedims(a3d_array, [1, 3, 2])
+    wrapdims(pa, 
+        iteration=1:size(pa, 2), 
+        chain=1:size(pa, 1), 
+        param=psymbols 
+    )
 end
 
 function matrix(ka::KeyedArray, sym::Union{Symbol, String})
