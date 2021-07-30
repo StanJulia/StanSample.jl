@@ -69,20 +69,22 @@ a[7]  1.81 0.39  1.22  2.48  3807    1
         # All draws of :a_1
         @test size(vcat(kb...)) == (4000,)
         # All of parameters @testset "Basic HelpModel" begin
-        kar = reshape(ka.data, 9, 4000);
-        @test size(kar) == (9, 4000)
+        kar = reshape(ka.data, 4000, 9);
+        @test size(kar) == (4000, 9)
         # Axes ranges
-        @test axes(ka) == (Base.OneTo(9), Base.OneTo(1000), Base.OneTo(4))
+        @test axes(ka) == (Base.OneTo(1000), Base.OneTo(4), Base.OneTo(9))
         # Axes keys
-        @test axiskeys(ka) == ([Symbol("a.1"), Symbol("a.2"), Symbol("a.3"),
-            Symbol("a.4"), Symbol("a.5"), Symbol("a.6"), Symbol("a.7"), :bp, :bpC],
-            1:1000, 1:4)
+        @test axiskeys(ka) == (
+            1:1000, 1:4,
+            [Symbol("a.1"), Symbol("a.2"), Symbol("a.3"), Symbol("a.4"), 
+                Symbol("a.5"), Symbol("a.6"), Symbol("a.7"), :bp, :bpC]
+        )
         # A single axis
         @test axiskeys(ka, :param) == vcat([Symbol("a.$i") for i in 1:7], :bp, :bpC)  
 
         # Test combining vector param 'a'
         ma = matrix(ka, "a");
-        rma = reshape(ma, size(ma, 1), 4000);
-        @test mean(rma, dims=2) ≈ [-0.7, 10.9, -1, -1, -0.7, 0.2, 1.8] atol=0.7
+        rma = reshape(ma.data, 4000, size(ma, 3))
+        @test mean(rma, dims=1) ≈ [-0.7 10.9 -1 -1 -0.7 0.2 1.8] atol=0.7
     end
 end
