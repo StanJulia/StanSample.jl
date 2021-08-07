@@ -43,7 +43,7 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
   end
   
   # Read .csv files and return a3d[n_samples, parameters, n_chains]
-  for i in chains
+  for i in 1:model.n_chains[1]
     if isfile(output_base*name_base*"_$(i).csv")
       instream = open(output_base*name_base*"_$(i).csv")
       
@@ -59,7 +59,7 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
       
       # Allocate a3d as we now know number of parameters
       if i == 1
-        a3d = fill(0.0, n_samples, n_parameters, length(chains))
+        a3d = fill(0.0, n_samples, n_parameters, model.n_chains[1])
       end
       
       skipchars(isspace, instream, linecomment='#')

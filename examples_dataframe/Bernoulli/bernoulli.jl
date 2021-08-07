@@ -30,6 +30,6 @@ sm = SampleModel("bernoulli", bernoulli_model;
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  df = read_samples(sm; output_format=:dataframe)
-  df_vector = read_samples(sm; output_format=:dataframes)
+  df = read_samples(sm, :dataframe)
+  df_vector = read_samples(sm, :dataframes)
 end

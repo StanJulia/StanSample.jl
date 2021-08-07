@@ -1,5 +1,7 @@
 ######### StanSample Bernoulli example  ###########
 
+# This example required MCMCChains.jl to be installed
+
 using StanSample, MCMCChains
 
 bernoulli_model = "

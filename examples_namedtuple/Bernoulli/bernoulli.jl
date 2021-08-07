@@ -23,7 +23,7 @@ sm = SampleModel("bernoulli", bernoulli_model);
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  nt = read_samples(sm; output_format=:namedtuple)	  # Return NamedTuple
+  nt = read_samples(sm, :namedtuple)	  # Return NamedTuple
 
   # Fetch cmdstan summary df
   sdf = read_summary(sm)

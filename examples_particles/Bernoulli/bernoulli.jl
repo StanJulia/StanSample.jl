@@ -23,9 +23,10 @@ sm = SampleModel("bernoulli", bernoulli_model);
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  nt = read_samples(sm; output_format=:particles)	  # Return Particles NamedTuple
+  part_sm = read_samples(sm, :particles)	  # Return Particles NamedTuple
+  part_sm |> display
 
   # Fetch cmdstan summary df
-  sdf = read_summary(sm)
+  sdf = read_summary(sm, true)
 
 end
