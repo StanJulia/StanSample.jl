@@ -24,8 +24,7 @@ sm = SampleModel("bernoulli", bernoulli_model, [6]);
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  df = read_samples(sm;
-    output_format=:dataframe,
+  df = read_samples(sm, :dataframe;
     include_internals=false
   )
 

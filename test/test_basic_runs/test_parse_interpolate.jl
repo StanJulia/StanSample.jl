@@ -34,7 +34,7 @@ cd(ProjDir) do
 
   if success(rc)
     # Convert to an MCMCChains.Chains object
-    samples = read_samples(sm; output_format=:array)
+    samples = read_samples(sm, :array)
     @test sum(samples)/length(samples) ≈ 0.33 rtol=0.05
   end
 

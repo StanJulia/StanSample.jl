@@ -36,9 +36,9 @@ if success(rc)
 
   # Included return formats
 
-  samples = read_samples(sm)                        # Return Array object
-  a3d = read_samples(sm; output_format=:array)      # Return an a3d object
-  df = read_samples(sm; output_format=:dataframe)   # Return a DataFrame object
+  samples = read_samples(sm)          # Return KeyesArray object
+  a3d = read_samples(sm, :array)      # Return an a3d object
+  df = read_samples(sm, :dataframe)   # Return a DataFrame object
 
   # If (and only if) MCMCChains is loaded:
   # chns = read_samples(sm, :mcmcchains)

@@ -21,16 +21,17 @@ bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 # Keep tmpdir across multiple runs to prevent re-compilation
 tmpdir = joinpath(@__DIR__, "tmp")
 
-sm = SampleModel("bernoulli", bernoulli_model, [6];
+sm = SampleModel("bernoulli", bernoulli_model;
   method = StanSample.Sample(
     save_warmup=false,                           # Default
     thin=1,
     adapt = StanSample.Adapt(delta = 0.85)),
-  tmpdir = tmpdir,
+  #tmpdir = tmpdir,
 );
 
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  (samples, cnames) = read_samples(sm, output_format=:array)
+  chns = read_samples(sm)
+  chns |> display
 end

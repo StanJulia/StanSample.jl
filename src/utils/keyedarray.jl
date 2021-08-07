@@ -11,8 +11,8 @@ function convert_a3d(a3d_array, cnames, ::Val{:keyedarray})
     psymbols= Symbol.(cnames)
     pa = permutedims(a3d_array, [1, 3, 2])
     wrapdims(pa, 
-        iteration=1:size(pa, 2), 
-        chain=1:size(pa, 1), 
+        iteration=1:size(pa, 1), 
+        chain=1:size(pa, 2), 
         param=psymbols 
     )
 end

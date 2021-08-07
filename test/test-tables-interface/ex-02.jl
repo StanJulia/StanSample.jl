@@ -56,8 +56,8 @@ end;
 
 if success(rc6_7s)
     nt6_7s = read_samples(m6_7s)
-    df6_7s = read_samples(m6_7s; output_format=:dataframe)
-    a6_7s, cnames = read_samples(m6_7s; output_format=:array, return_parameters=true);
+    df6_7s = read_samples(m6_7s, :dataframe)
+    a6_7s, cnames = read_samples(m6_7s, :array; return_parameters=true);
 end
 
 st = convert_a3d(a6_7s, cnames, Val(:table))

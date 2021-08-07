@@ -34,6 +34,6 @@ sm = SampleModel("bernoulli", bernoulli_model;
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  nt = read_samples(sm)
+  nt = read_samples(sm, :namedtuple)
   display(nt)
 end

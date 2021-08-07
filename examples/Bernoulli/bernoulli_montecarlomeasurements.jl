@@ -26,7 +26,7 @@ sm = SampleModel("bernoulli", bernoulli_model);
 rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
-  dict = read_samples(sm; output_format=:particles)
+  dict = read_samples(sm, :particles)
   println()
   dict |> display
 end

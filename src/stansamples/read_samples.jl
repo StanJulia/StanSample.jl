@@ -3,7 +3,7 @@
 """
 
 Read sample output files created by StanSample.jl and return the requested `output_format`.
-The default output_format is :namedtuple. Optionally the list of parameter symbols can be returned.
+The default output_format is :keyedarray. Optionally the list of parameter symbols can be returned.
 
 $(SIGNATURES)
 
@@ -12,11 +12,11 @@ $(SIGNATURES)
 ### Required arguments
 ```julia
 * `model`                     : SampleModel
+* `output_format=:keyedarray` : Requested format for samples
 ```
 
 ### Optional arguments
 ```julia
-* `output_format=:namedtuple` : Requested format for samples
 * `include_internals=false`   : Include internal Stan paramenters
 * `return_parameters=false`   : Return a tuple of (output_format, parameter_symbols)
 * `chains=1:m.n_chains[1]`    : Chains to be included in output
@@ -24,21 +24,21 @@ $(SIGNATURES)
 * `kwargs...`                 : Capture all other keyword arguments
 ```
 
-Currently supported formats are:
+Currently supported output_formats are:
 
 1. :array (3d array format - [samples, parameters, chains])
-2. :namedtuple (DEFAULT: NamedTuple object, all chains appended)
+2. :namedtuple (NamedTuple object, all chains appended)
 3. :namedtuples (Vector{NamedTuple} object, individual chains)
 4. :table (Tables object, all chains appended)
 5. :tables (Vector{Tables} object, individual chains)
 6. :dataframe (DataFrames.DataFrame object, all chains appended)
 7. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
 8. :particles (Dict{MonteCarloMeasurements.Particles})
-9. :keyedarray (KeyedArray object from AxisDict.jl)
+9. :keyedarray (DEFAULT: KeyedArray object from AxisDict.jl)
 10. :mcmcchains (MCMCChains.Chains object)
 
-Basically chains can be returned as a NamedTuple, a StanTable, a DataFrame,
-a Particles or an MCMCChains.Chains object.
+Basically chains can be returned as an Array, a KeyedArray, a NamedTuple, a StanTable,
+a DataFrame, a Particles or an MCMCChains.Chains object.
 
 For NamedTuple, StanTable and DataFrame all chains are appended or can be returned
 as a Vector{...} for each chain.
@@ -64,10 +64,9 @@ stantable = read+samples(m10.4s; output_format=:table)
 atable = select_block(stantable, "a")
 ```
 
-The glue code for option 9 is enabled by Requires.jl if MCMCChains is loaded,.
+The glue code for option 10 is enabled by Requires.jl if MCMCChains is loaded,.
 """
-function read_samples(model::SampleModel;
-  output_format=:namedtuple,
+function read_samples(model::SampleModel, output_format=:keyedarray;
   include_internals=false,
   return_parameters=false,
   chains=1:model.n_chains[1],

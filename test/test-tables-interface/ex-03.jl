@@ -40,15 +40,15 @@ begin
     rc5_1s_t = stan_sample(m5_1s_t; data)
 
     if success(rc5_1s_t)
-        post5_1s_t_df = read_samples(m5_1s_t; output_format=:dataframe)
+        post5_1s_t_df = read_samples(m5_1s_t, :dataframe)
     end
 end
 
 if success(rc5_1s_t)
-    nt5_1s_t = read_samples(m5_1s_t)
-    df5_1s_t = read_samples(m5_1s_t; output_format=:dataframe)
+    nt5_1s_t = read_samples(m5_1s_t, :namedtuple)
+    df5_1s_t = read_samples(m5_1s_t, :dataframe)
     log_lik_1_t = nt5_1s_t.log_lik'
-    a5_1s_t, cnames = read_samples(m5_1s_t; output_format=:array, return_parameters=true);
+    a5_1s_t, cnames = read_samples(m5_1s_t, :array; return_parameters=true);
 end
 
 st5_1_t = convert_a3d(a5_1s_t, cnames, Val(:table));
