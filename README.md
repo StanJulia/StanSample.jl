@@ -56,9 +56,11 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-### Version 4.0.0 (under construction)
+### Version 4.0.0 (**BREAKING RELEASE!**)
 
-1. Make read_samples() default output_format=:table
+1. Make KeyedArray chains the read_samples() default output.
+2. Drop the output_format kwarg, e.g.: `read_samples(model, :dataframe)`.
+3. Default output format is KeyedArray chains, i.e.: `chns = read_samples(model)`.
 
 ### Version 3.1.0
 
