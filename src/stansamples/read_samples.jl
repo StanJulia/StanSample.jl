@@ -57,11 +57,11 @@ should be set to 1001.
 The NamedTuple output-format will extract and combine parameter vectors, e.g.
 if Stan's cmdstan returns `a.1, a.2, a.3` the NamedTuple will just contain `a`.
 
-For Tables object you can use the `select_block()` function to create an object
-that conforms to the Tables interface:
+For KeyedArray and Table objects you can use the overloaded `matrix()` method to
+extract a block of parametes:
 ```
-stantable = read+samples(m10.4s; output_format=:table)
-atable = select_block(stantable, "a")
+stantable = read_samples(m10.4s; output_format=:table)
+atable = matrix(stantable, "a")
 ```
 
 The glue code for option 10 is enabled by Requires.jl if MCMCChains is loaded,.
