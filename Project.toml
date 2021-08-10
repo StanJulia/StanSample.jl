@@ -1,7 +1,7 @@
 name = "StanSample"
 uuid = "c1514b29-d3a0-5178-b312-660c88baa699"
 authors = ["Rob J Goedman <goedman@icloud.com>"]
-version = "4.0.0"
+version = "4.0.1"
 
 [deps]
 AxisKeys = "94b1ba4f-4ee9-5380-92f1-94cde586c3c5"
@@ -24,16 +24,16 @@ Tables = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
 Unicode = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 
 [compat]
-AxisKeys = "0.1.18, 0.1.19"
+AxisKeys = "0.1.19"
 CSV = "0.8, 0.9, 1.0"
-DataFrames = "0.22, 1.0"
+DataFrames = "1.0"
 Distributions = "0.25, 0.26"
 DocStringExtensions = "0.8"
-MonteCarloMeasurements = "0.9, 0.10, 0.11"
+MonteCarloMeasurements = "0.10, 0.11"
 NamedTupleTools = "0.13"
-OrderedCollections = "1.3"
-Reexport = "0.2, 1.0"
-Requires = "1.0"
+OrderedCollections = "1.4"
+Reexport = "1"
+Requires = "1"
 StanBase = "2"
 StatsBase = "0.33"
 TableOperations = "1.0"

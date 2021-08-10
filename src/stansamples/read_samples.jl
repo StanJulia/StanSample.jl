@@ -35,7 +35,7 @@ Currently supported output_formats are:
 7. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
 8. :particles (Dict{MonteCarloMeasurements.Particles})
 9. :keyedarray (DEFAULT: KeyedArray object from AxisDict.jl)
-10. :mcmcchains (MCMCChains.Chains object)
+10.:mcmcchains (MCMCChains.Chains object)
 
 Basically chains can be returned as an Array, a KeyedArray, a NamedTuple, a StanTable,
 a DataFrame, a Particles or an MCMCChains.Chains object.
