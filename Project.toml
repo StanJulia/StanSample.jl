@@ -1,7 +1,7 @@
 name = "StanSample"
 uuid = "c1514b29-d3a0-5178-b312-660c88baa699"
 authors = ["Rob J Goedman <goedman@icloud.com>"]
-version = "4.0.1"
+version = "4.0.2"
 
 [deps]
 AxisKeys = "94b1ba4f-4ee9-5380-92f1-94cde586c3c5"
