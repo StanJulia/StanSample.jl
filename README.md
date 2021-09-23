@@ -24,7 +24,7 @@ This package is registered. It can be installed with:
 pkg> add StanSample.jl
 ```
 
-StanSample.jl v3 is slightly breaking in that the default return of `read_samples` has been update to be a NamedTuple, i.e. `output_format=:namedtuple`, while it used to return a 3 dimensional Array.
+StanSample.jl v4.1 is somewhat breaking update. See below changes in this version.
 
 You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like:
 
@@ -55,6 +55,13 @@ using StanSample
 See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
+
+### Version 4.1.0
+
+1. The addition of :dimarray and :dimarrays output_format (see ?read_samples).
+2. No longer re-exporting many previously exported packages.
+3. The use of Requires.jl to enable most output_format options.
+4. All example scripts have been moved to Stan.jl (because of item 3).
 
 ### Version 4.0.0 (**BREAKING RELEASE!**)
 
