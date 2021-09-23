@@ -1,4 +1,6 @@
-using StanSample, Random, Distributions, Test
+using StanSample
+using DataFrames, Tables
+using Random, Distributions, Test
 
 begin
     N = 100

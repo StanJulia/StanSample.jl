@@ -1,4 +1,6 @@
-using StanSample, Test
+using DataFrames, CSV, Tables
+using StanSample
+using Test
 
 df = CSV.read(joinpath(@__DIR__, "..", "..", "data", "WaffleDivorce.csv"), DataFrame);
 

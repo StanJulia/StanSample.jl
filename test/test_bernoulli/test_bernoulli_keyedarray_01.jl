@@ -1,5 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
+using AxisKeys
 using StanSample
 
 bernoulli_model = "
@@ -33,5 +34,4 @@ rc = stan_sample(sm; data=bernoulli_data);
 
 if success(rc)
   chns = read_samples(sm)
-  chns |> display
 end

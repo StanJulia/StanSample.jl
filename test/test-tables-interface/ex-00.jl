@@ -1,4 +1,4 @@
-using StanSample, Test
+using StanSample, Tables, Test
 
 # Testing
 

@@ -1,4 +1,5 @@
-using StanSample, DataFrames, Test
+using StanSample
+using DataFrames, Tables, Test
 
 # Testing
 

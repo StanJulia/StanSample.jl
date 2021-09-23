@@ -1,8 +1,7 @@
-# Load Julia packages (libraries)
-
-using DataFrames, CSV, Tables
+using CSV, DataFrames
+using DimensionalData
 using StanSample
-using Test
+using Statistics, Test
 
 df = CSV.read(joinpath(@__DIR__, "..", "..", "data", "chimpanzees.csv"), DataFrame);
 
@@ -62,20 +61,43 @@ a[7]  1.81 0.39  1.22  2.48  3807    1
 
 # Update sections 
 
-if success(rc10_4s)
-    nt = read_samples(m10_4s, :namedtuple)
-    @test mean(nt.a, dims=2) ≈ [-0.75 11.0 -1.0 -1.0 -0.7 0.2 1.8]' rtol=0.1
+@testset ":dimarrays tests" begin
+    if success(rc10_4s)
+        da = read_samples(m10_4s, :dimarrays)
+        da1 = da[param=At(Symbol("a.1"))]
 
-    st10_4 = read_samples(m10_4s, :table);
-    @test names(st10_4) == [ 
-        Symbol("a.1"),
-        Symbol("a.2"),
-        Symbol("a.3"),
-        Symbol("a.4"),
-        Symbol("a.5"),
-        Symbol("a.6"),
-        Symbol("a.7"),
-        :bp,
-        :bpC
-    ]
+        # Other manipulations
+        
+        @test Tables.istable(da) == true
+
+        # All of parameters
+        dar = reshape(Array(da), 4000, 9);
+        @test size(dar) == (4000, 9)
+
+        # Check :param axis names
+        @test dims(da, :param).val == vcat([Symbol("a.$i") for i in 1:7], :bp, :bpC)  
+
+        # Test combining vector param 'a'
+        ma = matrix(da, "a");
+        rma = reshape(ma, 4000, size(ma, 3))
+        @test mean(rma, dims=1) ≈ [-0.7 10.9 -1 -1 -0.7 0.2 1.8] atol=0.7
+    end
+end
+
+@testset ":dimarray tests" begin
+    if success(rc10_4s)
+        da = read_samples(m10_4s, :dimarray)
+        da1 = da[param=At(Symbol("a.1"))]
+
+        # Other manipulations
+        
+        @test Tables.istable(da) == true
+
+        # Check :param axis names
+        @test dims(da, :param).val == vcat([Symbol("a.$i") for i in 1:7], :bp, :bpC)  
+
+        # Test combining vector param 'a'
+        ma = matrix(da, "a");
+        @test mean(ma, dims=1) ≈ [-0.7 10.9 -1 -1 -0.7 0.2 1.8] atol=0.7
+    end
 end

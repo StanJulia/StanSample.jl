@@ -1,4 +1,7 @@
-using StanSample, CSV, AxisKeys, Test
+using AxisKeys
+using DataFrames, CSV
+using StanSample
+using Statistics, Test
 
 df = CSV.read(joinpath(@__DIR__, "..", "..", "data", "chimpanzees.csv"), DataFrame);
 

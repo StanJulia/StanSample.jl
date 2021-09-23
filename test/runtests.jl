@@ -111,7 +111,10 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
   end
 
   include(joinpath(TestDir, "test_keyedarray", "test_keyedarray.jl"))
-
+  println()
+  include(joinpath(TestDir, "test_dimensionaldata", "test_dimensionaldata.jl"))
+  println()
+  
 else
   println("\nJULIA_CMDSTAN_HOME not set. Skipping tests")
 end
