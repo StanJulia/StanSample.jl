@@ -20,6 +20,10 @@ Exports:
 """
 module StanSample
 
+using Reexport
+
+@reexport using AxisKeys
+
 using Requires
 
 using StanBase
@@ -33,7 +37,6 @@ import StanBase: cmdline, read_summary, stan_summary
 import StanBase: RandomSeed, Init, Output, StanModelError
 
 function __init__()
-  @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5"  include("utils/keyedarray.jl")
   @require DataFrames="a93c6f00-e57d-5684-b7b6-d8193f3e46c0" include("utils/dataframes.jl")
   @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("utils/particles.jl")
   @require DimensionalData="0703355e-b756-11e9-17c0-8b28908087d0" include("utils/dimarray.jl")
@@ -51,6 +54,7 @@ include("stansamples/convert_a3d.jl")
 include("stansamples/read_generated_quantities.jl")
 include("utils/namedtuples.jl")
 include("utils/tables.jl")
+include("utils/keyedarray.jl")
 
 export
   SampleModel,

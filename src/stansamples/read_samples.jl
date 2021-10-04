@@ -26,15 +26,15 @@ $(SIGNATURES)
 
 Currently supported output_formats are:
 
-1. :array (3d array format - [samples, parameters, chains])
-2. :namedtuple (NamedTuple object, all chains appended)
-3. :namedtuples (Vector{NamedTuple} object, individual chains)
-4. :table (Tables object, all chains appended)
-5. :tables (Vector{Tables} object, individual chains)
-6. :dataframe (DataFrames.DataFrame object, all chains appended)
-7. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
-8. :particles (Dict{MonteCarloMeasurements.Particles})
-9. :keyedarray (DEFAULT: KeyedArray object from AxisDict.jl)
+1. :keyedarray (DEFAULT: KeyedArray object from AxisDict.jl)
+2. :array (3d array format - [samples, parameters, chains])
+3. :namedtuple (NamedTuple object, all chains appended)
+4. :namedtuples (Vector{NamedTuple} object, individual chains)
+5. :table (StanTable Tables object, all chains appended)
+6. :tables (Vector{Tables} object, individual chains)
+7. :dataframe (DataFrames.DataFrame object, all chains appended)
+8. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
+9. :particles (Dict{MonteCarloMeasurements.Particles})
 10.:dimarray (Appended chains DimensionalData.DimArray object)
 11.:dimarrayw (DimensionalData.DimArray object)
 12.:mcmcchains (MCMCChains.Chains object)
@@ -42,8 +42,8 @@ Currently supported output_formats are:
 Basically chains can be returned as an Array, a KeyedArray, a DimArray, a NamedTuple,
 a StanTable, a DataFrame, a Particles or an MCMCChains.Chains object.
 
-Options 6 to 12 are enabled by the presence of DataFrames.jl, MonteCarloMeasurements.jl,
-AxisKeys.jl, DimensionalData.jl or MCMCChains.jl.
+Options 7 to 12 are enabled by the presence of DataFrames.jl, MonteCarloMeasurements.jl,
+DimensionalData.jl or MCMCChains.jl.
 
 For NamedTuple, StanTable, DimArray and DataFrame all chains are appended or can be returned
 as a Vector{...} for each chain.
