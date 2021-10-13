@@ -15,6 +15,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
       println("\n")
 
       if success(rc)
+
         sdf = read_summary(sm)
         @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
 
@@ -53,6 +54,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
   end
 
   basic_run_tests = [
+    "test_bernoulli/test_bernoulli_array_01.jl",
     "test_basic_runs/test_bernoulli_dict.jl",
     "test_basic_runs/test_bernoulli_array_dict_1.jl",
     "test_basic_runs/test_bernoulli_array_dict_2.jl",

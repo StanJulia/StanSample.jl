@@ -22,11 +22,7 @@ data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 tmpdir = joinpath(@__DIR__, "tmp")
 
 sm = SampleModel("bernoulli", bernoulli_model;
-  method = StanSample.Sample(
-    save_warmup=true,                           # Default
-    thin=4,
-    adapt = StanSample.Adapt(delta = 0.85)),
-  tmpdir = tmpdir,
+  tmpdir = tmpdir
 );
 
 rc = stan_sample(sm; data);
@@ -38,4 +34,6 @@ if success(rc)
   ka |> display
   println()
 
+  sdf = read_summary(sm)
+  sdf |> display
 end
