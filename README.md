@@ -24,8 +24,6 @@ This package is registered. It can be installed with:
 pkg> add StanSample.jl
 ```
 
-StanSample.jl v4.1 is somewhat breaking update. See below changes in this version.
-
 You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like:
 
 ```Julia
@@ -55,6 +53,16 @@ using StanSample
 See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
+
+### Version 4.3.0
+
+1. Added keywords seed and n_chains to satn_sample.
+2. SampleModel no longer uses shared fields (prep work for v5)
+
+### version 4.2.0
+
+1. Minor updates
+2. Added test for MCMCChains
 
 ### Version 4.1.0
 
