@@ -18,7 +18,7 @@ model {
 }
 ";
 
-bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
+data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 # Keep tmpdir across multiple runs to prevent re-compilation
 tmpdir = joinpath(@__DIR__, "tmp")
@@ -32,7 +32,7 @@ sm = SampleModel("bernoulli", bernoulli_model;
   tmpdir = tmpdir,
 );
 
-rc = stan_sample(sm; data=bernoulli_data);
+rc = stan_sample(sm; data, n_chains=2, seed=12);
 
 if success(rc)
   chns = read_samples(sm)

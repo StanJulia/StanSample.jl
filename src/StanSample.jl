@@ -20,19 +20,22 @@ Exports:
 """
 module StanSample
 
+using Requires
 using Reexport
 
 @reexport using AxisKeys
 
-using Requires
-
-using StanBase
 using CSV, DelimitedFiles, Unicode
 using NamedTupleTools, Tables, TableOperations
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
-import StanBase: stan_sample, get_cmdstan_home
+import StanBase
+import StanBase: get_cmdstan_home
+import StanBase: get_n_chains, set_n_chains, stan_compile
+import StanBase: executable_path, StanModelError, ensure_executable
+import StanBase: CmdStanModels, RandomSeed, Init, Output
+import StanBase: par, stan_dump
 import StanBase: cmdline, read_summary, stan_summary
 import StanBase: RandomSeed, Init, Output, StanModelError
 
@@ -45,13 +48,17 @@ end
 
 include("stanmodel/sample_types.jl")
 include("stanmodel/SampleModel.jl")
+
+include("stanrun/stan_sample.jl")
 include("stanrun/cmdline.jl")
 include("stanrun/diagnose.jl")
 include("stanrun/stan_generated_quantities.jl")
+
 include("stansamples/read_samples.jl")
 include("stansamples/read_csv_files.jl")
 include("stansamples/convert_a3d.jl")
 include("stansamples/read_generated_quantities.jl")
+
 include("utils/namedtuples.jl")
 include("utils/tables.jl")
 include("utils/keyedarray.jl")
