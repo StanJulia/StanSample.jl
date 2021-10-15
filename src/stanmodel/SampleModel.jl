@@ -78,10 +78,14 @@ function SampleModel(
         throw(StanModelError(name, String(take!(error_output))))
     end
 
-    if seed !== -1
-        nseed = RandomSeed(seed)
-    else
-        nseed = RandomSeed()
+    if typeof(seed) == RandomSeed
+        nseed = seed
+    elseif typeof(seed) == Int64
+        if seed !== -1
+            nseed = RandomSeed(seed)
+        else
+            nseed = RandomSeed()
+        end
     end
 
     SampleModel(name, model, n_chains, nseed, init, output,
