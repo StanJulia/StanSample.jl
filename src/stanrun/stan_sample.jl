@@ -91,11 +91,14 @@ $(SIGNATURES)
 * `model <: CmdStanModels`             : CmdStanModel subtype, e.g. SampleModel
 ```
 
-### Optional arguments
+### Keyword arguments
 ```julia
 * `init`                               : Init dict
 * `data`                               : Data dict
+* `n_chains=4`                         : Update number of chains.
+* `seed=-1`                            : Set seed value (::Int)
 ```
+
 ### Returns
 ```julia
 * `rc`                                 : Return code, 0 is success

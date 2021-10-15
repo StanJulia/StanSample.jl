@@ -34,14 +34,14 @@ model{
 }
 ";
 
-data = (N = size(df, 1), N_actors = length(unique(df.actor)), 
+data10_4 = (N = size(df, 1), N_actors = length(unique(df.actor)), 
     actor = df.actor, pulled_left = df.pulled_left,
     prosoc_left = df.prosoc_left, condition = df.condition);
 
 # Sample using cmdstan
 
 m10_4s = SampleModel("m10.4s", stan10_4)
-rc10_4s = stan_sample(m10_4s; data);
+rc10_4s = stan_sample(m10_4s; data=data10_4);
 
 # Result rethinking
 

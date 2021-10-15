@@ -7,10 +7,11 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
   println()
 
   test_bernoulli = [
-    "test_bernoulli/test_bernoulli_keyedarray_01.jl",
+    "test_keyedarray/test_bernoulli_keyedarray_01.jl",
+    "test_keyedarray/test_keyedarray.jl",
   ]
 
-  @testset "Bernoulli_01 array tests" begin
+  @testset "Bernoulli array tests" begin
       include(joinpath(TestDir, "test_bernoulli/test_bernoulli_keyedarray_01.jl"))
       println("\n")
 
@@ -112,9 +113,33 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
     println()
   end
 
-  include(joinpath(TestDir, "test_keyedarray", "test_keyedarray.jl"))
-  println()
-  include(joinpath(TestDir, "test_dimensionaldata", "test_dimensionaldata.jl"))
+  test_dimensionaldata = [
+    "test_dimensionaldata/test_dimensionaldata.jl",
+  ]
+
+  @testset "DimensionalData interface" begin
+    for test in test_dimensionaldata
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
+  test_keywords = [
+    "test_keywords/test_bernoulli_keyedarray_01.jl",
+    "test_keywords/test_bernoulli_keyedarray_02.jl",
+    "test_keywords/test_bernoulli_keyedarray_03.jl",
+  ]
+
+  @testset "Seed and n_chains keywords" begin
+    for test in test_keywords
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
+  include(joinpath(TestDir, ))
   println()
   
 else
