@@ -35,9 +35,9 @@ Currently supported output_formats are:
 7. :dataframe (DataFrames.DataFrame object, all chains appended)
 8. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
 9. :particles (Dict{MonteCarloMeasurements.Particles})
-10.:dimarray (Appended chains DimensionalData.DimArray object)
-11.:dimarrayw (DimensionalData.DimArray object)
-12.:mcmcchains (MCMCChains.Chains object)
+10. :dimarray (Appended chains DimensionalData.DimArray object)
+11. :dimarrays (DimensionalData.DimArray object)
+12. :mcmcchains (MCMCChains.Chains object)
 
 Basically chains can be returned as an Array, a KeyedArray, a DimArray, a NamedTuple,
 a StanTable, a DataFrame, a Particles or an MCMCChains.Chains object.
