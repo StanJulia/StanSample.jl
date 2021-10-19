@@ -35,6 +35,6 @@ sm = SampleModel("bernoulli", bernoulli_model;
 rc = stan_sample(sm; data, n_chains=2, seed=12);
 
 if success(rc)
-  chns = read_samples(sm)
-  display(chns)
+  st = read_samples(sm)
+  display(st)
 end

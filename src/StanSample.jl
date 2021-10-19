@@ -21,9 +21,6 @@ Exports:
 module StanSample
 
 using Requires
-using Reexport
-
-@reexport using AxisKeys
 
 using CSV, DelimitedFiles, Unicode
 using NamedTupleTools, Tables, TableOperations
@@ -44,6 +41,7 @@ function __init__()
   @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("utils/particles.jl")
   @require DimensionalData="0703355e-b756-11e9-17c0-8b28908087d0" include("utils/dimarray.jl")
   @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("utils/mcmcchains.jl")
+  @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("utils/keyedarray.jl")
 end
 
 include("stanmodel/sample_types.jl")
@@ -61,7 +59,6 @@ include("stansamples/read_generated_quantities.jl")
 
 include("utils/namedtuples.jl")
 include("utils/tables.jl")
-include("utils/keyedarray.jl")
 
 export
   SampleModel,

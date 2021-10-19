@@ -12,7 +12,7 @@ $(SIGNATURES)
 ### Required arguments
 ```julia
 * `model`                     : SampleModel
-* `output_format=:keyedarray` : Requested format for samples
+* `output_format=:table` : Requested format for samples
 ```
 
 ### Optional arguments
@@ -26,12 +26,12 @@ $(SIGNATURES)
 
 Currently supported output_formats are:
 
-1. :keyedarray (DEFAULT: KeyedArray object from AxisDict.jl)
+1. :table (DEFAULT: StanTable Tables object, all chains appended)
 2. :array (3d array format - [samples, parameters, chains])
 3. :namedtuple (NamedTuple object, all chains appended)
 4. :namedtuples (Vector{NamedTuple} object, individual chains)
-5. :table (StanTable Tables object, all chains appended)
-6. :tables (Vector{Tables} object, individual chains)
+5. :tables (Vector{Tables} object, individual chains)
+6. :keyedarray (KeyedArray object from AxisDict.jl)
 7. :dataframe (DataFrames.DataFrame object, all chains appended)
 8. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
 9. :particles (Dict{MonteCarloMeasurements.Particles})
@@ -42,7 +42,7 @@ Currently supported output_formats are:
 Basically chains can be returned as an Array, a KeyedArray, a DimArray, a NamedTuple,
 a StanTable, a DataFrame, a Particles or an MCMCChains.Chains object.
 
-Options 7 to 12 are enabled by the presence of DataFrames.jl, MonteCarloMeasurements.jl,
+Options 6 to 12 are enabled by the presence of AxisKeys.jl, DataFrames.jl, MonteCarloMeasurements.jl,
 DimensionalData.jl or MCMCChains.jl.
 
 For NamedTuple, StanTable, DimArray and DataFrame all chains are appended or can be returned
@@ -62,16 +62,21 @@ should be set to 1001.
 The NamedTuple output-format will extract and combine parameter vectors, e.g.
 if Stan's cmdstan returns `a.1, a.2, a.3` the NamedTuple will just contain `a`.
 
-For KeyedArray and Table objects you can use the overloaded `matrix()` method to
+For KeyedArray and StanTable objects you can use the overloaded `matrix()` method to
 extract a block of parametes:
 ```
-stantable = read_samples(m10.4s; output_format=:table)
+stantable = read_samples(m10.4s, :table)
 atable = matrix(stantable, "a")
 ```
 
-The glue code for option 10 is enabled by Requires.jl if MCMCChains is loaded,.
+Currently :table is the default chain output_format (a StanTable object).
+
+In general it is safer to specify the desired output_format as this area
+is still under heavy development in the Julia eco system. The default
+has changed frequently!
+
 """
-function read_samples(model::SampleModel, output_format=:keyedarray;
+function read_samples(model::SampleModel, output_format=:table;
   include_internals=false,
   return_parameters=false,
   chains=1:model.n_chains[1],
