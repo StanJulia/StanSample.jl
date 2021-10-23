@@ -3,28 +3,69 @@ import Base: show
 mutable struct SampleModel <: CmdStanModels
     name::AbstractString;              # Name of the Stan program
     model::AbstractString;             # Stan language model program
-    n_chains::Vector{Int64};           # Number of chains
-    seed::StanBase.RandomSeed;         # Seed section of cmd to run cmdstan
-    init::StanBase.Init;               # Init section of cmd to run cmdstan
+    # Sample fields
+    num_chains::Int64;                 # Number of chains
+    num_threads::Int64;                # Number of threads
+    num_samples::Int;                  # Number of draws after warmup
+    num_warmups::Int;                  # Number of warmup draws
+    save_warmup::Bool;                 # Store warup_samples
+    thin::Int;                         # Thinning of draws
+    seed::Int;                         # Seed section of cmd to run cmdstan
+    refresh::Int
+    init_bound::Int
+
+    # Adapt fields
+    engaged::Bool;                     # See Stan manual for meaning.
+    gamma::Float64;
+    delta::Float64;
+    kappa::Float64;
+    t0::Int;
+    init_buffer::Int;
+    term_buffer::Int;
+    window::Int;
+
+    # Algorithm fields
+    algorithm::Symbol;                 # :nuts or :static
+    # HMC specific fields
+    engine::Symbol;
+    # NUTS specific fields
+    max_depth::Int;
+    # Static specific fields
+    int_time::Float64;                  # Static integration time
+
+    metric::Symbol;                    # :diag_e, :unit_e, :dense_e
+    metric_file::AbstractString;
+
+    stepsize::Float64;
+    stepsize_jitter::Float64;
+    # Init settings
+
+    # Output files
     output::StanBase.Output;           # Output section of cmd to run cmdstan
+    output_base::AbstractString;       # Used for file paths to be created
+    # Tmpdir setting
     tmpdir::AbstractString;            # Holds all below copied/created files
-    output_base::AbstractString;       # Used for naming failes to be created
+    # Cmdstan path
     exec_path::AbstractString;         # Path to the cmdstan excutable
-    data_file::Vector{String};         # Array of data files input to cmdstan
-    init_file::Vector{String};         # Array of init files input to cmdstan
+    # Data and init file paths
+    data_file::Vector{AbstractString}; # Array of data files input to cmdstan
+    init_file::Vector{AbstractString}; # Array of init files input to cmdstan
+    # Generated command line vector
     cmds::Vector{Cmd};                 # Array of cmds to be spawned/pipelined
+    # Files created
     sample_file::Vector{String};       # Sample file array created by cmdstan
     log_file::Vector{String};          # Log file array created by cmdstan
     diagnostic_file::Vector{String};   # Diagnostic file array created by cmdstan
+    # Stansummary settings
     summary::Bool;                     # Store cmdstan's summary as a .csv file
     printsummary::Bool;                # Print the summary
+    # CMDSTAN_HOME
     cmdstan_home::AbstractString;      # Directory where cmdstan can be found
-    method::Sample
-    end
+end
 
 """
 
-Create a SampleModel
+Create a SampleModel and compile Stan Language Model.
 
 $(SIGNATURES)
 
@@ -36,30 +77,14 @@ $(SIGNATURES)
 * `model::AbstractString`              : Stan model source
 ```
 
-### Optional arguments
+### Optional positional argument
 ```julia
-* `n_chains::Vector{Int64}=[4]`        : Optionally updated in stan_sample()
-* `seed::RandomSeed`                   : Random seed settings
-* `init::Init`                         : Interval bound for parameters
-* `output::Output`                     : File output options
-* `tmpdir::AbstractString`             : Directory where output files are stored
-* `summary::Bool=true`                 : Create computed stan summary
-* `printsummary::Bool=false`           : Print the summary
-* `method::Sample                      : Will be Sample()  
+* `tmpdir=mktempdir`                   : Directory where output files are stored
 ```
+
 """
-function SampleModel(
-    name::AbstractString,
-    model::AbstractString,
-    n_chains = [4];
-    seed = -1,
-    init = StanBase.Init(),
-    output = StanBase.Output(),
-    tmpdir = mktempdir(),
-    summary::Bool = true,
-    printsummary::Bool = false,
-    method = Sample(),
-)
+function SampleModel(name::AbstractString, model::AbstractString,
+    tmpdir=mktempdir())
   
     !isdir(tmpdir) && mkdir(tmpdir)
 
@@ -74,62 +99,99 @@ function SampleModel(
         success(pipeline(`make -f $(cmdstan_home)/makefile -C $(cmdstan_home) $(exec_path)`;
             stderr = error_output))
     end
+
     if !is_ok
         throw(StanModelError(name, String(take!(error_output))))
     end
 
-    if typeof(seed) == RandomSeed
-        nseed = seed
-    elseif typeof(seed) == Int64
-        if seed !== -1
-            nseed = RandomSeed(seed)
-        else
-            nseed = RandomSeed()
-        end
-    end
-
-    SampleModel(name, model, n_chains, nseed, init, output,
-        tmpdir, output_base, exec_path, String[], String[], 
-        Cmd[], String[], String[], String[], summary, printsummary,
-        cmdstan_home, method)
+    SampleModel(name, model, 
+        # num_chains, num_threads, num_samples, num_warmups, save_warmups
+        4, 4, 1000, 1000, false,
+        # thin, seed, refresh, init_bound
+        1, -1, 100, 2,
+        # Adapt fields
+        # engaged, gamma, delta, kappa, t0, init_buffer, term_buffer, window
+        true, 0.05, 0.8, 0.75, 10, 75, 50, 25,
+        # algorithm fields
+        :hmc,                          # or :static
+        # engine, max_depth
+        :nuts, 10,
+        # Static engine specific fields
+        2pi,
+        # metric, metric_file, stepsize, stepsize_jitter
+        :diag_e, "", 1.0, 0.0,
+        # Ouput settings
+        StanBase.Output(),
+        output_base,
+        # Tmpdir settings
+        tmpdir,
+        # exec_path
+        exec_path,
+        # Data files
+        AbstractString[],
+        # Init files
+        AbstractString[],  
+        # Command lines
+        Cmd[],
+        # Sample .csv files  
+        String[],
+        # Log files
+        String[],
+        # Diagnostic files
+        String[],
+        # Create stansummary result
+        true,
+        # Display stansummary result
+        false,
+        cmdstan_home
+    )
 end
 
 function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
-    println(io, "  name =                    \"$(m.name)\"")
-    println(io, "  n_chains =                $(StanBase.get_n_chains(m))")
-    println(io, "  output =                  Output()")
-    println(io, "    refresh =                 $(m.output.refresh)")
-    println(io, "  tmpdir =                  \"$(m.tmpdir)\"")
-    println(io, "  method =                  Sample()")
-    println(io, "    num_samples =             ", m.method.num_samples)
-    println(io, "    num_warmup =              ", m.method.num_warmup)
-    println(io, "    save_warmup =             ", m.method.save_warmup)
-    println(io, "    thin =                    ", m.method.thin)
-    if isa(m.method.algorithm, Hmc)
-        println(io, "    algorithm =               HMC()")
-    if isa(m.method.algorithm.engine, Nuts)
-        println(io, "      engine =                  NUTS()")
-        println(io, "        max_depth =               ", m.method.algorithm.engine.max_depth)
-    elseif isa(m.method.algorithm.engine, Static)
-        println(io, "      engine =                  Static()")
-        println(io, "        int_time =                ", m.method.algorithm.engine.int_time)
-    end
-    println(io, "      metric =                  ", typeof(m.method.algorithm.metric))
-    println(io, "      stepsize =                ", m.method.algorithm.stepsize)
-    println(io, "      stepsize_jitter =         ", m.method.algorithm.stepsize_jitter)
+    println(io, "\nSample section:")
+    println(io, "  name =                    $(m.name)")
+    println(io, "  num_chains =              $(m.num_chains)")
+    println(io, "  num_threads =             $(m.num_threads)")
+    println(io, "  num_samples =             ", m.num_samples)
+    println(io, "  num_warmups =             ", m.num_warmups)
+    println(io, "  save_warmup =             ", m.save_warmup)
+    println(io, "  thin =                    ", m.thin)
+    println(io, "  seed =                    ", m.seed)
+    println(io, "  refresh =                 ", m.refresh)
+    println(io, "  init_bound =              ", m.init_bound)
+    println(io, "\nAdapt section:")
+    println(io, "  engaged =                 ", m.engaged)
+    println(io, "  gamma =                   ", m.gamma)
+    println(io, "  delta =                   ", m.delta)
+    println(io, "  kappa =                   ", m.kappa)
+    println(io, "  t0 =                      ", m.t0)
+    println(io, "  init_buffer =             ", m.init_buffer)
+    println(io, "  term_buffer =             ", m.term_buffer)
+    println(io, "  window =                  ", m.window)
+    if m.algorithm ==:hmc
+        println("\nAlgorithm section:")
+        println(io, "\n  algorithm =               $(m.algorithm)")
+        if m.engine == :nuts
+            println(io, "\n    NUTS section:")
+            println(io, "      engine =              $(m.engine)")
+            println(io, "      max_depth =           ", m.max_depth)
+        elseif m.engine == :static
+            println(io, "\n  STATIC section:")
+            println(io, "    engine =               :static")
+            println(io, "    int_time =             ", m.int_time)
+        end
+        println(io, "\n  Metric section:")
+        println(io, "    metric =                ", m.metric)
+        println(io, "    stepsize =              ", m.stepsize)
+        println(io, "    stepsize_jitter =       ", m.stepsize_jitter)
     else
-        if isa(m.method.algorithm, Fixed_param)
-            println(io, "    algorithm =               Fixed_param()")
+        if m.algorithm == :fixed_param
+            println(io, "    algorithm =         :fixed_param")
         else
-            println(io, "    algorithm =               Unknown")
+            println(io, "    algorithm =         Unknown")
         end
     end
-    println(io, "    adapt =                   Adapt()")
-    println(io, "      gamma =                   ", m.method.adapt.gamma)
-    println(io, "      delta =                   ", m.method.adapt.delta)
-    println(io, "      kappa =                   ", m.method.adapt.kappa)
-    println(io, "      t0 =                      ", m.method.adapt.t0)
-    println(io, "      init_buffer =             ", m.method.adapt.init_buffer)
-    println(io, "      term_buffer =             ", m.method.adapt.term_buffer)
-    println(io, "      window =                  ", m.method.adapt.window)
+    println(io, "\nOther:")
+    println(io, "  output_base =             $(m.output_base)")
+    println(io, "  tmpdir =                  $(m.tmpdir)")
 end

@@ -29,7 +29,7 @@ Not exported.
 """ 
 abstract type SamplingAlgorithm end
 
-struct Nuts <: Engine
+mutable struct Nuts <: Engine
   max_depth::Int64
 end
 
@@ -47,7 +47,7 @@ Not exported
 """
 Nuts(;max_depth::Number=10) = Nuts(max_depth)
 
-struct Static <: Engine
+mutable struct Static <: Engine
   int_time::Float64
 end
 
@@ -78,14 +78,14 @@ Metric types for geometry of base manifold
 Not exported.
 """ 
 abstract type Metric end
-struct unit_e <: Metric
+mutable struct unit_e <: Metric
 end
-struct dense_e <: Metric
+mutable struct dense_e <: Metric
 end
-struct diag_e <: Metric
+mutable struct diag_e <: Metric
 end
 
-struct Hmc <: SamplingAlgorithm
+mutable struct Hmc <: SamplingAlgorithm
   engine::Engine
   metric::Metric
   stepsize::Float64
@@ -136,9 +136,9 @@ Fixed_param()
 ```
 Not exported
 """
-struct Fixed_param <: SamplingAlgorithm end
+mutable struct Fixed_param <: SamplingAlgorithm end
 
-struct Adapt
+mutable struct Adapt
   engaged::Bool
   gamma::Float64
   delta::Float64
@@ -191,7 +191,7 @@ Adapt(;engaged::Bool=true, gamma::Number=0.05, delta::Number=0.8,
   init_buffer::Number=75, term_buffer::Number=50, window::Number=25) = 
     Adapt(engaged, gamma, delta, kappa, t0, init_buffer, term_buffer, window)
 
-struct Sample
+mutable struct Sample
   num_samples::Int64
   num_warmup::Int64
   save_warmup::Bool

@@ -17,14 +17,14 @@ $(SIGNATURES)
 ### Optional arguments
 ```julia
 * `include_internals`                  : Include internal parameters
-* `chains=1:model.n_chains[1]`         : Vector of chain id to include in output
+* `chains=1:model.num_chains`         : Vector of chain id to include in output
 * `start=1`                            : First sample to include in output
 ```
 Not exported
 """
 function read_csv_files(model::SampleModel, output_format::Symbol;
   include_internals=false,
-  chains=1:model.n_chains[1],
+  chains=1:model.num_chains,
   start=1,
   kwargs...)
 
@@ -35,15 +35,15 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
   name_base ="_chain"
 
   # How many samples?
-  if model.method.save_warmup
+  if model.save_warmup
     n_samples = floor(Int,
-      (model.method.num_samples+model.method.num_warmup)/model.method.thin)
+      (model.num_samples+model.num_warmups)/model.thin)
   else
-    n_samples = floor(Int, model.method.num_samples/model.method.thin)
+    n_samples = floor(Int, model.num_samples/model.thin)
   end
   
   # Read .csv files and return a3d[n_samples, parameters, n_chains]
-  for i in 1:model.n_chains[1]
+  for i in 1:model.num_chains
     if isfile(output_base*name_base*"_$(i).csv")
       instream = open(output_base*name_base*"_$(i).csv")
       
@@ -59,7 +59,7 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
       
       # Allocate a3d as we now know number of parameters
       if i == 1
-        a3d = fill(0.0, n_samples, n_parameters, model.n_chains[1])
+        a3d = fill(0.0, n_samples, n_parameters, model.num_chains)
       end
       
       skipchars(isspace, instream, linecomment='#')

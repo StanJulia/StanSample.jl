@@ -1,7 +1,8 @@
 ######### StanSample Bernoulli example  ###########
 
-using AxisKeys
 using StanSample
+
+ProjDir = @__DIR__
 
 bernoulli_model = "
 data {
@@ -17,16 +18,21 @@ model {
 }
 ";
 
-bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
+data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 # Keep tmpdir across multiple runs to prevent re-compilation
 tmpdir = joinpath(@__DIR__, "tmp")
 
-sm = SampleModel("bernoulli", bernoulli_model)
+sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
 
-rc = stan_sample(sm; data=bernoulli_data, num_chaims=6, delta=0.85);
+sm |> display
+
+rc = stan_sample(sm; data, n_chains=2, seed=12);
 
 if success(rc)
   st = read_samples(sm)
-  st |> display
+  display(st)
+  println()
+  display(read_samples(sm, :dataframe))
 end
+

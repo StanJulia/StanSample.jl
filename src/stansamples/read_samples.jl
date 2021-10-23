@@ -19,7 +19,7 @@ $(SIGNATURES)
 ```julia
 * `include_internals=false`   : Include internal Stan paramenters
 * `return_parameters=false`   : Return a tuple of (output_format, parameter_symbols)
-* `chains=1:m.n_chains[1]`    : Chains to be included in output
+* `chains=1:m.num_chains[1]`  : Chains to be included in output
 * `start=1`                   : First sample to be included
 * `kwargs...`                 : Capture all other keyword arguments
 ```
@@ -79,7 +79,7 @@ has changed frequently!
 function read_samples(model::SampleModel, output_format=:table;
   include_internals=false,
   return_parameters=false,
-  chains=1:model.n_chains[1],
+  chains=1:model.num_chains,
   start=1,
   kwargs...)
 
