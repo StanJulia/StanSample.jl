@@ -117,7 +117,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
     "test_keywords/test_bernoulli_keyedarray_03.jl",
   ]
 
-  @testset "Seed and n_chains keywords" begin
+  @testset "Seed and num_chains keywords" begin
     for test in test_keywords
       println("\nTesting: $test.")
       include(joinpath(TestDir, test))

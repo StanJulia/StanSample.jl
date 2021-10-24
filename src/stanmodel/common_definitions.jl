@@ -1,3 +1,49 @@
+const CMDSTAN_HOME_VAR = "JULIA_CMDSTAN_HOME"
+
+"""
+
+Get the path to the `CMDSTAN_HOME` environment variable.
+
+$(SIGNATURES)
+
+# Extended help
+
+Example: `get_cmdstan_home()`
+"""
+function get_cmdstan_home()
+    get(ENV, CMDSTAN_HOME_VAR) do
+        throw(ErrorException("The environment variable $CMDSTAN_HOME_VAR needs to be set."))
+    end
+end
+
+"""
+
+Set the path for `CMDSTAN_HOME`.
+
+$(SIGNATURES)
+
+# Extended help
+
+Example: `set_cmdstan_home!(homedir() * "/Projects/Stan/cmdstan/")`
+"""
+set_cmdstan_home!(path) = global CMDSTAN_HOME = path
+
+"""
+
+# CmdStanModels
+
+Base model specialized in:
+
+### Method
+```julia
+*  SampleModel                  : StanSample.jl
+*  OptimizeModel                : StanOptimize.jl
+*  VariationalModel             : StanVariational.jl
+*  DiagnoseModel                : StanDiagnose.jl
+```
+""" 
+abstract type CmdStanModels end
+
 """
 
 Executable path corresponding to a source file, or a model.

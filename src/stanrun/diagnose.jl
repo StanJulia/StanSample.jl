@@ -11,7 +11,7 @@ $(SIGNATURES)
 """
 function diagnose(model::SampleModel)
   #local csvfile
-  n_chains = model.n_chains[1]
+  n_chains = model.num_chains
   
   samplefiles = String[]
   for i in 1:n_chains

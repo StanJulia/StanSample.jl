@@ -11,8 +11,8 @@ mutable struct SampleModel <: CmdStanModels
     save_warmup::Bool;                 # Store warup_samples
     thin::Int;                         # Thinning of draws
     seed::Int;                         # Seed section of cmd to run cmdstan
-    refresh::Int
-    init_bound::Int
+    refresh::Int                       # Display progress in output files
+    init_bound::Int                    # Bound for initial param values
 
     # Adapt fields
     engaged::Bool;                     # See Stan manual for meaning.
@@ -31,19 +31,17 @@ mutable struct SampleModel <: CmdStanModels
     # NUTS specific fields
     max_depth::Int;
     # Static specific fields
-    int_time::Float64;                  # Static integration time
+    int_time::Float64;                 # Static integration time
 
     metric::Symbol;                    # :diag_e, :unit_e, :dense_e
     metric_file::AbstractString;
-
     stepsize::Float64;
     stepsize_jitter::Float64;
 
     # Output files
-    #output::Output;                    # Output section of cmd to run cmdstan
     output_base::AbstractString;       # Used for file paths to be created
     # Tmpdir setting
-    tmpdir::AbstractString;            # Holds all below copied/created files
+    tmpdir::AbstractString;            # Holds all created files
     # Cmdstan path
     exec_path::AbstractString;         # Path to the cmdstan excutable
     # Data and init file paths
@@ -51,10 +49,10 @@ mutable struct SampleModel <: CmdStanModels
     init_file::Vector{AbstractString}; # Array of init files input to cmdstan
     # Generated command line vector
     cmds::Vector{Cmd};                 # Array of cmds to be spawned/pipelined
-    # Files created
-    sample_file::Vector{String};       # Sample file array created by cmdstan
-    log_file::Vector{String};          # Log file array created by cmdstan
-    diagnostic_file::Vector{String};   # Diagnostic file array created by cmdstan
+    # Files created by cmdstan
+    sample_file::Vector{String};       # Sample file array (.csv)
+    log_file::Vector{String};          # Log file array
+    diagnostic_file::Vector{String};   # Diagnostic file array
     # Stansummary settings
     summary::Bool;                     # Store cmdstan's summary as a .csv file
     printsummary::Bool;                # Print the summary
