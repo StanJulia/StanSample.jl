@@ -22,11 +22,11 @@ bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 # Keep tmpdir across multiple runs to prevent re-compilation
 tmpdir = joinpath(@__DIR__, "tmp")
 
-sm = SampleModel("bernoulli", bernoulli_model)
+sm = SampleModel("bernoulli", bernoulli_model, tmpdir)
 
 rc = stan_sample(sm; data=bernoulli_data, num_chaims=6, delta=0.85);
 
 if success(rc)
-  st = read_samples(sm)
-  st |> display
+  ka = read_samples(sm, :keyedarray)
+  ka |> display
 end

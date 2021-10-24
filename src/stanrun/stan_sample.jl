@@ -1,5 +1,5 @@
 data_union = Union{Nothing, AbstractString, Dict, Array{T, 1} where T}
-init_union = Union{Nothing, StanBase.Init, AbstractString, Dict, Array{T, 1} where T}
+init_union = Union{Nothing, AbstractString, Dict, Array{T, 1} where T}
 
 """
 

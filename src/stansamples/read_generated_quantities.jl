@@ -11,14 +11,14 @@ $(SIGNATURES)
 * `model`                    : SampleModel
 ```
 """
-function read_generated_quantities(model::SampleModel, chains=[1];
+function read_generated_quantities(model::SampleModel, chains=1;
     output_format=:namedtuple,
     kwargs...
   )
 
 read_csv_files(model::SampleModel, output_format::Symbol;
   include_internals=false,
-  chains=1:model.n_chains[1],
+  chains=1:model.num_chains,
   start=1,
   kwargs...)
 

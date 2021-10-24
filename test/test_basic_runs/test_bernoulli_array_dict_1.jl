@@ -23,13 +23,8 @@ bernoulli_data = [
   Dict("N" => 10, "y" => [0, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
 ]
 
-# Keep tmpdir identical across multiple runs to prevent re-compilation
-stanmodel = SampleModel(
-  "bernoulli", bernoulli_model;
-  method =  StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
-
-rc = stan_sample(stanmodel, data=bernoulli_data)
-
+stanmodel = SampleModel("bernoulli", bernoulli_model)
+rc = stan_sample(stanmodel, data=bernoulli_data, delta=0.85)
 if success(rc)
 
   # Fetch the same output in the `sdf` ChainDataFrame

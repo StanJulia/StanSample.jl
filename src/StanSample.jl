@@ -22,19 +22,11 @@ module StanSample
 
 using Requires
 
-using CSV, DelimitedFiles, Unicode
+using CSV, DelimitedFiles, Unicode, Parameters
 using NamedTupleTools, Tables, TableOperations
+using StanDump, DataFrames
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
-
-import StanBase
-import StanBase: get_cmdstan_home
-import StanBase: get_n_chains, set_n_chains, stan_compile
-import StanBase: executable_path, StanModelError, ensure_executable
-import StanBase: CmdStanModels, RandomSeed, Init, Output
-import StanBase: par, stan_dump
-import StanBase: cmdline, read_summary, stan_summary
-import StanBase: RandomSeed, Init, Output, StanModelError
 
 function __init__()
   @require DataFrames="a93c6f00-e57d-5684-b7b6-d8193f3e46c0" include("utils/dataframes.jl")
@@ -44,10 +36,13 @@ function __init__()
   @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("utils/keyedarray.jl")
 end
 
+include("stanmodel/cmdstan_home.jl")
 include("stanmodel/sample_types.jl")
 include("stanmodel/SampleModel.jl")
+include("stanmodel/update_model_file.jl")
 
 include("stanrun/stan_sample.jl")
+include("stanrun/executable.jl")
 include("stanrun/cmdline.jl")
 include("stanrun/diagnose.jl")
 include("stanrun/stan_generated_quantities.jl")
@@ -56,13 +51,17 @@ include("stansamples/read_samples.jl")
 include("stansamples/read_csv_files.jl")
 include("stansamples/convert_a3d.jl")
 include("stansamples/read_generated_quantities.jl")
+include("stansamples/read_summary.jl")
+include("stansamples/stan_summary.jl")
 
 include("utils/namedtuples.jl")
 include("utils/tables.jl")
+include("utils/par.jl")
 
 export
   SampleModel,
   StanModelError,
+  stan_dump,
   stan_sample,
   read_samples,
   read_summary,

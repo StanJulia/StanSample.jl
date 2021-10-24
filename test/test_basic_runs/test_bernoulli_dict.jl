@@ -22,12 +22,9 @@ bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 #tmpdir=joinpath(@__DIR__, "tmp")
 tmpdir=mktempdir()
 
-sm = SampleModel(
-  "bernoulli", bernoulli_model;
-  method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)),
-  tmpdir=tmpdir)
+sm = SampleModel("bernoulli", bernoulli_model, tmpdir)
 
-rc = stan_sample(sm, data=bernoulli_data, n_chains=4)
+rc = stan_sample(sm, data=bernoulli_data, num_chains=4, delta=0.85)
 
 # Fetch the cmdstan summary in sdf`
 if success(rc)

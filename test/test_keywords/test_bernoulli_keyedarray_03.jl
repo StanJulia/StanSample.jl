@@ -19,17 +19,7 @@ model {
 
 bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
-# Keep tmpdir across multiple runs to prevent re-compilation
-tmpdir = joinpath(@__DIR__, "tmp")
-
-sm = SampleModel("bernoulli", bernoulli_model, [6];
-  method = StanSample.Sample(
-    save_warmup=false,                           # Default
-    thin=1,
-    adapt = StanSample.Adapt(delta = 0.85)),
-  tmpdir = tmpdir,
-);
-
+sm = SampleModel("bernoulli", bernoulli_model);
 rc = stan_sample(sm; data=bernoulli_data, n_chains=6);
 
 if success(rc)

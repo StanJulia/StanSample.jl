@@ -22,7 +22,7 @@ function diagnose(model::SampleModel)
     if Sys.iswindows()
       pstring = pstring * ".exe"
     end
-    cmd = `$(pstring) $(StanBase.par(samplefiles))`
+    cmd = `$(pstring) $(par(samplefiles))`
     resfile = open(cmd; read=true);
     print(read(resfile, String))
   catch e

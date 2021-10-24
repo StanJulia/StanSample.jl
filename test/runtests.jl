@@ -10,11 +10,10 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
     "test_keyedarray/test_bernoulli_keyedarray_01.jl",
     "test_keyedarray/test_keyedarray.jl",
   ]
-
+  
   @testset "Bernoulli array tests" begin
       include(joinpath(TestDir, "test_bernoulli/test_bernoulli_keyedarray_01.jl"))
-      println("\n")
-
+  
       if success(rc)
 
         sdf = read_summary(sm)
@@ -45,15 +44,15 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
 
         (samples, parameters) = read_samples(sm, :array;
           return_parameters=true)
-        @test size(samples) == (500, 1, 4)
+        @test size(samples) == (250, 1, 4)
         @test length(parameters) == 1
 
         samples = read_samples(sm, :array;
           include_internals=true)
-        @test size(samples) == (500, 8, 4)
+        @test size(samples) == (250, 8, 4)
       end
   end
-
+  
   basic_run_tests = [
     "test_bernoulli/test_bernoulli_array_01.jl",
     "test_basic_runs/test_bernoulli_dict.jl",
@@ -67,19 +66,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME")
       println("\nTesting: $test.")
       include(joinpath(TestDir, test))
       @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
-    end
-    println()
-  end
-
-  sample_settings_tests = [
-    "test_sample_settings/test_bernoulli.jl"
-  ]
-
-  @testset "Bernoulli Sample() settings tests" begin
-    for test in sample_settings_tests
-      println("\nTesting: $test.")
-      include(joinpath(TestDir, test))
-      @test stanmodel.method.adapt.delta ≈ 0.85 atol=0.01
     end
     println()
   end

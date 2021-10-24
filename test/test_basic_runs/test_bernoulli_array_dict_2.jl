@@ -22,9 +22,7 @@ bernoulli_data = [
   Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 1, 0])
 ]
 
-# Keep tmpdir identical across multiple runs to prevent re-compilation
-stanmodel = SampleModel("bernoulli", bernoulli_model;
-  method = StanSample.Sample(adapt=StanSample.Adapt(delta=0.85)))
+stanmodel = SampleModel("bernoulli", bernoulli_model)
 
 rc = stan_sample(stanmodel, data=bernoulli_data)
 

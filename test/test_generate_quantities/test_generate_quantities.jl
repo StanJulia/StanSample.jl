@@ -27,12 +27,12 @@ gq_data = Dict(
   "y" => [100, 950, 450]
 );
 
-sm = SampleModel("Generate_quantities", gq, tmpdir=joinpath(@__DIR__, "tmp"));
+sm = SampleModel("Generate_quantities", gq, joinpath(@__DIR__, "tmp"));
 
 rc = stan_sample(sm; data=gq_data, debug=false)
 
 if success(rc)
-  for i in 1:sm.n_chains[1]
+  for i in 1:sm.num_chains
     stan_generate_quantities(sm, i)
   end
 

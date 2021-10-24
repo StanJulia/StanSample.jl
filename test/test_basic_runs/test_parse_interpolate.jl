@@ -1,6 +1,6 @@
 using StanSample, Test
 
-#StanBase.set_cmdstan_home!(homedir() * "/Projects/StanSupport/cmdstan_stanc3")
+#set_cmdstan_home!(homedir() * "/Projects/StanSupport/cmdstan_stanc3")
 
 ProjDir = @__DIR__
 cd(ProjDir) do
@@ -25,12 +25,9 @@ cd(ProjDir) do
     }
   ";
 
-  tmpdir = joinpath(ProjDir, "tmp")
   sm = SampleModel("bernoulli", bernoulli_model)
-
   observeddata = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
-
-  rc = stan_sample(sm, data=observeddata)
+  rc = stan_sample(sm; data=observeddata)
 
   if success(rc)
     # Convert to an MCMCChains.Chains object

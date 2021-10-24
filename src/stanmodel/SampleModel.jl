@@ -38,10 +38,9 @@ mutable struct SampleModel <: CmdStanModels
 
     stepsize::Float64;
     stepsize_jitter::Float64;
-    # Init settings
 
     # Output files
-    output::StanBase.Output;           # Output section of cmd to run cmdstan
+    #output::Output;                    # Output section of cmd to run cmdstan
     output_base::AbstractString;       # Used for file paths to be created
     # Tmpdir setting
     tmpdir::AbstractString;            # Holds all below copied/created files
@@ -88,10 +87,10 @@ function SampleModel(name::AbstractString, model::AbstractString,
   
     !isdir(tmpdir) && mkdir(tmpdir)
 
-    StanBase.update_model_file(joinpath(tmpdir, "$(name).stan"), strip(model))
+    update_model_file(joinpath(tmpdir, "$(name).stan"), strip(model))
 
     output_base = joinpath(tmpdir, name)
-    exec_path = StanBase.executable_path(output_base)
+    exec_path = executable_path(output_base)
     cmdstan_home = get_cmdstan_home()
 
     error_output = IOBuffer()
@@ -121,7 +120,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         # metric, metric_file, stepsize, stepsize_jitter
         :diag_e, "", 1.0, 0.0,
         # Ouput settings
-        StanBase.Output(),
+        #Output(),
         output_base,
         # Tmpdir settings
         tmpdir,
