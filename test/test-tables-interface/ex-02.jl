@@ -62,7 +62,7 @@ if success(rc6_7s)
     a6_7s, cnames = read_samples(m6_7s, :array; return_parameters=true);
 end
 
-st = convert_a3d(a6_7s, cnames, Val(:table))
+st = StanSample.convert_a3d(a6_7s, cnames, Val(:table))
 
 # Testing
 

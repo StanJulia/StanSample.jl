@@ -35,15 +35,16 @@ function __init__()
   @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("utils/keyedarray.jl")
 end
 
-include("stanmodel/common_definitions.jl")
-include("stanmodel/SampleModel.jl")
-include("stanmodel/update_model_file.jl")
+include("common/common_definitions.jl")
+include("common/update_model_file.jl")
+include("common/stan_sample.jl")
+include("common/par.jl")
 
-include("stanrun/stan_sample.jl")
+include("stanmodel/SampleModel.jl")
+
 include("stanrun/cmdline.jl")
 include("stanrun/diagnose.jl")
 include("stanrun/stan_generated_quantities.jl")
-include("stanrun/par.jl")
 
 include("stansamples/read_samples.jl")
 include("stansamples/read_csv_files.jl")

@@ -29,7 +29,7 @@ You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan
 ```Julia
 # CmdStan setup
 ENV["JULIA_CMDSTAN_HOME"] =
-     expanduser("~/src/cmdstan-2.27.0/") # replace with your path
+     expanduser("~/src/cmdstan-2.28.1/") # replace with your path
 ```
 
 This package is modeled after Tamas Papp's [StanRun.jl](https://github.com/tpapp/StanRun.jl) package. 

@@ -53,7 +53,7 @@ if success(rc5_1s_t)
     a5_1s_t, cnames = read_samples(m5_1s_t, :array; return_parameters=true);
 end
 
-st5_1_t = convert_a3d(a5_1s_t, cnames, Val(:table));
+st5_1_t = StanSample.convert_a3d(a5_1s_t, cnames, Val(:table));
 @test names(st5_1_t)[end] == Symbol("log_lik.50")
 @test size(DataFrame(st5_1_t)) == (4000, 103)
 
