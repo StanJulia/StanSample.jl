@@ -9,7 +9,6 @@ $(SIGNATURES)
 Exports:
 ```Julia
 * `SampleModel`                        : Model structure to sample a Stan language model
-* `StanModelError`                     : Exception error on cmdstan compilation failure
 * `stan_sample`                        : Sample the model
 * `read_samples`                       : Read the samples from .csv files
 * `read_summary`                       : Read the cmdstan summary .csv file
@@ -37,11 +36,11 @@ end
 
 include("common/common_definitions.jl")
 include("common/update_model_file.jl")
-include("common/stan_sample.jl")
 include("common/par.jl")
 
 include("stanmodel/SampleModel.jl")
 
+include("stanrun/stan_run.jl")
 include("stanrun/cmdline.jl")
 include("stanrun/diagnose.jl")
 include("stanrun/stan_generated_quantities.jl")
@@ -56,6 +55,8 @@ include("stansamples/stan_summary.jl")
 include("utils/namedtuples.jl")
 include("utils/tables.jl")
 include("utils/dataframes.jl")
+
+stan_sample = stan_run
 
 export
   SampleModel,

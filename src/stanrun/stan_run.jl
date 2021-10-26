@@ -104,7 +104,7 @@ $(SIGNATURES)
 * `rc`                                 : Return code, 0 is success
 ```
 """
-function stan_sample(m::T; kwargs...) where {T <: CmdStanModels}
+function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
 
     # How many chains and threads?
     if :num_chains in keys(kwargs)
