@@ -20,6 +20,8 @@
 
 This package is registered. It can be installed with:
 
+Note: StanSample.jl v5 is a breaking change from StanSample.jl v4. See the `example/bernoulli.jl` for a basic example.
+
 ```Julia
 pkg> add StanSample.jl
 ```
@@ -36,7 +38,7 @@ This package is modeled after Tamas Papp's [StanRun.jl](https://github.com/tpapp
 
 ## Usage
 
-It is recommended that you start your Julia process with multiple worker processes to take advantage of parallel sampling, eg
+It is recommended that you start your Julia process with multiple worker processes to take advantage of parallel sampling, e.g.:
 
 ```sh
 julia -p auto
@@ -54,10 +56,19 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 5.0.0
+
+1. Keyword based SampleModel and stan_sample().
+2. Dropped dependency on StanBase.
+3. Needs cmdstan 2.28.1 (for num_threads).
+4. `tmpdir` now positional argument in SampleZModel.
+5. Refactor src dir (add `common` subdir).
+6. stan_sample() is now an alias for stan_run().
+
 ### Version 4.3.0
 
-1. Added keywords seed and n_chains to satn_sample.
-2. SampleModel no longer uses shared fields (prep work for v5)
+1. Added keywords seed and n_chains to stan_sample().
+2. SampleModel no longer uses shared fields (prep work for v5).
 
 ### version 4.2.0
 

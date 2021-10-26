@@ -80,28 +80,61 @@ diagnostic_file_path(output_base::AbstractString, id::Int) =
 
 """
 
-Execute the method contained in a CmdStanModel.
+Execute the method contained in m <: CmdStanModel.
 
 $(SIGNATURES)
 
-# Extended help
-
-### Required arguments
+## Required arguments
 ```julia
-* `m <: CmdStanModels`             : CmdStanModel subtype, e.g. SampleModel
+* `m <: CmdStanModels`             : SampleModel.
 ```
 
-### Keyword arguments
+### Most frequently used keyword arguments
 ```julia
-* `init`                               : Init dict
-* `data`                               : Data dict
+* `data`                               : Observations Dict or NamedTuple.
+* `init`                               : Init Dict or NT (default: -2 to +2).
+```
+
+See extended help for other keyword arguments ( `??stan_help` ).
+
+# Extended help
+
+### Additional configuration keyword arguments
+```julia
 * `num_chains=4`                       : Update number of chains.
-* `seed=-1`                            : Set seed value (::Int)
+* `num_threads=8`                      : Update number of threads.
+
+* `num_samples=1000`                   # Number of samples.
+* `num_warmups=1000`                   # Number of warmup samples.
+* `save_warmup=false`                  # Save warmup samples.
+
+* `thin=1`                             # Set thinning value.
+* `seed=-1`                            # Set seed value.
+
+* `engaged=true`                       # Adaptation engaged.
+* `gamma=0.05`                         # Adaptation regularization scale.
+* `delta=0.8`                          # Adaptation target acceptance statistic.
+* `kappa=0.75`                         # Adaptation relaxation exponent.
+* `t0=10`                              # Adaptation iteration offset.
+* `init_buffer=75`                     # Inital adaptation interval.
+* `term_buffer=50`                     # Final fast adaptation interval.
+* `window=25`                          # Initia; slow adaptation interval.
+
+* `algorithm=:hmc`                     # Sampling algorithm.
+* `engine=:nuts`                       # :nuts or :static.
+* `max_depth=10`                       # Max tree depth for :nuts engine.
+* `int_time=2 * pi`                    # Integration time for :static engine.
+
+* `metric=:diag_e`                     # Geometry of manifold setting:
+                                       # :diag_e, :unit_e or :dense_e.
+* `metric_file=""`                     # Precompiled Euclidean metric.
+* `stepsize=1.0`                       # Step size for discrete evolution
+* `stepsize_jitter0.0`                 # Random jitter on step size ( [%] )
 ```
 
 ### Returns
 ```julia
-* `rc`                                 : Return code, 0 is success
+* `rc`                                 : Return code, 0 is success.
 ```
 """
 function stan_run(m::T; kwargs...) where {T <: CmdStanModels}

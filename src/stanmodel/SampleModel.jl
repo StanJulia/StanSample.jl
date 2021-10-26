@@ -8,35 +8,36 @@ mutable struct SampleModel <: CmdStanModels
     num_threads::Int64;                # Number of threads
     num_samples::Int;                  # Number of draws after warmup
     num_warmups::Int;                  # Number of warmup draws
-    save_warmup::Bool;                 # Store warup_samples
+    save_warmup::Bool;                 # Store warmup_samples
     thin::Int;                         # Thinning of draws
     seed::Int;                         # Seed section of cmd to run cmdstan
     refresh::Int                       # Display progress in output files
     init_bound::Int                    # Bound for initial param values
 
     # Adapt fields
-    engaged::Bool;                     # See Stan manual for meaning.
-    gamma::Float64;
-    delta::Float64;
-    kappa::Float64;
-    t0::Int;
-    init_buffer::Int;
-    term_buffer::Int;
-    window::Int;
+    engaged::Bool;                     # Adaptation enganged?.
+    gamma::Float64;                    # Adaptation regularization scale    
+    delta::Float64;                    # Adaptation target acceptance statistic
+    kappa::Float64;                    # Adaptation relaxation exponent
+    t0::Int;                           # Adaptation iteration offset
+    init_buffer::Int;                  # Width initial adaptation interval
+    term_buffer::Int;                  # Width of final adaptation interval
+    window::Int;                       # Initial width slow adaptation interval
 
     # Algorithm fields
-    algorithm::Symbol;                 # :nuts or :static
+    algorithm::Symbol;                 # :hmc or :fixed_param
     # HMC specific fields
-    engine::Symbol;
-    # NUTS specific fields
-    max_depth::Int;
-    # Static specific fields
+    engine::Symbol;                    # :nuts or :static (default = :nuts)
+    # NUTS specific field
+    max_depth::Int;                    # Maximum tree depth (> 0, default=10)
+    # Static specific field
     int_time::Float64;                 # Static integration time
 
+    # HMC remaining fields
     metric::Symbol;                    # :diag_e, :unit_e, :dense_e
-    metric_file::AbstractString;
-    stepsize::Float64;
-    stepsize_jitter::Float64;
+    metric_file::AbstractString;       # Precompiled Euclidean metric
+    stepsize::Float64;                 # Stepsize for discrete evolution
+    stepsize_jitter::Float64;          # Uniform random jitter of stepsize (%)
 
     # Output files
     output_base::AbstractString;       # Used for file paths to be created
@@ -70,13 +71,14 @@ $(SIGNATURES)
 
 ### Required arguments
 ```julia
-* `name::AbstractString`               : Name for the model
-* `model::AbstractString`              : Stan model source
+* `name::AbstractString`               # Name for the model
+* `model::AbstractString`              # Stan model source
 ```
 
 ### Optional positional argument
 ```julia
-* `tmpdir=mktempdir`                   : Directory where output files are stored
+* `tmpdir`                             # Directory where output files are stored
+                                       # Default: `mktempdir()`
 ```
 
 """

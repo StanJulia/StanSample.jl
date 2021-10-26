@@ -1,6 +1,6 @@
 ######### StanSample example  ###########
 
-using StanSample
+using StanSample, Test
 
 bernoulli_model = "
 data { 
@@ -19,8 +19,8 @@ model {
 bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 # Keep tmpdir identical to prevent re-compilation
-#tmpdir=joinpath(@__DIR__, "tmp")
-tmpdir=mktempdir()
+tmpdir=joinpath(@__DIR__, "tmp")
+#tmpdir=mktempdir()
 
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir)
 

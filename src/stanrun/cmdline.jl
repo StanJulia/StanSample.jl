@@ -13,19 +13,20 @@ Not exported
 """
 function cmdline(m::SampleModel, id)
   
-    #=
-    `./bernoulli3 sample num_samples=1000 num_warmup=1000 save_warmup=0
-      thin=1
-      adapt engaged=1 gamma=0.05 delta=0.8 kappa=0.75 
-      t0=10.0 init_buffer=75 term_buffer=50 window=25
-      algorithm=hmc engine=nuts 
-      max_depth=10 metric=diag_e stepsize=1.0 stepsize_jitter=1.0
-      random seed=-1 
-      init=bernoulli3_1.init.R 
-      id=1 
-      data file=bernoulli3_1.data.R 
-      output file=bernoulli3_samples_1.csv
-      refresh=100`
+    #= cmdline with default parameter values
+        `./bernoulli3 sample
+        num_samples=1000 num_warmup=1000 save_warmup=0
+        thin=1
+        adapt engaged=1 gamma=0.05 delta=0.8 kappa=0.75 
+        t0=10.0 init_buffer=75 term_buffer=50 window=25
+        algorithm=hmc engine=nuts 
+        max_depth=10 metric=diag_e stepsize=1.0 stepsize_jitter=1.0
+        random seed=-1 
+        init=bernoulli3_1.init.R 
+        id=1 
+        data file=bernoulli3_1.data.R 
+        output file=bernoulli3_samples_1.csv
+        refresh=100`
     =#
 
     cmd = ``

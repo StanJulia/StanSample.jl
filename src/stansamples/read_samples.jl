@@ -12,7 +12,7 @@ $(SIGNATURES)
 ### Required arguments
 ```julia
 * `model`                     : SampleModel
-* `output_format=:table` : Requested format for samples
+* `output_format=:table`      : Requested format for samples
 ```
 
 ### Optional arguments
@@ -31,9 +31,9 @@ Currently supported output_formats are:
 3. :namedtuple (NamedTuple object, all chains appended)
 4. :namedtuples (Vector{NamedTuple} object, individual chains)
 5. :tables (Vector{Tables} object, individual chains)
-6. :keyedarray (KeyedArray object from AxisDict.jl)
-7. :dataframe (DataFrames.DataFrame object, all chains appended)
-8. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
+6. :dataframe (DataFrames.DataFrame object, all chains appended)
+7. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
+8. :keyedarray (KeyedArray object from AxisDict.jl)
 9. :particles (Dict{MonteCarloMeasurements.Particles})
 10. :dimarray (Appended chains DimensionalData.DimArray object)
 11. :dimarrays (DimensionalData.DimArray object)
@@ -42,22 +42,21 @@ Currently supported output_formats are:
 Basically chains can be returned as an Array, a KeyedArray, a DimArray, a NamedTuple,
 a StanTable, a DataFrame, a Particles or an MCMCChains.Chains object.
 
-Options 6 to 12 are enabled by the presence of AxisKeys.jl, DataFrames.jl, MonteCarloMeasurements.jl,
+Options 8 to 12 are enabled by the presence of AxisKeys.jl, MonteCarloMeasurements.jl,
 DimensionalData.jl or MCMCChains.jl.
 
 For NamedTuple, StanTable, DimArray and DataFrame all chains are appended or can be returned
 as a Vector{...} for each chain.
 
-By default all chains will be read in. With the optional keyword argument `chains`
-a subset of chains can be included, e.g. `chains = [2, 4]`.
+With the optional keyword argument `chains` a subset of chains can be included,
+e.g. `chains = [2, 4]`.
 
 The optional keyword argument `start` specifies which initial (warm-up) samples
 should be removed.
 
 Notes:
 1. Use of the Stan `thinning` option will interfere with the value of start.
-2. Start is the first sample included, e.g. with 1000 warm-up samples, start
-should be set to 1001.
+2. Start is the first sample included, e.g. with 1000 warm-up samples, start should be set to 1001.
 
 The NamedTuple output-format will extract and combine parameter vectors, e.g.
 if Stan's cmdstan returns `a.1, a.2, a.3` the NamedTuple will just contain `a`.
@@ -68,6 +67,9 @@ extract a block of parametes:
 stantable = read_samples(m10.4s, :table)
 atable = matrix(stantable, "a")
 ```
+
+For an appended DataFrame you can use e.g. `DataFrame(df, :log_lik)` to block a
+set of variables, in this example the `log_lik.1, log_lik.2, etc.`.
 
 Currently :table is the default chain output_format (a StanTable object).
 

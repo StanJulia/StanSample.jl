@@ -21,9 +21,9 @@ StanSample.update_model_file(
 
 Internal, not exported.
 """
-function update_model_file(file::AbstractString, model::AbstractString)
+function update_model_file(file::AbstractString, m::AbstractString)
   
-  model1 = strip(parse_and_interpolate(model))
+  model1 = strip(parse_and_interpolate(m))
   model2 = ""
   if isfile(file)
     resfile = open(file, "r")
@@ -61,9 +61,9 @@ StanSample.parse_and_interpolate(
 
 Internal, not exported.
 """
-function parse_and_interpolate(model::AbstractString)
+function parse_and_interpolate(m::AbstractString)
   newmodel = ""
-  lines = split(model, "\n")
+  lines = split(m, "\n")
   for l in lines
     ls = String(strip(l))
     replace_strings = findall("#include", ls)

@@ -61,8 +61,8 @@ function executable_path(source_path::AbstractString)
     source_path = source_path
 end
 
-executable_path(model::T) where T <: CmdStanModels =
-    executable_path(model.tmpdir)
+executable_path(m::T) where T <: CmdStanModels =
+    executable_path(m.tmpdir)
 
 """
 
@@ -98,8 +98,8 @@ If compilation fails, a `StanModelError` is returned instead.
 
 Internal, not exported.
 """
-function ensure_executable(model::T) where T <: CmdStanModels
-    @unpack cmdstan_home, exec_path = model
+function ensure_executable(m::T) where T <: CmdStanModels
+    @unpack cmdstan_home, exec_path = m
     error_output = IOBuffer()
     is_ok = cd(cmdstan_home) do
         success(pipeline(`make -f $(cmdstan_home)/makefile -C $(cmdstan_home) $(exec_path)`;
@@ -108,7 +108,7 @@ function ensure_executable(model::T) where T <: CmdStanModels
     if is_ok
         exec_path
     else
-        throw(StanModelError(model.name, String(take!(error_output))))
+        throw(StanModelError(m.name, String(take!(error_output))))
     end
 end
 
@@ -118,8 +118,8 @@ Compile a model, throwing an error if it failed.
 
 $(SIGNATURES)
 """
-function stan_compile(model::T) where T <: CmdStanModels
-    ensure_executable(model)
+function stan_compile(m::T) where T <: CmdStanModels
+    ensure_executable(m)
     nothing
 end
 
