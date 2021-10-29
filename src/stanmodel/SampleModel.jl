@@ -190,6 +190,9 @@ function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
             println(io, "    algorithm =         Unknown")
         end
     end
+    println(io, "\nStansummary section:")
+    println(io, "  summary                     ", m.summary)
+    println(io, "  print summary               ", m.print_summaary)
     println(io, "\nOther:")
     println(io, "  output_base =             $(m.output_base)")
     println(io, "  tmpdir =                  $(m.tmpdir)")

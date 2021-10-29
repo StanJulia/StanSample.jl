@@ -84,25 +84,25 @@ Execute the method contained in m <: CmdStanModel.
 
 $(SIGNATURES)
 
-## Required arguments
+## Required argument
 ```julia
-* `m <: CmdStanModels`             : SampleModel.
+* `m <: CmdStanModels`                 # SampleModel.
 ```
 
 ### Most frequently used keyword arguments
 ```julia
-* `data`                               : Observations Dict or NamedTuple.
-* `init`                               : Init Dict or NT (default: -2 to +2).
+* `data`                               # Observations Dict or NamedTuple.
+* `init`                               # Init Dict or NT (default: -2 to +2).
 ```
 
-See extended help for other keyword arguments ( `??stan_help` ).
+See extended help for other keyword arguments ( `??stan_sample` ).
 
 # Extended help
 
 ### Additional configuration keyword arguments
 ```julia
-* `num_chains=4`                       : Update number of chains.
-* `num_threads=8`                      : Update number of threads.
+* `num_chains=4`                       # Update number of chains.
+* `num_threads=8`                      # Update number of threads.
 
 * `num_samples=1000`                   # Number of samples.
 * `num_warmups=1000`                   # Number of warmup samples.
@@ -129,12 +129,15 @@ See extended help for other keyword arguments ( `??stan_help` ).
                                        # :diag_e, :unit_e or :dense_e.
 * `metric_file=""`                     # Precompiled Euclidean metric.
 * `stepsize=1.0`                       # Step size for discrete evolution
-* `stepsize_jitter0.0`                 # Random jitter on step size ( [%] )
+* `stepsize_jitter=0.0`                # Random jitter on step size ( [%] )
+
+* `summary=true`                       # Create stansummary .csv file
+* `print_summary=false`                # Display summary
 ```
 
 ### Returns
 ```julia
-* `rc`                                 : Return code, 0 is success.
+* `rc`                                 # Return code, 0 is success.
 ```
 """
 function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
@@ -215,6 +218,13 @@ function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
     end
     if :stepsize_jitter in keys(kwargs)
         m.stepsize_jitter = kwargs[:stepsize_jitter]
+    end
+
+    if :summary in keys(kwargs)
+        m.summary = kwargs[:summary]
+    end
+    if :print_summary in keys(kwargs)
+        m.print_summary = kwargs[:print_summary]
     end
 
     # Diagnostics files requested?
