@@ -54,9 +54,11 @@ mutable struct SampleModel <: CmdStanModels
     sample_file::Vector{String};       # Sample file array (.csv)
     log_file::Vector{String};          # Log file array
     diagnostic_file::Vector{String};   # Diagnostic file array
+
     # Stansummary settings
     summary::Bool;                     # Store cmdstan's summary as a .csv file
-    printsummary::Bool;                # Print the summary
+    print_summary::Bool;               # Print the summary
+
     # CMDSTAN_HOME
     cmdstan_home::AbstractString;      # Directory where cmdstan can be found
 end
@@ -191,9 +193,9 @@ function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
         end
     end
     println(io, "\nStansummary section:")
-    println(io, "  summary                     ", m.summary)
-    println(io, "  print summary               ", m.print_summaary)
+    println(io, "  summary                   ", m.summary)
+    println(io, "  print_summary             ", m.print_summary)
     println(io, "\nOther:")
-    println(io, "  output_base =             $(m.output_base)")
-    println(io, "  tmpdir =                  $(m.tmpdir)")
+    println(io, "  output_base =             ", m.output_base)
+    println(io, "  tmpdir =                  ", m.tmpdir)
 end

@@ -80,9 +80,9 @@ diagnostic_file_path(output_base::AbstractString, id::Int) =
 
 """
 
-Execute the method contained in m <: CmdStanModel.
+stan_sample()
 
-$(SIGNATURES)
+Draw from a StanJulia SampleModel (<: CmdStanModel.)
 
 ## Required argument
 ```julia
@@ -93,6 +93,11 @@ $(SIGNATURES)
 ```julia
 * `data`                               # Observations Dict or NamedTuple.
 * `init`                               # Init Dict or NT (default: -2 to +2).
+```
+
+### Returns
+```julia
+* `rc`                                 # Return code, 0 is success.
 ```
 
 See extended help for other keyword arguments ( `??stan_sample` ).
@@ -133,11 +138,6 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 
 * `summary=true`                       # Create stansummary .csv file
 * `print_summary=false`                # Display summary
-```
-
-### Returns
-```julia
-* `rc`                                 # Return code, 0 is success.
 ```
 """
 function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
