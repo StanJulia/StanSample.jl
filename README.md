@@ -18,28 +18,29 @@
 
 ## Installation
 
-This package is registered. It can be installed with:
+Note: StanSample.jl v5 is a breaking change from StanSample.jl v4.
 
-Note: StanSample.jl v5 is a breaking change from StanSample.jl v4. The most important difference is that all modifications to running a default `cmdstan` are specified as keyword arguments to stan_sample(), e.g. in StanSample v4:
+The most important difference is that all modifications to running a default `cmdstan` script are specified as keyword arguments to stan_sample(), e.g. in StanSample.jl v4:
 ```Julia
 sm = SampleModel("bernoulli", bernoulli_model;
-  method = StanSample.Sample(
-    save_warmup=false,                           # Default
-    thin=1,
-    adapt = StanSample.Adapt(delta = 0.85)),
+  method = StanSample.Sample(adapt = StanSample.Adapt(delta = 0.85)),
   tmpdir = tmpdir,
 );
 
 rc = stan_sample(sm; data, n_chains=2, seed=12);
 ```
 
-in v5 looks like:
+will in StanSample.jl v5 look like:
 ```Julia
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir)
 rc = stan_sample(sm; data, num_chains=2, seed=12, delta=0.85)
 ```
 
+Note also that n_chains is now called `num_chains` and is a simple `Int`. In v4 this used to be a `Vector{int}`.
+
 See the `example/bernoulli.jl` for a basic example.
+
+This package is registered. It can be installed with:
 
 ```Julia
 pkg> add StanSample.jl
