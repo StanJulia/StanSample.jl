@@ -36,6 +36,6 @@ bt = matrix(st2, :b)
 @test size(bt) == (10, 2)
 
 df = DataFrame(st2)
-dfb = DataFrame(df, :b)
+b = Matrix(DataFrame(df, :b))
 
 @test size(dfb) == (10, 2)
