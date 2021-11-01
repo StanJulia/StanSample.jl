@@ -87,6 +87,7 @@ end
 @testset ":dimarray tests" begin
     if success(rc10_4s)
         da = read_samples(m10_4s, :dimarray)
+        da |> display
         da1 = da[param=At(Symbol("a.1"))]
 
         # Other manipulations

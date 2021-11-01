@@ -1,12 +1,12 @@
-using StanSample
 using DataFrames, Tables, Test
+using StanSample
 
 # Testing
 
 a3d_array = rand(10, 5, 4)
 cnames = [:a, Symbol("b[1]"), Symbol("b.2"), :bb, :sigma]
 
-st2 = convert_a3d(a3d_array, cnames, Val(:table); start=6, chains=[1, 4])
+st2 = StanSample.convert_a3d(a3d_array, cnames, Val(:table); start=6, chains=[1, 4])
 df2 = DataFrame(st2)
 #df2 |> display
 
@@ -26,7 +26,7 @@ end
 
 @test size(Tables.matrix(st2)) == (10,5)
 
-@test Tables.matrix(convert_a3d(a3d_array, cnames, Val(:table); start=6, chains=[2])) ==
+@test Tables.matrix(StanSample.convert_a3d(a3d_array, cnames, Val(:table); start=6, chains=[2])) ==
     a3d_array[6:end, :, 2]
 
 @test Tables.getcolumn(rows, Symbol("b.2")) == df2[:, "b.2"]
@@ -34,3 +34,8 @@ end
 bt = matrix(st2, :b)
 
 @test size(bt) == (10, 2)
+
+df = DataFrame(st2)
+dfb = DataFrame(df, :b)
+
+@test size(dfb) == (10, 2)

@@ -76,6 +76,12 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Versions 5.0.1
+
+1. Docs updates.
+2. Fix for DimensionalData v0.19.1 (@dim no longer exported)
+3. Added DataFrame parameter blocking option.
+
 ### Version 5.0.0
 
 1. Keyword based SampleModel and stan_sample().
