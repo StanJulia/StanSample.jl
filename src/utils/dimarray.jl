@@ -1,4 +1,5 @@
 using .DimensionalData
+import .DimensionalData: @dim, XDim, YDim, ZDim
 
 import StanSample: convert_a3d
 
