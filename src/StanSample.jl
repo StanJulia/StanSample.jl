@@ -1,6 +1,6 @@
 """
 
-Helper infrastructure to compile and sample models using Stan's cmdstan binary.
+Julia package to compile and sample models using Stan's cmdstan binary.
 
 $(SIGNATURES)
 
@@ -27,16 +27,17 @@ using StanDump, DataFrames
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
+using StanBase
+
+import StanBase: update_model_file, par, handle_keywords!
+import StanBase: executable_path, ensure_executable, stan_compile
+
 function __init__()
   @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("utils/particles.jl")
   @require DimensionalData="0703355e-b756-11e9-17c0-8b28908087d0" include("utils/dimarray.jl")
   @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("utils/mcmcchains.jl")
   @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("utils/keyedarray.jl")
 end
-
-include("common/common_definitions.jl")
-include("common/update_model_file.jl")
-include("common/par.jl")
 
 include("stanmodel/SampleModel.jl")
 
@@ -49,8 +50,6 @@ include("stansamples/read_samples.jl")
 include("stansamples/read_csv_files.jl")
 include("stansamples/convert_a3d.jl")
 include("stansamples/read_generated_quantities.jl")
-include("stansamples/read_summary.jl")
-include("stansamples/stan_summary.jl")
 
 include("utils/namedtuples.jl")
 include("utils/tables.jl")
