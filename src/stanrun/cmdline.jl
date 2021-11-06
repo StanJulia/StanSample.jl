@@ -34,9 +34,11 @@ function cmdline(m::SampleModel, id)
     cmd = `$(m.exec_path)`
 
     # Sample specific portion of the model
-    cmd = `$cmd sample` 
+    cmd = `$cmd sample`
+    
     #cmd = `$cmd num_threads=$(m.num_threads)`
     cmd = `$cmd num_samples=$(m.num_samples) num_warmup=$(m.num_warmups)`
+    
     if m.save_warmup
         cmd = `$cmd save_warmup=1`
     else
