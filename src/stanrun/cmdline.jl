@@ -37,6 +37,7 @@ function cmdline(m::SampleModel, id)
     cmd = `$cmd sample`
     
     #cmd = `$cmd num_threads=$(m.num_threads)`
+    
     cmd = `$cmd num_samples=$(m.num_samples) num_warmup=$(m.num_warmups)`
     
     if m.save_warmup
@@ -76,10 +77,12 @@ function cmdline(m::SampleModel, id)
     else
       cmd = `$cmd init=$(m.init_bound)`
     end
+    
+    cmd = `$cmd id=$(id)`
 
     # Data file required?
     if length(m.data_file) > 0 && isfile(m.data_file[id])
-      cmd = `$cmd id=$(id) data file=$(m.data_file[id])`
+      cmd = `$cmd data file=$(m.data_file[id])`
     end
 
     # Output files
