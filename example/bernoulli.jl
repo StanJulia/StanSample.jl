@@ -1,6 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
-using StanSample
+using StanSample, DataFrames
 
 ProjDir = @__DIR__
 
@@ -28,5 +28,5 @@ rc = stan_sample(sm; data, num_chains=2, seed=-1);
 
 if success(rc)
   st = read_samples(sm)
-  display(st)
+  display(DataFrame(st))
 end

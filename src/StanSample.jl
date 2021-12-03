@@ -35,6 +35,7 @@ import StanBase: update_R_files
 import StanBase: data_file_path, init_file_path, sample_file_path
 import StanBase: generated_quantities_file_path, log_file_path
 import StanBase: diagnostic_file_path, setup_diagnostics
+import StanBase: set_make_string, make_string
 
 function __init__()
   @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("utils/particles.jl")
@@ -69,6 +70,8 @@ export
   stan_summary,
   stan_generate_quantities,
   read_generated_quantities,
-  diagnose
+  diagnose,
+  make_string,
+  set_make_string
 
 end # module

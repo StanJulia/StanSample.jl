@@ -97,7 +97,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
 
     error_output = IOBuffer()
     is_ok = cd(cmdstan_home) do
-        success(pipeline(`make -f $(cmdstan_home)/makefile -C $(cmdstan_home) $(exec_path)`;
+        success(pipeline(`$(make_command()) -f $(cmdstan_home)/makefile -C $(cmdstan_home) $(exec_path)`;
             stderr = error_output))
     end
 
