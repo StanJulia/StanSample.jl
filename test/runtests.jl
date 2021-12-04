@@ -1,6 +1,6 @@
 using StanSample, Test
 
-if haskey(ENV, "JULIA_CMDSTAN_HOME")
+if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
 
   TestDir = @__DIR__
   tmpdir = mktempdir()
