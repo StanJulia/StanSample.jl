@@ -46,12 +46,12 @@ This package is registered. It can be installed with:
 pkg> add StanSample.jl
 ```
 
-You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like:
+You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in either `CMDSTAN` or JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like:
 
 ```Julia
 # CmdStan setup
-ENV["JULIA_CMDSTAN_HOME"] =
-     expanduser("~/src/cmdstan-2.28.1/") # replace with your path
+ENV["CMDSTAN"] =
+     expanduser("~/src/cmdstan-2.28.2/") # replace with your path
 ```
 
 This package is modeled after Tamas Papp's [StanRun.jl](https://github.com/tpapp/StanRun.jl) package. 
