@@ -129,6 +129,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   println()
   
 else
-  println("\nJULIA_CMDSTAN_HOME not set. Skipping tests")
+  println("\nCMDSTAN and JULIA_CMDSTAN_HOME not set. Skipping tests")
 end
 
