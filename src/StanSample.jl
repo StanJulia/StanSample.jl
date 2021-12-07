@@ -65,7 +65,6 @@ stan_sample = stan_run
 
 export
   CMDSTAN_HOME,
-  get_cmdstan_home,
   set_cmdstan_home!,
   SampleModel,
   stan_sample,
