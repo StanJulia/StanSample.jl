@@ -46,7 +46,7 @@ This package is registered. It can be installed with:
 pkg> add StanSample.jl
 ```
 
-You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in either `CMDSTAN` or JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like:
+You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in either `CMDSTAN` or `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like:
 
 ```Julia
 # CmdStan setup
@@ -55,6 +55,15 @@ ENV["CMDSTAN"] =
 ```
 
 This package is modeled after Tamas Papp's [StanRun.jl](https://github.com/tpapp/StanRun.jl) package. 
+
+Note: StanSample.jl v5.3, supports multithreading in the `cmdstan` binary and requires cmdstan v2.28.2 and up. To activate multithreading in `cmdstan` this needs to be specified during the build process of `cmdstan`. 
+
+Once multithreading is included in `cmdstan`, there are 2 ways to specify the number of threads used:
+
+1. Use the environment variable STAN_NUM_THREADS, e.g. `STAN_NUM_THREADS=4`.
+2. Set num_threads in the call to stan_sample, e.g. `rc = stan_sample(sm; data, num_threads=3, num_chains=2, seed=-1)`
+
+The environment variable will take precedence and a warning will be printed if the num_threads value in the model is updated.
 
 ## Usage
 
