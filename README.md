@@ -81,7 +81,7 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ### Version 5.3
 
-1. Enable local multithreading.
+1. Enable local multithreading. Local as cmdstan needs to be built with STAN_THREADS=true (see make/local examples).
 
 ### Version 5.2
 
