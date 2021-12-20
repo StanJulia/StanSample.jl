@@ -33,10 +33,17 @@ function cmdline(m::SampleModel, id)
     # Handle the model name field for unix and windows
     cmd = `$(m.exec_path)`
 
+    # How many threads have been configured?
+    if "STAN_NUM_THREADS" in keys(ENV)
+        if Meta.parse(ENV["STAN_NUM_THREADS"]) !== m.num_threads
+            @warn "STAN_NUM_THREADS not equal to num_threads, num_threads updated."
+            m.num_threads = Meta.parse(ENV["STAN_NUM_THREADS"])
+        end
+    end
+    cmd = `$cmd num_threads=$(m.num_threads)`
+
     # Sample specific portion of the model
     cmd = `$cmd sample`
-    
-    #cmd = `$cmd num_threads=$(m.num_threads)`
     
     cmd = `$cmd num_samples=$(m.num_samples) num_warmup=$(m.num_warmups)`
     
