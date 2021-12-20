@@ -65,15 +65,9 @@ Once multithreading is included in `cmdstan`, there are 2 ways to specify the nu
 
 The environment variable will take precedence and a warning will be printed if the num_threads value in the model is updated.
 
+Currently to test on Github CI you have to define an enviroment variable in the Github workflow setting STAN_NUM_THREADS="1".
+
 ## Usage
-
-It is recommended that you start your Julia process with multiple worker processes to take advantage of parallel sampling, e.g.:
-
-```sh
-julia -p auto
-```
-
-Otherwise, `stan_sample` will use a single process.
 
 Use this package like this:
 
@@ -85,7 +79,19 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-### Versions 5.0.1
+### Version 5.3
+
+1. Enable local multithreading.
+
+### Version 5.2
+
+1. Switch use CMDSTAN environment variable
+
+### version 5.1
+
+1. Testing with conda based install (Windows, but also other platforms)
+
+### Versions 5.0
 
 1. Docs updates.
 2. Fix for DimensionalData v0.19.1 (@dim no longer exported)
