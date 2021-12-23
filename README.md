@@ -58,14 +58,9 @@ This package is modeled after Tamas Papp's [StanRun.jl](https://github.com/tpapp
 
 Note: StanSample.jl v5.3, supports multithreading in the `cmdstan` binary and requires cmdstan v2.28.2 and up. To activate multithreading in `cmdstan` this needs to be specified during the build process of `cmdstan`. 
 
-Once multithreading is included in `cmdstan`, there are 2 ways to specify the number of threads used:
+Once multithreading is included in `cmdstan`, set num_threads in the call to stan_sample, e.g. `rc = stan_sample(sm; data, num_threads=3, num_chains=2, seed=-1)`
 
-1. Use the environment variable STAN_NUM_THREADS, e.g. `STAN_NUM_THREADS=4`.
-2. Set num_threads in the call to stan_sample, e.g. `rc = stan_sample(sm; data, num_threads=3, num_chains=2, seed=-1)`
-
-The environment variable will take precedence and a warning will be printed if the num_threads value in the model is updated.
-
-Currently to test on Github CI you have to define an enviroment variable in the Github workflow setting STAN_NUM_THREADS="1".
+The default value for num_threads is 4.
 
 ## Usage
 
@@ -78,6 +73,10 @@ using StanSample
 See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
+
+### Version 5.3.1
+
+1. Drop the use of the STAN_NUM_THREADS environment variable in favor of the keyword num_threads in stan_sample(). Default value is 4.
 
 ### Version 5.3
 

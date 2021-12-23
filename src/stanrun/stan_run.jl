@@ -89,6 +89,7 @@ function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
     #println(m.cmds)
 
     run(pipeline(par(m.cmds), stdout=m.log_file[1]))
+    #run.(pipeline(m.cmds, stdout=m.log_file[1]))
 end
 
 """
