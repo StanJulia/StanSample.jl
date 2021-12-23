@@ -24,7 +24,7 @@ bernoulli_data = [
 ]
 
 stanmodel = SampleModel("bernoulli", bernoulli_model)
-rc = stan_sample(stanmodel; data=bernoulli_data, delta=0.85, num_threads=6)
+rc = stan_sample(stanmodel; data=bernoulli_data, delta=0.85, num_threads=1)
 if success(rc)
 
   # Fetch the same output in the `sdf` ChainDataFrame
