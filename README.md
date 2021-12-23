@@ -60,7 +60,7 @@ Note: StanSample.jl v5.3, supports multithreading in the `cmdstan` binary and re
 
 Once multithreading is included in `cmdstan`, set num_threads in the call to stan_sample, e.g. `rc = stan_sample(sm; data, num_threads=3, num_chains=2, seed=-1)`
 
-The default value for num_threads is 4.
+The default value for num_threads is 1.
 
 ## Usage
 

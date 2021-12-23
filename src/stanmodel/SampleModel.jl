@@ -108,7 +108,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
 
     SampleModel(name, model, 
         # num_threads,
-        4, 
+        1, 
         # num_chains, num_samples, num_warmups, save_warmups
         4, 1000, 1000, false,
         # thin, seed, refresh, init_bound
