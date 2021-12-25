@@ -4,6 +4,7 @@ mutable struct SampleModel <: CmdStanModels
     name::AbstractString;              # Name of the Stan program
     model::AbstractString;             # Stan language model program
     num_threads::Int64;                # Number of threads
+    num_cpp_chains::Int64;             # Number of chains in each exec process
 
     # Sample fields
     num_chains::Int64;                 # Number of chains
@@ -107,8 +108,8 @@ function SampleModel(name::AbstractString, model::AbstractString,
     end
 
     SampleModel(name, model, 
-        # num_threads,
-        1, 
+        # num_threads, num_cpp_chains
+        1, 1,
         # num_chains, num_samples, num_warmups, save_warmups
         4, 1000, 1000, false,
         # thin, seed, refresh, init_bound
@@ -152,10 +153,13 @@ function SampleModel(name::AbstractString, model::AbstractString,
 end
 
 function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
-    println(io, "\nSample section:")
+    println("\nC++ threads and chains per forked process:")
+    println(io, "  num_threads =             $(m.num_threads)")
+    println(io, "  num_cpp_chains =          $(m.num_cpp_chains)")
+
+    println(io, "Sample section:")
     println(io, "  name =                    $(m.name)")
     println(io, "  num_chains =              $(m.num_chains)")
-    println(io, "  num_threads =             $(m.num_threads)")
     println(io, "  num_samples =             ", m.num_samples)
     println(io, "  num_warmups =             ", m.num_warmups)
     println(io, "  save_warmup =             ", m.save_warmup)

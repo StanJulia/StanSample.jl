@@ -2,8 +2,8 @@
 
 """
 
-Read sample output files created by StanSample.jl and return the requested `output_format`.
-The default output_format is :keyedarray. Optionally the list of parameter symbols can be returned.
+Read sample output files created by StanSample.jl and return in the requested `output_format`.
+The default output_format is :table. Optionally the list of parameter symbols can be returned.
 
 $(SIGNATURES)
 
@@ -11,17 +11,18 @@ $(SIGNATURES)
 
 ### Required arguments
 ```julia
-* `model`                     : SampleModel
-* `output_format=:table`      : Requested format for samples
+* `model`                         : SampleModel
+* `output_format=:table`          : Requested format for samples
 ```
 
 ### Optional arguments
 ```julia
-* `include_internals=false`   : Include internal Stan paramenters
-* `return_parameters=false`   : Return a tuple of (output_format, parameter_symbols)
-* `chains=1:m.num_chains[1]`  : Chains to be included in output
-* `start=1`                   : First sample to be included
-* `kwargs...`                 : Capture all other keyword arguments
+* `include_internals=false`       : Include internal Stan paramenters
+* `return_parameters=false`       : Return a tuple of (output_format, parameter_symbols)
+* `cpp_chains=1:m.num_cpp_chains` : Cpp chains to be included in output
+* `chains=1:m.num_chains`         : Chains to be included in output (forked processes)
+* `start=1`                       : First sample to be included
+* `kwargs...`                     : Capture all other keyword arguments
 ```
 
 Currently supported output_formats are:
@@ -81,13 +82,13 @@ has changed frequently!
 function read_samples(model::SampleModel, output_format=:table;
   include_internals=false,
   return_parameters=false,
+  cpp_chains=1:model.num_cpp_chains,
   chains=1:model.num_chains,
   start=1,
   kwargs...)
 
   (res, names) = read_csv_files(model::SampleModel, output_format;
-    include_internals=include_internals, start=start, chains=chains,
-    kwargs...
+    include_internals, start, cpp_chains, chains, kwargs...
   )
 
   if return_parameters

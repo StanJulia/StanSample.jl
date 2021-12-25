@@ -36,7 +36,7 @@ function cmdline(m::SampleModel, id)
     cmd = `$cmd num_threads=$(m.num_threads)`
 
     # Sample specific portion of the model
-    cmd = `$cmd sample`
+    cmd = `$cmd sample num_chains=$(m.num_cpp_chains)`
     
     cmd = `$cmd num_samples=$(m.num_samples) num_warmup=$(m.num_warmups)`
     

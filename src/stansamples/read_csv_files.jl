@@ -17,13 +17,15 @@ $(SIGNATURES)
 ### Optional arguments
 ```julia
 * `include_internals`                  : Include internal parameters
-* `chains=1:model.num_chains`         : Vector of chain id to include in output
+* `CPP_chains=1:model.num_chains`      : Vector of cpp_chains id to include in output
+* `chains=1:model.num_chains`          : Vector of chains id to include in output
 * `start=1`                            : First sample to include in output
 ```
 Not exported
 """
 function read_csv_files(model::SampleModel, output_format::Symbol;
   include_internals=false,
+  cpp_chains=1:model.num_cpp_chains,
   chains=1:model.num_chains,
   start=1,
   kwargs...)
@@ -43,40 +45,49 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
   end
   
   # Read .csv files and return a3d[n_samples, parameters, n_chains]
-  for i in 1:model.num_chains
-    if isfile(output_base*name_base*"_$(i).csv")
-      instream = open(output_base*name_base*"_$(i).csv")
-      
-      # Skip initial set of commented lines, e.g. containing cmdstan version info, etc.      
-      skipchars(isspace, instream, linecomment='#')
-      
-      # First non-comment line contains names of variables
-      line = Unicode.normalize(readline(instream), newline2lf=true)
-      idx = split(strip(line), ",")
-      index = [idx[k] for k in 1:length(idx)]      
-      indvec = 1:length(index)
-      n_parameters = length(indvec)
-      
-      # Allocate a3d as we now know number of parameters
-      if i == 1
-        a3d = fill(0.0, n_samples, n_parameters, model.num_chains)
+  for i in chains   # Number of exec processes
+    for k in cpp_chains   # Number of cpp chains handled in cmdstan
+      if model.num_cpp_chains == 1
+        csvfile = output_base*name_base*"_$(i).csv"
+      else
+        csvfile = output_base*name_base*"_$(i)_$(i+k-1).csv"
       end
-      
-      skipchars(isspace, instream, linecomment='#')
-      for j in 1:n_samples
+      #println("Reading "*csvfile)
+      if isfile(csvfile)
+        #println(csvfile*" found!")
+        instream = open(csvfile)
+        
+        # Skip initial set of commented lines, e.g. containing cmdstan version info, etc.      
         skipchars(isspace, instream, linecomment='#')
+        
+        # First non-comment line contains names of variables
         line = Unicode.normalize(readline(instream), newline2lf=true)
-        if eof(instream) && length(line) < 2
-          close(instream)
-          break
-        else
-          flds = parse.(Float64, split(strip(line), ","))
-          flds = reshape(flds[indvec], 1, length(indvec))
-          a3d[j,:,i] = flds
+        idx = split(strip(line), ",")
+        index = [idx[k] for k in 1:length(idx)]      
+        indvec = 1:length(index)
+        n_parameters = length(indvec)
+        
+        # Allocate a3d as we now know number of parameters
+        if i == 1 && k == 1
+          a3d = fill(0.0, n_samples, n_parameters, model.num_cpp_chains*model.num_chains)
         end
-      end   # read in samples
-    end   # read in next file if it exists
-  end   # read in file for each chain
+        
+        skipchars(isspace, instream, linecomment='#')
+        for j in 1:n_samples
+          skipchars(isspace, instream, linecomment='#')
+          line = Unicode.normalize(readline(instream), newline2lf=true)
+          if eof(instream) && length(line) < 2
+            close(instream)
+            break
+          else
+            flds = parse.(Float64, split(strip(line), ","))
+            flds = reshape(flds[indvec], 1, length(indvec))
+            a3d[j,:,i*k] = flds
+          end
+        end   # read in samples
+      end   # read in next file if it exists
+    end   # read in all cpp_chains
+  end   # read in file all chains
   
   # Filtering of draws, parameters and chains before further processing
   
@@ -90,7 +101,9 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
     indices = Vector{Int}(indexin(snames, cnames))
   end 
 
-  res = convert_a3d(a3d[start:end, indices, chains], snames, Val(output_format); kwargs...)
+  #println(size(a3d))
+  res = convert_a3d(a3d[start:end, indices, 1:cpp_chains[end]*chains[end]], 
+    snames, Val(output_format); kwargs...)
 
   (res, snames) 
 

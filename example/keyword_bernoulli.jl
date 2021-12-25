@@ -27,7 +27,7 @@ sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
 
 sm |> display
 
-rc = stan_sample(sm; data, n_chains=2, seed=12);
+rc = stan_sample(sm; data, num_threads=4, num_cpp_chains=4, num_chains=2, seed=12);
 
 if success(rc)
   st = read_samples(sm)

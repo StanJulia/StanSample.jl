@@ -26,9 +26,10 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 
 ### Additional configuration keyword arguments
 ```julia
-* `num_chains=4`                       # Update number of chains.
 * `num_threads=8`                      # Update number of threads.
+* `num_cpp_chains=4`                   # Update number of chains per forked procedd.
 
+* `num_chains=4`                       # Update number of chains.
 * `num_samples=1000`                   # Number of samples.
 * `num_warmups=1000`                   # Number of warmup samples.
 * `save_warmup=false`                  # Save warmup samples.
