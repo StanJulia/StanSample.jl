@@ -60,7 +60,7 @@ Note: StanSample.jl v5.3+, supports multithreading in the `cmdstan` binary and r
 
 Once multithreading on C++ level is included in `cmdstan`, set num_threads in the call to stan_sample, e.g.:
 ```
-rc = stan_sample(sm; data, num_threads=4, num__cpp_chains=4)
+rc = stan_sample(sm; data, num_threads=4, num_cpp_chains=4)
 ```
 
 The default value for num_threads is 1. This is for CI workflows testing only.
