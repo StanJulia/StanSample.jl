@@ -56,7 +56,7 @@ ENV["CMDSTAN"] =
 
 This package is modeled after Tamas Papp's [StanRun.jl](https://github.com/tpapp/StanRun.jl) package. 
 
-Note: StanSample.jl v5.3, supports multithreading in the `cmdstan` binary and requires cmdstan v2.28.2 and up. To activate multithreading in `cmdstan` this needs to be specified during the build process of `cmdstan`. 
+Note: StanSample.jl v5.3+, supports multithreading in the `cmdstan` binary and requires cmdstan v2.28.2 and up. To activate multithreading in `cmdstan` this needs to be specified during the build process of `cmdstan`. 
 
 Once multithreading on C++ level is included in `cmdstan`, set num_threads in the call to stan_sample, e.g.:
 ```
@@ -65,16 +65,18 @@ rc = stan_sample(sm; data, num_threads=4, num__cpp_chains=4)
 
 The default value for num_threads is 1. This is for CI workflows testing only.
 
-In general, to run 4 chains drawing about the name number of samples as warmup samples, I mostly use Julia threads by having the environment variable `JULIA_NUM_THREADS=4`. The number of threads are visible in `versioninfo()`.
+In general, to run 4 chains drawing about the name number of samples as warmup samples, I mostly use Julia threads by having the environment variable `JULIA_NUM_THREADS=4`. The number of Julia threads are visible in `versioninfo()`.
 
 But if Stan provides additional support I use:
 ```
-rc = stan_sample(sm; data, num_threads=4, num__cpp_chains=4, num_chains=1)
+rc = stan_sample(sm; data, num_threads=4, num_cpp_chains=4, num_chains=1)
 ```
 
-See the redcardsstudy example in Stan.jl and [here](https://discourse.mc-stan.org/t/stan-num-threads-and-num-threads/25780/5?u=rob_j_goedman) for more details. 
+See the redcardsstudy example in Stan.jl and [here](https://discourse.mc-stan.org/t/stan-num-threads-and-num-threads/25780/5?u=rob_j_goedman) for more details, in particular with respect to just enabling threads and including TBB or not on Intel and also, on Apple's M1/ARM processor running native (not using Rosetta but without TBB). 
 
 Some performance tests/examples are also included in DiffEqBayesStan.jl.
+
+In some cases I have seen performance advantages using both Julia threads and C++ threads but too many combined threads certainly doesn't help. Note that if you only want 1000 draws (using 1000 warmup samples for tuning), multiple chains (C++ or Julia) do not help a lot.
 
 ## Usage
 
@@ -88,7 +90,11 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-### Version 5.3.1
+### Version 5.4.0
+
+1. Full usage of num_threads and num_cpp_threads
+
+### Version 5.3.1 & 5.3.2
 
 1. Drop the use of the STAN_NUM_THREADS environment variable in favor of the keyword num_threads in stan_sample(). Default value is 4.
 
