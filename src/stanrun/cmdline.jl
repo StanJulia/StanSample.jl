@@ -14,7 +14,8 @@ Not exported
 function cmdline(m::SampleModel, id)
   
     #= cmdline with default parameter values
-        `./bernoulli3 sample
+        `./bernoulli3 num_threads=1 
+        sample num_cpp_chains=1 num_chains=4
         num_samples=1000 num_warmup=1000 save_warmup=0
         thin=1
         adapt engaged=1 gamma=0.05 delta=0.8 kappa=0.75 

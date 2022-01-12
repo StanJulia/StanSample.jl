@@ -58,9 +58,23 @@ This package is modeled after Tamas Papp's [StanRun.jl](https://github.com/tpapp
 
 Note: StanSample.jl v5.3, supports multithreading in the `cmdstan` binary and requires cmdstan v2.28.2 and up. To activate multithreading in `cmdstan` this needs to be specified during the build process of `cmdstan`. 
 
-Once multithreading is included in `cmdstan`, set num_threads in the call to stan_sample, e.g. `rc = stan_sample(sm; data, num_threads=3, num_chains=2, seed=-1)`
+Once multithreading on C++ level is included in `cmdstan`, set num_threads in the call to stan_sample, e.g.:
+```
+rc = stan_sample(sm; data, num_threads=4, num__cpp_chains=4)
+```
 
-The default value for num_threads is 1.
+The default value for num_threads is 1. This is for CI workflows testing only.
+
+In general, to run 4 chains drawing about the name number of samples as warmup samples, I mostly use Julia threads by having the environment variable `JULIA_NUM_THREADS=4`. The number of threads are visible in `versioninfo()`.
+
+But if Stan provides additional support I use:
+```
+rc = stan_sample(sm; data, num_threads=4, num__cpp_chains=4, num_chains=1)
+```
+
+See the redcardsstudy example in Stan.jl and [here](https://discourse.mc-stan.org/t/stan-num-threads-and-num-threads/25780/5?u=rob_j_goedman) for more details. 
+
+Some performance tests/examples are also included in DiffEqBayesStan.jl.
 
 ## Usage
 
