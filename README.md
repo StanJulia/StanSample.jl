@@ -65,14 +65,14 @@ rc = stan_sample(sm; data, num_threads=4, num__cpp_chains=4)
 
 The default value for num_threads is 1. This is for CI workflows testing only.
 
-In general, to run 4 chains drawing about the name number of samples as warmup samples, I mostly use Julia threads by having the environment variable `JULIA_NUM_THREADS=4`. The number of Julia threads are visible in `versioninfo()`.
+In general, to run 4 chains drawing about the same number of samples as warmup samples, I mostly use Julia threads by having the environment variable `JULIA_NUM_THREADS=4`. The actual number of Julia threads are visible in `versioninfo()`.
 
-But if Stan provides additional support I use:
+But if Stan provides additional support I use (or at least try):
 ```
 rc = stan_sample(sm; data, num_threads=4, num_cpp_chains=4, num_chains=1)
 ```
 
-See the redcardsstudy example in Stan.jl and [here](https://discourse.mc-stan.org/t/stan-num-threads-and-num-threads/25780/5?u=rob_j_goedman) for more details, in particular with respect to just enabling threads and including TBB or not on Intel and also, on Apple's M1/ARM processor running native (not using Rosetta but without TBB). 
+See the redcardsstudy example in Stan.jl and [here](https://discourse.mc-stan.org/t/stan-num-threads-and-num-threads/25780/5?u=rob_j_goedman) for more details, in particular with respect to just enabling threads and including TBB or not on Intel, and also some indications of the performance on an Apple's M1/ARM processor running native (not using Rosetta and without TBB). 
 
 Some performance tests/examples are also included in DiffEqBayesStan.jl.
 
