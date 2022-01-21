@@ -26,6 +26,7 @@ function stan_summary(
   
   #local csvfile
   n_chains = m.num_chains * m.num_cpp_chains
+  println(n_chains)
   
   samplefiles = String[]
   cpp_chains = model.num_cpp_chains
