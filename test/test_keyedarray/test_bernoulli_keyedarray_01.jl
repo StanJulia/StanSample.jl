@@ -23,7 +23,8 @@ bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 tmpdir = joinpath(@__DIR__, "tmp")
 
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir)
-rc = stan_sample(sm; data=bernoulli_data, num_chaims=6, delta=0.85);
+rc = stan_sample(sm; data=bernoulli_data,
+  num_threads=6, num_cpp_chains=6, num_chaims=1, delta=0.85);
 
 if success(rc)
   ka = read_samples(sm, :keyedarray)

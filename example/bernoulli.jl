@@ -24,7 +24,7 @@ data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 tmpdir = joinpath(@__DIR__, "tmp")
 
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
-rc = stan_sample(sm; data, num_threads=4, num_cpp_chains=4, num_chains=4, seed=-1);
+rc = stan_sample(sm; data, num_threads=4, num_cpp_chains=4, num_chains=1, seed=-1);
 
 if success(rc)
   st = read_samples(sm)

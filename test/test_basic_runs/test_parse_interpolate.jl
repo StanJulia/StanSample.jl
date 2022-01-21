@@ -3,7 +3,7 @@ using StanSample, Test
 #set_cmdstan_home!(homedir() * "/Projects/StanSupport/cmdstan_stanc3")
 
 ProjDir = @__DIR__
-cd(ProjDir) do
+cd(ProjDir) # do
 
   bernoulli_model = "
     functions{
@@ -30,9 +30,8 @@ cd(ProjDir) do
   rc = stan_sample(sm; data=observeddata)
 
   if success(rc)
-    # Convert to an MCMCChains.Chains object
     samples = read_samples(sm, :array)
     @test sum(samples)/length(samples) ≈ 0.33 rtol=0.05
   end
 
-end
+#end

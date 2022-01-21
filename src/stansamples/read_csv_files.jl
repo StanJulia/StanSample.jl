@@ -17,16 +17,14 @@ $(SIGNATURES)
 ### Optional arguments
 ```julia
 * `include_internals`                  : Include internal parameters
-* `CPP_chains=1:model.num_chains`      : Vector of cpp_chains id to include in output
-* `chains=1:model.num_chains`          : Vector of chains id to include in output
+* `chains=1:cpp_chains*julia_chains    : Which chains to include in output
 * `start=1`                            : First sample to include in output
 ```
 Not exported
 """
 function read_csv_files(model::SampleModel, output_format::Symbol;
   include_internals=false,
-  cpp_chains=1:model.num_cpp_chains,
-  chains=1:model.num_chains,
+  chains=1:model.num_cpp_chains*model.num_chains,
   start=1,
   kwargs...)
 
@@ -44,13 +42,17 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
     n_samples = floor(Int, model.num_samples/model.thin)
   end
   
+  init_a3d = true
+  cpp_chains = model.num_cpp_chains
+  julia_chains = model.num_chains
+
   # Read .csv files and return a3d[n_samples, parameters, n_chains]
-  for i in chains   # Number of exec processes
-    for k in cpp_chains   # Number of cpp chains handled in cmdstan
+  for i in 1:julia_chains   # Number of exec processes
+    for k in 1:cpp_chains   # Number of cpp chains handled in cmdstan
       if model.num_cpp_chains == 1
         csvfile = output_base*name_base*"_$(i).csv"
       else
-        csvfile = output_base*name_base*"_$(i)_$(i+k-1).csv"
+        csvfile = output_base*name_base*"_$(i)_$(k).csv"
       end
       #println("Reading "*csvfile)
       if isfile(csvfile)
@@ -68,7 +70,8 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
         n_parameters = length(indvec)
         
         # Allocate a3d as we now know number of parameters
-        if i == 1 && k == 1
+        if init_a3d
+          init_a3d = false
           a3d = fill(0.0, n_samples, n_parameters, model.num_cpp_chains*model.num_chains)
         end
         
@@ -102,7 +105,7 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
   end 
 
   #println(size(a3d))
-  res = convert_a3d(a3d[start:end, indices, 1:cpp_chains[end]*chains[end]], 
+  res = convert_a3d(a3d[start:end, indices, chains], 
     snames, Val(output_format); kwargs...)
 
   (res, snames) 
