@@ -38,6 +38,7 @@ jobs:
           println(pwd())
           println(ENV["CMDSTAN"])
           println(ENV["HOME"])
+          println(pwd(ENV["CMDSTAN"]))
       - run: |
           OLDWD=`pwd`
           cd ~

@@ -22,12 +22,12 @@ Note: StanSample.jl v6 is a breaking change from StanSample.jl v5.
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
-StanSample.jl v6 uses c++ multithreading in the `cmdstan` binary. By default StanSample.jl's SampleModel sets the `num_threads` and `num_cpp_chains` in the call to `stan_sample` as shown below: 
+StanSample.jl v6 uses C++ multithreading in the `cmdstan` binary. By default StanSample.jl's SampleModel sets the `num_threads`, `num_cpp_chains` and `num_chains` in the call to `stan_sample` as shown below: 
 ```
 rc = stan_sample(sm; [data,] [init,] num_threads=4, num_cpp_chains=4, num_chains=1)`
 ```
 
-Currently I do not suggest to use both C++ level chains and Julia level chains. By default, if `num_chains > 1` this method will set `num_cpp_chains` to 1 and a message will be displayed. Set the positional `check_num_chains` argument in the call to `stan_sample()` to `false` to prevent this.
+Currently I do not suggest to use both C++ level chains and Julia level chains. By default, if `num_chains > 1` the `handle_arguments()` method in StanBase.jl will set `num_cpp_chains` to 1 and a message will be displayed. Set the positional `check_num_chains` argument in the call to `stan_sample()` to `false` to prevent this. Above settings imply no spawning on Julia level for each chain and C++ will typically use 1 thread for each chain
 
 See the `example/bernoulli.jl` for a basic example. Many more examples and test scripts are available in this package and also in Stan.jl.
 
