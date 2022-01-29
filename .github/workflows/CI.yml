@@ -49,10 +49,11 @@ jobs:
         shell: julia --project=. {0}
         run: |
           cd(joinpath(ENV["CMDSTAN"]))
+          println(pwd())
           println(readdir())
-          open(joinpath(ENV["CMDSTAN"], "make", "local"), "w") do f
-            println(f, "STAN_THREADS=true")
-          end
+          #open(joinpath(ENV["CMDSTAN"], "make", "local"), "w") do f
+          #  println(f, "STAN_THREADS=true")
+          #end
       - run: |
           make -C $CMDSTAN build
           cd $OLDWD
