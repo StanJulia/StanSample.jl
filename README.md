@@ -20,17 +20,14 @@ Note: StanSample.jl v6 is a breaking change from StanSample.jl v5.
 
 ## Purpose
 
-StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the promary workhorse in the StanJulia ecosystem.
+StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
-StanSample.jl v6 uses c++ multithreading in the `cmdstan` binary. By default StanSample.jl's SampleModel sets the num_threads and num_cpp_chains in the call to `stan_sample` as shown below: 
+StanSample.jl v6 uses c++ multithreading in the `cmdstan` binary. By default StanSample.jl's SampleModel sets the `num_threads` and `num_cpp_chains` in the call to `stan_sample` as shown below: 
 ```
 rc = stan_sample(sm; [data,] [init,] num_threads=4, num_cpp_chains=4, num_chains=1)`
 ```
 
-Note: Currently I do not suggest to use both C++ level chains and Julia
-level chains. By default, if `num_chains > 1` this method will set
-`num_cpp_chains` to 1 and a message will be displayed. Set the
-postional `check_num_chains` argument in the call to `stan_sample()` to `false` to prevent this.
+Currently I do not suggest to use both C++ level chains and Julia level chains. By default, if `num_chains > 1` this method will set `num_cpp_chains` to 1 and a message will be displayed. Set the positional `check_num_chains` argument in the call to `stan_sample()` to `false` to prevent this.
 
 See the `example/bernoulli.jl` for a basic example. Many more examples and test scripts are available in this package and also in Stan.jl.
 
@@ -66,7 +63,7 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## C++ level threads and chains
 
-Even when running multiple chains on Julia level (e.g. `num_chains=4`), it might be benificial to enable multiple C++ threads (e.g. `num_threads=6`) for certain constructs available in the Stan Language Program. See the RedCardsStudy example in Stan.jl for more details.
+Even when running multiple chains on Julia level (e.g. `num_chains=4`), it might be benificial to enable multiple C++ threads (e.g. `num_threads=6`) for certain constructs available in the Stan Language Program. 
 
 See the redcardsstudy example in Stan.jl and [here](https://discourse.mc-stan.org/t/stan-num-threads-and-num-threads/25780/5?u=rob_j_goedman) for more details, in particular with respect to just enabling threads and including TBB or not on Intel, and also some indications of the performance on an Apple's M1/ARM processor running native (not using Rosetta and without Intel's TBB). 
 
@@ -80,6 +77,8 @@ In some cases I have seen performance advantages using both Julia threads and C+
 
 1. Switch to C++ threads by default.
 2. Use JSON3.jl for data.json and init.json as replacement for data.r and init.r files.
+3. The function `read_generated_quantities()` has been dropped.
+4. The function `stan_generate_quantites()` now returns a DataFrame.
 
 ### Version 5.4 - 5.6
 
