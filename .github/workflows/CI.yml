@@ -45,16 +45,7 @@ jobs:
           wget https://github.com/stan-dev/cmdstan/releases/download/v2.28.2/cmdstan-2.28.2.tar.gz
           tar -xzpf cmdstan-2.28.2.tar.gz
           ls -lia .
-      - name: Create make/local
-        shell: julia --project=. {0}
-        run: |
-          cd(joinpath(ENV["CMDSTAN"]))
-          println(pwd())
-          println(readdir())
-          #open(joinpath(ENV["CMDSTAN"], "make", "local"), "w") do f
-          #  println(f, "STAN_THREADS=true")
-          #end
-      - run: |
+          ls lia /home/runner/cmdstan-2.28.2
           make -C $CMDSTAN build
           cd $OLDWD
         env:
