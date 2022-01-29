@@ -48,7 +48,7 @@ jobs:
       - name: Create make/local
         shell: julia --project=. {0}
         run: |
-          cd(joinpath(ENV["CMDSTAN"], "make"))
+          cd(joinpath(ENV["CMDSTAN"]))
           println(readdir())
           open(joinpath(ENV["CMDSTAN"], "make", "local"), "w") do f
             println(f, "STAN_THREADS=true")
