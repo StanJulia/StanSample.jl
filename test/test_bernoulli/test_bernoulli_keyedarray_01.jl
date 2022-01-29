@@ -24,7 +24,7 @@ tmpdir = joinpath(@__DIR__, "tmp")
 
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
 
-rc = stan_sample(sm; data=bernoulli_data, num_chains=6);
+rc = stan_sample(sm; data=bernoulli_data, num_cpp_chains=6);
 
 if success(rc)
   chns = read_samples(sm)

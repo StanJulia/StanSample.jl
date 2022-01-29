@@ -20,11 +20,11 @@ bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 # Keep tmpdir identical to prevent re-compilation
 tmpdir=joinpath(@__DIR__, "tmp")
+isdir(tmpdir) && rm(tmpdir, recursive=true)
 #tmpdir=mktempdir()
 
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir)
-
-rc = stan_sample(sm, data=bernoulli_data, num_chains=4, delta=0.85)
+rc = stan_sample(sm, data=bernoulli_data, num_chains=1, delta=0.85)
 
 # Fetch the cmdstan summary in sdf`
 if success(rc)
@@ -41,4 +41,29 @@ if success(rc)
   # chns = read_samples(sm, :mcmcchains)
   # See examples in directory `examples_mcmcchains`
 
+  df |> display
+end
+
+isdir(tmpdir) && rm(tmpdir, recursive=true)
+sm = SampleModel("bernoulli", bernoulli_model, tmpdir)
+
+rc = stan_sample(sm, data=bernoulli_data, 
+  num_threads=4, num_cpp_chains=1, num_chains=4, delta=0.85)
+
+# Fetch the cmdstan summary in sdf`
+if success(rc)
+  sdf = read_summary(sm)
+  @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
+
+  # Included return formats
+
+  samples = read_samples(sm)          # Return Tables object
+  a3d = read_samples(sm, :array)      # Return an a3d object
+  df = read_samples(sm, :dataframe)   # Return a DataFrame object
+
+  # If (and only if) MCMCChains is loaded:
+  # chns = read_samples(sm, :mcmcchains)
+  # See examples in directory `examples_mcmcchains`
+
+  df |> display
 end

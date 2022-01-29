@@ -11,22 +11,20 @@ $(SIGNATURES)
 * `model`                    : SampleModel
 ```
 """
-function read_generated_quantities(model::SampleModel, chains=1;
-    output_format=:namedtuple,
+function read_generated_quantities(model::SampleModel, 
+    chains=[1];
+    output_format=:table,
     kwargs...
   )
 
-read_csv_files(model::SampleModel, output_format::Symbol;
-  include_internals=false,
-  chains=1:model.num_chains,
-  start=1,
-  kwargs...)
-
-  read_csv_files(model::SampleModel, :namedtuple;
-  include_internals=false,
-  chains=[1],
-  start=1,
-  kwargs...)
+  #=
+  read_csv_files(model::SampleModel, output_format;
+    chains=chains,
+    include_internals=false,
+    start=1,
+    kwargs...)
+  =#
+  available_chains[chains]
 
 end   # end of read_generated_quantities
 

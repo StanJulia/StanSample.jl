@@ -32,7 +32,7 @@ using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
 import StanBase: update_model_file, par, handle_keywords!
 import StanBase: executable_path, ensure_executable, stan_compile
-import StanBase: update_R_files
+import StanBase: update_R_files, update_json_files
 import StanBase: data_file_path, init_file_path, sample_file_path
 import StanBase: generated_quantities_file_path, log_file_path
 import StanBase: diagnostic_file_path, setup_diagnostics
@@ -50,12 +50,12 @@ include("stanmodel/SampleModel.jl")
 include("stanrun/stan_run.jl")
 include("stanrun/cmdline.jl")
 include("stanrun/diagnose.jl")
-include("stanrun/stan_generated_quantities.jl")
+include("stanrun/stan_generate_quantities.jl")
 
 include("stansamples/read_samples.jl")
 include("stansamples/read_csv_files.jl")
 include("stansamples/convert_a3d.jl")
-include("stansamples/read_generated_quantities.jl")
+#include("stansamples/read_generated_quantities.jl")
 
 include("utils/namedtuples.jl")
 include("utils/tables.jl")
@@ -72,7 +72,7 @@ export
   read_summary,
   stan_summary,
   stan_generate_quantities,
-  read_generated_quantities,
+  #read_generated_quantities,
   diagnose,
   make_string,
   set_make_string

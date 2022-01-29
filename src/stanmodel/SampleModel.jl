@@ -3,11 +3,11 @@ import Base: show
 mutable struct SampleModel <: CmdStanModels
     name::AbstractString;              # Name of the Stan program
     model::AbstractString;             # Stan language model program
-    num_threads::Int64;                # Number of threads
-    num_cpp_chains::Int64;             # Number of chains in each exec process
+    num_threads::Int64;                # Number of C++ threads
+    num_cpp_chains::Int64;             # Number of C++ chains in each exec process
 
     # Sample fields
-    num_chains::Int64;                 # Number of chains
+    num_chains::Int64;                 # Number of (Julia level) chains
     num_samples::Int;                  # Number of draws after warmup
     num_warmups::Int;                  # Number of warmup draws
     save_warmup::Bool;                 # Store warmup_samples
@@ -109,9 +109,9 @@ function SampleModel(name::AbstractString, model::AbstractString,
 
     SampleModel(name, model, 
         # num_threads, num_cpp_chains
-        1, 1,
+        4, 4,
         # num_chains, num_samples, num_warmups, save_warmups
-        4, 1000, 1000, false,
+        1, 1000, 1000, false,
         # thin, seed, refresh, init_bound
         1, -1, 100, 2,
         # Adapt fields

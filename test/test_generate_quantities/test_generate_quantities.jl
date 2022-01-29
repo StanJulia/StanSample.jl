@@ -1,3 +1,4 @@
+using DataFrames
 using StanSample, Test
 
 ProjDir = @__DIR__
@@ -29,12 +30,9 @@ data = Dict(
 
 sm = SampleModel("Generate_quantities", gq, joinpath(@__DIR__, "tmp"));
 
-rc = stan_sample(sm; data)
+rc = stan_sample(sm; num_cpp_chains=2, num_chains=2, data)
 
 if success(rc)
-  for i in 1:sm.num_chains
-    stan_generate_quantities(sm, i)
-  end
-
-  gq = read_generated_quantities(sm)
+  df = stan_generate_quantities(sm, 1, "1_1")
+  df |> display
 end

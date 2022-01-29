@@ -6,7 +6,9 @@ Draw from a StanJulia SampleModel (<: CmdStanModel.)
 
 ## Required argument
 ```julia
-* `m <: CmdStanModels`                 # SampleModel.
+* `m <: CmdStanModels`                 # SampleModel
+* `use_json=true`                      # Set to false for .R
+                                       # data files
 ```
 
 ### Most frequently used keyword arguments
@@ -26,10 +28,10 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 
 ### Additional configuration keyword arguments
 ```julia
-* `num_threads=8`                      # Update number of threads.
-* `num_cpp_chains=4`                   # Update number of chains per forked procedd.
+* `num_threads=4`                      # Update number of c++ threads.
+* `num_cpp_chains=4`                   # Update number of c++ chains.
 
-* `num_chains=4`                       # Update number of chains.
+* `num_chains=1`                       # Update number of Julia level chains.
 * `num_samples=1000`                   # Number of samples.
 * `num_warmups=1000`                   # Number of warmup samples.
 * `save_warmup=false`                  # Save warmup samples.
@@ -60,8 +62,14 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 * `summary=true`                       # Create stansummary .csv file
 * `print_summary=false`                # Display summary
 ```
+
+Note: Currently I do not suggest to use both C++ level chains and Julia
+level chains. By default, if `num_chains > 1` this method will set
+`num_cpp_chains` to 1 and a message will be displayed. Set the
+postional `check_num_chains` argument to `false` to prevent this.
+
 """
-function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
+function stan_run(m::T, use_json=true; kwargs...) where {T <: CmdStanModels}
 
     handle_keywords!(m, kwargs)
     
@@ -78,10 +86,17 @@ function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
         isfile(sfile) && rm(sfile)
     end
 
-    :init in keys(kwargs) && update_R_files(m, kwargs[:init],
-        m.num_chains, "init")
-    :data in keys(kwargs) && update_R_files(m, kwargs[:data],
-        m.num_chains, "data")
+    if use_json
+        :init in keys(kwargs) && update_json_files(m, kwargs[:init],
+            m.num_chains, "init")
+        :data in keys(kwargs) && update_json_files(m, kwargs[:data],
+            m.num_chains, "data")
+    else
+        :init in keys(kwargs) && update_R_files(m, kwargs[:init],
+            m.num_chains, "init")
+        :data in keys(kwargs) && update_R_files(m, kwargs[:data],
+            m.num_chains, "data")
+    end
 
     m.cmds = [stan_cmds(m, id; kwargs...) for id in 1:m.num_chains]
 

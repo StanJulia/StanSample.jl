@@ -20,7 +20,9 @@ model {
 bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 sm = SampleModel("bernoulli", bernoulli_model)
-rc = stan_sample(sm; data=bernoulli_data, seed=123, num_chains=6, delta=0.85)
+rc = stan_sample(sm; data=bernoulli_data,
+    num_threads=6, num_cpp_chains=1, seed=123,
+    num_chains=6, delta=0.85)
 
 if success(rc)
   chns = read_samples(sm)

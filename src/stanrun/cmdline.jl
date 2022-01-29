@@ -34,11 +34,14 @@ function cmdline(m::SampleModel, id)
     # Handle the model name field for unix and windows
     cmd = `$(m.exec_path)`
 
-    cmd = `$cmd num_threads=$(m.num_threads)`
 
-    # Sample specific portion of the model
-    cmd = `$cmd sample num_chains=$(m.num_cpp_chains)`
-    
+    if m.num_chains == 1 
+        cmd = `$cmd num_threads=$(m.num_threads)`
+        cmd = `$cmd sample num_chains=$(m.num_cpp_chains)`
+    else
+        cmd = `$cmd sample num_chains=1`
+    end
+
     cmd = `$cmd num_samples=$(m.num_samples) num_warmup=$(m.num_warmups)`
     
     if m.save_warmup

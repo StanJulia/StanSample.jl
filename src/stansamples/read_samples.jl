@@ -81,10 +81,12 @@ has changed frequently!
 function read_samples(model::SampleModel, output_format=:table;
   include_internals=false,
   return_parameters=false,
-  chains=1:Int(model.num_chains*model.num_cpp_chains),
+  chains=1:max(model.num_chains, model.num_cpp_chains),
   start=1,
   kwargs...)
 
+  #println(chains)
+  
   (res, names) = read_csv_files(model::SampleModel, output_format;
     include_internals, start, chains, kwargs...
   )
