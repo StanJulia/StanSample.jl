@@ -7,8 +7,8 @@ Draw from a StanJulia SampleModel (<: CmdStanModel.)
 ## Required argument
 ```julia
 * `m <: CmdStanModels`                 # SampleModel
-* `use_json=true`                      # Set to false for .R
-                                       # data files
+* `use_json=true`                      # Set to false for .R data files.
+                                       # Currently init.R files are rejected.
 ```
 
 ### Most frequently used keyword arguments
