@@ -46,6 +46,7 @@ jobs:
           tar -xzpf cmdstan-2.28.2.tar.gz
           ls -lia .
           ls -lia ./cmdstan-2.28.2
+          ls -lia ./cmdstan-2.28.2/make
           make -C $CMDSTAN build
           cd $OLDWD
         env:
