@@ -38,7 +38,9 @@ jobs:
           println(pwd())
           println(ENV["CMDSTAN"])
           println(ENV["HOME"])
-          println(pwd(ENV["CMDSTAN"]))
+          open(joinpath(ENV["CMDSTAN"], "make", "local"), "w") do f
+            println(f, "STAN_THREADS=true")
+          end
       - run: |
           OLDWD=`pwd`
           cd ~
