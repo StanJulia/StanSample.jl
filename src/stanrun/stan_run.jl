@@ -9,6 +9,7 @@ Draw from a StanJulia SampleModel (<: CmdStanModel.)
 * `m <: CmdStanModels`                 # SampleModel
 * `use_json=true`                      # Set to false for .R data files.
                                        # Currently init.R files are rejected.
+* `check_num_chains=true`              # Check for C++ chains or Julia level chains
 ```
 
 ### Most frequently used keyword arguments
@@ -17,12 +18,12 @@ Draw from a StanJulia SampleModel (<: CmdStanModel.)
 * `init`                               # Init Dict or NT (default: -2 to +2).
 ```
 
+See extended help for other keyword arguments ( `??stan_sample` ).
+
 ### Returns
 ```julia
 * `rc`                                 # Return code, 0 is success.
 ```
-
-See extended help for other keyword arguments ( `??stan_sample` ).
 
 # Extended help
 
@@ -69,9 +70,12 @@ level chains. By default, if `num_chains > 1` this method will set
 postional `check_num_chains` argument to `false` to prevent this.
 
 """
-function stan_run(m::T, use_json=true; kwargs...) where {T <: CmdStanModels}
+function stan_run(m::T, 
+    use_json=true,
+    check_num_chains=true;
+    kwargs...) where {T <: CmdStanModels}
 
-    handle_keywords!(m, kwargs)
+    handle_keywords!(m, kwargs, check_num_chains)
     
     # Diagnostics files requested?
     diagnostics = false
