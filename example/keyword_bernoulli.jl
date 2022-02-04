@@ -23,7 +23,7 @@ data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 # Keep tmpdir across multiple runs to prevent re-compilation
 tmpdir = joinpath(@__DIR__, "tmp")
 
-sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
+sm = SampleModel("kw_bern", bernoulli_model, tmpdir);
 
 sm |> display
 

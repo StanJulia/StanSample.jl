@@ -24,7 +24,7 @@ isdir(tmpdir) && rm(tmpdir, recursive=true)
 #tmpdir=mktempdir()
 
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir)
-rc = stan_sample(sm, data=bernoulli_data, num_chains=1, delta=0.85)
+rc = stan_sample(sm, data=bernoulli_data, num_chains=4, delta=0.85)
 
 # Fetch the cmdstan summary in sdf`
 if success(rc)

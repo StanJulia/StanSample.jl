@@ -21,10 +21,11 @@ model {
 data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 # Keep tmpdir across multiple runs to prevent re-compilation
-tmpdir = joinpath(@__DIR__, "tmp")
+tmpdir = joinpath(ProjDir, "tmp")
 
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
-rc = stan_sample(sm; data, seed=-1);
+
+rc = stan_sample(sm; data);
 
 if success(rc)
   st = read_samples(sm)

@@ -35,7 +35,7 @@ function cmdline(m::SampleModel, id)
     cmd = `$(m.exec_path)`
 
 
-    if m.num_chains == 1 
+    if m.use_cpp_chains
         cmd = `$cmd num_threads=$(m.num_threads)`
         cmd = `$cmd sample num_chains=$(m.num_cpp_chains)`
     else

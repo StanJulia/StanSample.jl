@@ -1,6 +1,6 @@
 ######### StanSample example  ###########
 
-using StanSample
+using StanSample, Test
 
 bernoulli_model = "
 data { 
@@ -23,12 +23,12 @@ bernoulli_data = [
   Dict("N" => 10, "y" => [0, 0, 0, 1, 0, 0, 1, 0, 0, 1]),
 ]
 
-stanmodel = SampleModel("bernoulli", bernoulli_model)
-rc = stan_sample(stanmodel; data=bernoulli_data, delta=0.85, num_threads=1)
+sm = SampleModel("bernoulli", bernoulli_model)
+rc = stan_sample(sm; data=bernoulli_data, delta=0.85, num_threads=1)
 if success(rc)
 
   # Fetch the same output in the `sdf` ChainDataFrame
-  sdf = read_summary(stanmodel)
+  sdf = read_summary(sm)
 
   @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
   

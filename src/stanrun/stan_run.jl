@@ -30,9 +30,14 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 ### Additional configuration keyword arguments
 ```julia
 * `num_threads=4`                      # Update number of c++ threads.
-* `num_cpp_chains=4`                   # Update number of c++ chains.
+* `num_cpp_chains=1`                   # Update number of c++ chains.
+* `num_julia_chains=1`                 # Update number of Julia chains.
+                                       # Both initialized from num_chains
 
-* `num_chains=1`                       # Update number of Julia level chains.
+* `use_cpp_chains=true`                # Run num_chains on c++ level
+                                       # Set to false to use Julia processes
+
+* `num_chains=4`                       # Actual number of chains.
 * `num_samples=1000`                   # Number of samples.
 * `num_warmups=1000`                   # Number of warmup samples.
 * `save_warmup=false`                  # Save warmup samples.
@@ -81,28 +86,33 @@ function stan_run(m::T,
     diagnostics = false
     if :diagnostics in keys(kwargs)
         diagnostics = kwargs[:diagnostics]
-        setup_diagnostics(m, m.num_chains)
+        setup_diagnostics(m, m.num_julia_chains)
     end
 
     # Remove existing sample files
-    for id in 1:m.num_chains
+    for id in 1:m.num_julia_chains
         sfile = sample_file_path(m.output_base, id)
         isfile(sfile) && rm(sfile)
     end
 
+    m.data_file = String[]
+    m.init_file = String[]
     if use_json
         :init in keys(kwargs) && update_json_files(m, kwargs[:init],
-            m.num_chains, "init")
+            m.num_julia_chains, "init")
         :data in keys(kwargs) && update_json_files(m, kwargs[:data],
-            m.num_chains, "data")
+            m.num_julia_chains, "data")
     else
         :init in keys(kwargs) && update_R_files(m, kwargs[:init],
-            m.num_chains, "init")
+            m.num_julia_chains, "init")
         :data in keys(kwargs) && update_R_files(m, kwargs[:data],
-            m.num_chains, "data")
+            m.num_julia_chains, "data")
     end
 
-    m.cmds = [stan_cmds(m, id; kwargs...) for id in 1:m.num_chains]
+    m.sample_file = String[]
+    m.log_file = String[]
+    m.diagnostic_file = String[]
+    m.cmds = [stan_cmds(m, id; kwargs...) for id in 1:m.num_julia_chains]
 
     #println(typeof(m.cmds))
     #println()

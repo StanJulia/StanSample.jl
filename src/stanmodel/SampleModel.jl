@@ -4,10 +4,13 @@ mutable struct SampleModel <: CmdStanModels
     name::AbstractString;              # Name of the Stan program
     model::AbstractString;             # Stan language model program
     num_threads::Int64;                # Number of C++ threads
+
+    use_cpp_chains::Bool;              # 
     num_cpp_chains::Int64;             # Number of C++ chains in each exec process
+    num_julia_chains::Int64;           # Number of julia chains ( == processes)
+    num_chains::Int64;                 # Actual number of chains
 
     # Sample fields
-    num_chains::Int64;                 # Number of (Julia level) chains
     num_samples::Int;                  # Number of draws after warmup
     num_warmups::Int;                  # Number of warmup draws
     save_warmup::Bool;                 # Store warmup_samples
@@ -108,10 +111,18 @@ function SampleModel(name::AbstractString, model::AbstractString,
     end
 
     SampleModel(name, model, 
-        # num_threads, num_cpp_chains
-        4, 4,
-        # num_chains, num_samples, num_warmups, save_warmups
-        1, 1000, 1000, false,
+        # num_threads
+        4,
+        # use_cpp_chains
+        true, 
+        # num_cpp_chains
+        1,
+        # num_julia_chains
+        1,
+        # num_chains
+        4,
+        # num_samples, num_warmups, save_warmups
+        1000, 1000, false,
         # thin, seed, refresh, init_bound
         1, -1, 100, 2,
         # Adapt fields
@@ -153,13 +164,19 @@ function SampleModel(name::AbstractString, model::AbstractString,
 end
 
 function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
-    println("\nC++ threads and chains per forked process:")
-    println(io, "  num_threads =             $(m.num_threads)")
-    println(io, "  num_cpp_chains =          $(m.num_cpp_chains)")
-
-    println(io, "Sample section:")
+    println("\nModel name:")
     println(io, "  name =                    $(m.name)")
+    println("\nC++ threads per forked process:")
+    println(io, "  num_threads =             $(m.num_threads)")
+    println(io, "  use_cpp_chains =          $(m.use_cpp_chains)")
+    println("\nC++ chains per forked process:")
+    println(io, "  num_cpp_chains =          $(m.num_cpp_chains)")
+    println("\nNo of forked Julia processes:")
+    println(io, "  num_julia_chains =        $(m.num_julia_chains)")
+    println("\nActual number of chains:")
     println(io, "  num_chains =              $(m.num_chains)")
+
+    println(io, "\nSample section:")
     println(io, "  num_samples =             ", m.num_samples)
     println(io, "  num_warmups =             ", m.num_warmups)
     println(io, "  save_warmup =             ", m.save_warmup)
