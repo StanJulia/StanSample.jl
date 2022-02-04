@@ -70,9 +70,16 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 ```
 
 Note: Currently I do not suggest to use both C++ level chains and Julia
-level chains. By default, if `num_chains > 1` this method will set
-`num_cpp_chains` to 1 and a message will be displayed. Set the
-postional `check_num_chains` argument to `false` to prevent this.
+level chains. By default, based on  `use_cpp_chains` the `stan_sample()` 
+method will set either `num_cpp_chains=num_chains; num_julia_chains=1` 
+(the default) or `num_julia_chains=num_chains;num_cpp_chain=1`. Set the 
+postional `check_num_chains` argument in the call to `stan_sample()` to 
+`false` to prevent this default behavior.
+
+Threads on C++ level can be used in multiple ways, e.g. to run separate 
+chains and to speed up certain operations. By default StanSample.jl's 
+SampleModel sets the C++ num_threads to 4. See the `graphs` subdirectory
+in the RedCardsStudy in the Examples directory for an example.
 
 """
 function stan_run(m::T, 
