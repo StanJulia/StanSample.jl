@@ -24,7 +24,7 @@ StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan La
 
 See the `example/bernoulli.jl` for a basic example. Many more examples and test scripts are available in this package and also in Stan.jl.
 
-## Multi-threading and -chaining.
+## Multi-threading and multi-chaining behavior.
 
 StanSample.jl v6 uses c++ multithreading in the `cmdstan` binary and requires cmdstan v2.28.2 and up. To activate multithreading in `cmdstan` this needs to be specified during the build process of `cmdstan`. I typically create a `path_to_cmdstan_directory/make/local` file (before running `make -j9 build`) containing `STAN_THREADS=true`.
 
@@ -39,7 +39,7 @@ rc = stan_sample(model; use_cpp_chains=false, [data | init | ...])
 
 By default in either case `num_chains=4`. See `??stan_sample` for all keyword arguments. Internally, `num_chains` will be copied to either `num_cpp_chains` or `num_julia_chains'.`
 
-Currently I do not suggest to use both C++ and Julialevel chains. Based on the value (true or false) of `use_cpp_chains` the `stan_sample()` method will set either `num_cpp_chains=num_chains; num_julia_chains=1` or `num_julia_chains=num_chains;num_cpp_chain=1`.
+Currently I do not suggest to use both C++ and Julia level chains. Based on the value of `use_cpp_chains` (true or false) the `stan_sample()` method will set either `num_cpp_chains=num_chains; num_julia_chains=1` or `num_julia_chains=num_chains;num_cpp_chain=1`.
 
 This default behavior can be disabled by setting the postional `check_num_chains` argument in the call to `stan_sample()` to `false`.
 
