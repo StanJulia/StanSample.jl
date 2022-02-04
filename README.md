@@ -26,11 +26,13 @@ See the `example/bernoulli.jl` for a basic example. Many more examples and test 
 
 ## Multi-threading and multi-chaining behavior.
 
-StanSample.jl v6 uses by default c++ multithreading in the `cmdstan` binary and thus requires cmdstan v2.28.2 and up. To activate multithreading in `cmdstan` this needs to be specified during the build process of `cmdstan`. I typically create a `path_to_cmdstan_directory/make/local` file (before running `make -j9 build`) containing `STAN_THREADS=true`.
+StanSample.jl v6 uses **by default** C++ multithreading in the `cmdstan` binary and for this requires cmdstan v2.28.2 and up.
+
+To activate multithreading in `cmdstan` specify this before the build process of `cmdstan`, i.e. before running `make -j9 build`. I typically create a `path_to_my_cmdstan_directory/make/local` file containing `STAN_THREADS=true`.
 
 This means StanSample.jl v6 now supports 2 mechanisms for in paralel drawing samples for chains, i.e. on C++ level (using threads) and on Julia level (by spawning a Julia process for each chain). 
 
-The `use_cpp_chains` keyword argument in the call to `stan_sampe()` determines if chains are executed on C++ level or on Julia level. By default, `use_cpp_chains=true`.
+The `use_cpp_chains` keyword argument in the call to `stan_sampe()` determines if chains are executed on C++ level or on Julia level. By default, `use_cpp_chains = true`.
 
 If your build of cmdstan does not support C++ threads or you prefer to use Julia level chains, specify:
 ```
@@ -43,7 +45,11 @@ Currently I do not suggest to use both C++ and Julia level chains. Based on the 
 
 This default behavior can be disabled by setting the postional `check_num_chains` argument in the call to `stan_sample()` to `false`.
 
-Threads on C++ level can be used in multiple ways, e.g. to run separate chains and to speed up certain operations. By default StanSample.jl's SampleModel sets the C++ num_threads to 4. See the [graphs](https://github.com/StanJulia/Stan.jl/tree/master/Examples/RedCardsStudy/graphs) subdirectory in the RedCardsStudy in the Examples directory for an example.
+Threads on C++ level can be used in multiple ways, e.g. to run separate chains and to speed up certain operations. By default StanSample.jl's SampleModel sets the C++ num_threads to 4.
+
+See the RedCardsStudy example [graphs](https://github.com/StanJulia/Stan.jl/tree/master/Examples/RedCardsStudy/graphs) in Stan.jl and [here](https://discourse.mc-stan.org/t/stan-num-threads-and-num-threads/25780/5?u=rob_j_goedman) for more details, in particular with respect to just enabling threads and including TBB or not on Intel, and also some indications of the performance on an Apple's M1/ARM processor running native (not using Rosetta and without Intel's TBB). 
+
+In some cases I have seen performance advantages using both Julia threads and C++ threads but too many combined threads certainly doesn't help. Note that if you only want 1000 draws (using 1000 warmup samples for tuning), multiple chains (C++ or Julia) do not help a lot.
 
 ## Installation
 
@@ -70,16 +76,6 @@ using StanSample
 ```
 
 See the docstrings (in particular `??StanSample`) for more help.
-
-## C++ level threads and chains
-
-Even when running multiple chains on Julia level (e.g. `num_chains=4`), it might be benificial to enable multiple C++ threads (e.g. `num_threads=6`) for certain constructs available in the Stan Language Program. 
-
-See the redcardsstudy example in Stan.jl and [here](https://discourse.mc-stan.org/t/stan-num-threads-and-num-threads/25780/5?u=rob_j_goedman) for more details, in particular with respect to just enabling threads and including TBB or not on Intel, and also some indications of the performance on an Apple's M1/ARM processor running native (not using Rosetta and without Intel's TBB). 
-
-Some performance tests/examples are also included in DiffEqBayesStan.jl.
-
-In some cases I have seen performance advantages using both Julia threads and C++ threads but too many combined threads certainly doesn't help. Note that if you only want 1000 draws (using 1000 warmup samples for tuning), multiple chains (C++ or Julia) do not help a lot.
 
 ## Versions
 
