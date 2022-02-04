@@ -22,14 +22,27 @@ Note: StanSample.jl v6 is a breaking change from StanSample.jl v5.
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
-StanSample.jl v6 uses C++ multithreading in the `cmdstan` binary. By default StanSample.jl's SampleModel sets the `num_threads`, `num_cpp_chains` and `num_chains` in the call to `stan_sample` as shown below: 
-```
-rc = stan_sample(sm; [data,] [init,] num_threads=4, num_cpp_chains=4, num_chains=1)`
-```
-
-Currently I do not suggest to use both C++ level chains and Julia level chains. By default, if `num_chains > 1` the `handle_arguments()` method in StanBase.jl will set `num_cpp_chains` to 1 and a message will be displayed. Set the positional `check_num_chains` argument in the call to `stan_sample()` to `false` to prevent this. Above settings imply no spawning on Julia level for each chain and C++ will typically use 1 thread for each chain
-
 See the `example/bernoulli.jl` for a basic example. Many more examples and test scripts are available in this package and also in Stan.jl.
+
+## Multi-threading and -chaining.
+
+StanSample.jl v6 uses c++ multithreading in the `cmdstan` binary and requires cmdstan v2.28.2 and up. To activate multithreading in `cmdstan` this needs to be specified during the build process of `cmdstan`. I typically create a `path_to_cmdstan_directory/make/local` file (before running `make -j9 build`) containing `STAN_THREADS=true`.
+
+This means StanSample now supports 2 mechanisms for in paralel drawing samples for chains, i.e. on C++ level (using threads) and on Julia level (by spawing a Julia process for each chain). 
+
+The `use_cpp_chains` keyword argument for `stan_sampe()` determines if chains are executed on C++ level or on Julia level. By default, `use_cpp_chains=true`.
+
+If your build of cmdstan does not support C++ threads or you prefer to use Julia level chains, specify:
+```
+rc = stan_sample(model; use_cpp_chains=false, [data | init | ...])
+```
+
+By default in ether case `num_chains=4`. See `??stan_sample`. Internally, `num_chains` will be copied to either `num_cpp_chains` or `num_julia_chains'.`
+
+Note: Currently I do not suggest to use both C++ level chains and Julia
+level chains. By default, based on  `use_cpp_chains` the `stan_sample()` method will set either `num_cpp_chains=num_chains; num_julia_chains=1` (the default) or `num_julia_chains=num_chains;num_cpp_chain=1`. Set the postional `check_num_chains` argument in the call to `stan_sample()` to `false` to prevent this default behavior.
+
+Threads on C++ level can be used in multiple ways, e.g. to run separate chains and to speed up certain operations. By default StanSample.jl's SampleModel sets the C++ num_threads to 4. See the [graphs](https://github.com/StanJulia/Stan.jl/tree/master/Examples/RedCardsStudy/graphs) subdirectory in the RedCardsStudy in the Examples directory for an example.
 
 ## Installation
 
@@ -72,6 +85,14 @@ Some performance tests/examples are also included in DiffEqBayesStan.jl.
 In some cases I have seen performance advantages using both Julia threads and C++ threads but too many combined threads certainly doesn't help. Note that if you only want 1000 draws (using 1000 warmup samples for tuning), multiple chains (C++ or Julia) do not help a lot.
 
 ## Versions
+
+### Version 6.1.1
+
+1. Documentation improvement.
+
+### version 6.1.0
+
+1. Modified (simplified?) use of `num_chains` to define either number of chains on C++ or Julia level based on `use_cpp_chains` keyword argument to `stan_sample()`.
 
 ### Version 6.0.0
 
