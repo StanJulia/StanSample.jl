@@ -22,7 +22,7 @@ Not exported
 """
 function read_csv_files(model::SampleModel, output_format::Symbol;
   include_internals=false,
-  chains=1:model.num_cpp_chains*model.num_chains,
+  chains=1:model.num_chains,
   start=1,
   kwargs...)
 

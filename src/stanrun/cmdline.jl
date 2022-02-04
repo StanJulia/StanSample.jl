@@ -6,7 +6,7 @@ $(SIGNATURES)
 
 ### Required arguments
 ```julia
-* `m::CmdStanSampleModel`              : CmdStanSampleModel
+* `m::SampleModel`                     : SampleModel
 * `id::Int`                            : Chain id
 ``` 
 Not exported
@@ -14,8 +14,8 @@ Not exported
 function cmdline(m::SampleModel, id)
   
     #= cmdline with default parameter values
-        `./bernoulli3 num_threads=1 
-        sample num_cpp_chains=1 num_chains=4
+        `./bernoulli3 num_threads=4 
+        sample num_chains=4
         num_samples=1000 num_warmup=1000 save_warmup=0
         thin=1
         adapt engaged=1 gamma=0.05 delta=0.8 kappa=0.75 
@@ -33,7 +33,6 @@ function cmdline(m::SampleModel, id)
     cmd = ``
     # Handle the model name field for unix and windows
     cmd = `$(m.exec_path)`
-
 
     if m.use_cpp_chains
         cmd = `$cmd num_threads=$(m.num_threads)`
