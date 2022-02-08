@@ -88,6 +88,8 @@ $(SIGNATURES)
                                        # Default: `mktempdir()`
 ```
 
+Note: On Windows I have seen issues using `tmpdir`.
+
 """
 function SampleModel(name::AbstractString, model::AbstractString,
     tmpdir=mktempdir())
