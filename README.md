@@ -22,6 +22,16 @@ Note: StanSample.jl v6 is a breaking change from StanSample.jl v5.
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
+You need a working installation of [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html), the path of which you should specify in either `CMDSTAN` or `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like:
+
+```Julia
+# CmdStan setup
+ENV["CMDSTAN"] =
+     expanduser("~/.../cmdstan/") # replace with your path
+```
+
+Or you can define and export CMDSTAN in your .profile, .bashrc, .zshrc, etc.
+
 See the `example/bernoulli.jl` for a basic example. Many more examples and test scripts are available in this package and also in Stan.jl.
 
 ## Multi-threading and multi-chaining behavior.
@@ -32,12 +42,14 @@ To activate multithreading in `cmdstan` specify this before the build process of
 
 This means StanSample.jl v6 now supports 2 mechanisms for in paralel drawing samples for chains, i.e. on C++ level (using threads) and on Julia level (by spawning a Julia process for each chain). 
 
-The `use_cpp_chains` keyword argument in the call to `stan_sampe()` determines if chains are executed on C++ level or on Julia level. By default, `use_cpp_chains = true`.
+The `use_cpp_chains` keyword argument in the call to `stan_sample()` determines if chains are executed on C++ level or on Julia level. By default, `use_cpp_chains = true`.
 
 If your build of cmdstan does not support C++ threads or you prefer to use Julia level chains, specify:
 ```
 rc = stan_sample(model; use_cpp_chains=false, [data | init | ...])
 ```
+
+Note: I have not been able to test these features on Windows. Please file an issue if you would like to help me work through this aspect on Windows.
 
 By default in either case `num_chains=4`. See `??stan_sample` for all keyword arguments. Internally, `num_chains` will be copied to either `num_cpp_chains` or `num_julia_chains`.
 
@@ -59,14 +71,6 @@ This package is registered. It can be installed with:
 pkg> add StanSample.jl
 ```
 
-You need a working [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html) installation, the path of which you should specify in either `CMDSTAN` or `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like:
-
-```Julia
-# CmdStan setup
-ENV["CMDSTAN"] =
-     expanduser("~/.../cmdstan/") # replace with your path
-```
- 
 ## Usage
 
 Use this package like this:
