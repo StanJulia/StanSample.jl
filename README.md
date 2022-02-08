@@ -22,7 +22,7 @@ Note: StanSample.jl v6 is a breaking change from StanSample.jl v5.
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
-You need a working installation of [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html), the path of which you should specify in either `CMDSTAN` or `JULIA_CMDSTAN_HOME`, eg in your `~/.julia/config/startup.jl` have a line like:
+Thus, you need a working installation of [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html), the path of which you should specify in either `CMDSTAN` or `JULIA_CMDSTAN_HOME`, e.g. in your `~/.julia/config/startup.jl` include a line like:
 
 ```Julia
 # CmdStan setup
@@ -44,7 +44,7 @@ This means StanSample.jl v6 now supports 2 mechanisms for in paralel drawing sam
 
 The `use_cpp_chains` keyword argument in the call to `stan_sample()` determines if chains are executed on C++ level or on Julia level. By default, `use_cpp_chains = true`.
 
-If your build of cmdstan does not support C++ threads or you prefer to use Julia level chains, specify:
+**If your build of cmdstan does not support C++ threads or you prefer to use Julia level chains, specify:**
 ```
 rc = stan_sample(model; use_cpp_chains=false, [data | init | ...])
 ```
