@@ -34,7 +34,7 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 * `num_julia_chains=1`                 # Update number of Julia chains.
                                        # Both initialized from num_chains
 
-* `use_cpp_chains=true`                # Run num_chains on c++ level
+* `use_cpp_chains=false`               # Run num_chains on c++ level
                                        # Set to false to use Julia processes
 
 * `num_chains=4`                       # Actual number of chains.

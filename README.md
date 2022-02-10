@@ -36,20 +36,17 @@ See the `example/bernoulli.jl` for a basic example. Many more examples and test 
 
 ## Multi-threading and multi-chaining behavior.
 
-StanSample.jl v6 uses **by default** C++ multithreading in the `cmdstan` binary and for this requires cmdstan v2.28.2 and up.
+StanSample.jl v6 supports 2 mechanisms for in paralel drawing samples for chains, i.e. on C++ level (using threads) and on Julia level (by spawning a Julia process for each chain). 
 
-To activate multithreading in `cmdstan` specify this before the build process of `cmdstan`, i.e. before running `make -j9 build`. I typically create a `path_to_my_cmdstan_directory/make/local` file containing `STAN_THREADS=true`.
+The `use_cpp_chains` keyword argument in the call to `stan_sample()` determines if chains are executed on C++ level or on Julia level. By default, `use_cpp_chains = false`.
 
-This means StanSample.jl v6 now supports 2 mechanisms for in paralel drawing samples for chains, i.e. on C++ level (using threads) and on Julia level (by spawning a Julia process for each chain). 
-
-The `use_cpp_chains` keyword argument in the call to `stan_sample()` determines if chains are executed on C++ level or on Julia level. By default, `use_cpp_chains = true`.
-
-**If your build of cmdstan does not support C++ threads or you prefer to use Julia level chains, specify:**
+From cmdstan-2.28.0 onwards it is possible to use C++ threads to run multiple chains by setting `use_cpp_chains=true` in the call to `stan_sample()`:
 ```
-rc = stan_sample(model; use_cpp_chains=false, [data | init | ...])
+rc = stan_sample(_your_model_; use_cpp_chains=true, [ data | init | ...])
 ```
 
-Note: I have not been able to test these features on Windows. Please file an issue if you would like to help me work through this aspect on Windows.
+To enable multithreading in `cmdstan` specify this before the build process of `cmdstan`, i.e. before running `make -j9 build`. I typically create a `path_to_my_cmdstan_directory/make/local` file containing `STAN_THREADS=true`.
+You can see an exaple in `.github/CI.yml` script.
 
 By default in either case `num_chains=4`. See `??stan_sample` for all keyword arguments. Internally, `num_chains` will be copied to either `num_cpp_chains` or `num_julia_chains`.
 
@@ -82,6 +79,14 @@ using StanSample
 See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
+
+### Version 6.2.1 (soon)
+
+1. Switch to cmdstan-2.29.0 testing.
+
+### Version 6.2.0
+
+1. Revert back to by default use Julia level chains.
 
 ### Version 6.1.1-2
 

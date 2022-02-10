@@ -116,7 +116,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         # num_threads
         4,
         # use_cpp_chains
-        true, 
+        false, 
         # num_cpp_chains
         1,
         # num_julia_chains
