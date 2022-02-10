@@ -83,9 +83,9 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-### Version 6.1.1
+### Version 6.1.1-2
 
-1. Documentation improvement.
+1. Documentation improvements.
 
 ### version 6.1.0
 
