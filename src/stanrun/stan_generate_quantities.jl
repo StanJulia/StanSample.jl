@@ -13,13 +13,11 @@ $(SIGNATURES)
 Returns a vector with available chain suffixes.
 """
 function available_chains(model::SampleModel)
-  res = AbstractString[]
+  result = AbstractString[]
   for i in 1:model.num_chains
-    for j in 1:model.num_cpp_chains
-      append!(res, ["$(i)_$(j)"])
-    end
+      append!(result, ["$(i)"])
   end
-  res
+  result
 end
 
 export

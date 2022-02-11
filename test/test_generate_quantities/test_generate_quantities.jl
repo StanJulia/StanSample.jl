@@ -33,6 +33,6 @@ sm = SampleModel("Generate_quantities", gq, joinpath(@__DIR__, "tmp"));
 rc = stan_sample(sm; data)
 
 if success(rc)
-  df = stan_generate_quantities(sm, 1, "1_1")
+  df = stan_generate_quantities(sm, 1, "1")
   df |> display
 end
