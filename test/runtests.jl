@@ -1,5 +1,8 @@
 using StanSample, Test
 
+import CompatHelperLocal as CHL
+CHL.@check()
+
 if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
 
   TestDir = @__DIR__
