@@ -50,7 +50,7 @@ is returned. Each call will return e new set of values.
 
 """
 function stan_generate_quantities(
-  m::SampleModel, id=1, chain="1_1";
+  m::SampleModel, id=1, chain="1";
   kwargs...)
   
   if id > m.num_chains
