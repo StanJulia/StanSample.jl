@@ -80,9 +80,13 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-### Version 6.2.1 (soon)
+### Version 6.2.2 (soon)
 
 1. Switch to cmdstan-2.29.0 testing.
+
+### Version 6.2.1
+
+1. Better handling of .csv chain retrieval in read_csv_files.
 
 ### Version 6.2.0
 

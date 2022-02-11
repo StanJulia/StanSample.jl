@@ -97,9 +97,14 @@ function stan_run(m::T,
     end
 
     # Remove existing sample files
-    for id in 1:m.num_julia_chains
-        sfile = sample_file_path(m.output_base, id)
-        isfile(sfile) && rm(sfile)
+    if m.use_cpp_chains
+            sfile = m.output_base  * "_chain.csv"
+            isfile(sfile) && rm(sfile)
+    else
+        for id in 1:m.num_julia_chains
+            sfile = sample_file_path(m.output_base, id)
+            isfile(sfile) && rm(sfile)
+        end
     end
 
     m.data_file = String[]
@@ -119,7 +124,7 @@ function stan_run(m::T,
     m.sample_file = String[]
     m.log_file = String[]
     m.diagnostic_file = String[]
-    m.cmds = [stan_cmds(m, id; kwargs...) for id in 1:m.num_julia_chains]
+    m.cmds = [stan_cmds(m, id, check_num_chains; kwargs...) for id in 1:m.num_julia_chains]
 
     #println(typeof(m.cmds))
     #println()
@@ -137,8 +142,14 @@ $(SIGNATURES)
 
 Internal, not exported.
 """
-function stan_cmds(m::T, id::Integer; kwargs...) where {T <: CmdStanModels}
-    append!(m.sample_file, [sample_file_path(m.output_base, id)])
+function stan_cmds(m::T, id::Integer, check_num_chains::Bool; kwargs...) where {T <: CmdStanModels}
+    if m.use_cpp_chains && check_num_chains
+        append!(m.sample_file, [m.output_base  * "_chain.csv"])
+    else
+        for id in 1:m.num_julia_chains
+            append!(m.sample_file, [sample_file_path(m.output_base, id)])
+        end
+    end
     append!(m.log_file, [log_file_path(m.output_base, id)])
     if length(m.diagnostic_file) > 0
       append!(m.diagnostic_file, [diagnostic_file_path(m.output_base, id)])
