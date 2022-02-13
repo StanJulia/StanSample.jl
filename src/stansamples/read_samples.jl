@@ -81,7 +81,7 @@ has changed frequently!
 function read_samples(model::SampleModel, output_format=:table;
   include_internals=false,
   return_parameters=false,
-  chains=1:max(model.num_chains, model.num_cpp_chains),
+  chains=1:model.num_chains,
   start=1,
   kwargs...)
 

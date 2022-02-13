@@ -7,9 +7,6 @@ Draw from a StanJulia SampleModel (<: CmdStanModel.)
 ## Required argument
 ```julia
 * `m <: CmdStanModels`                 # SampleModel
-* `use_json=true`                      # Set to false for .R data files.
-                                       # Currently init.R files are rejected.
-* `check_num_chains=true`              # Check for C++ chains or Julia level chains
 ```
 
 ### Most frequently used keyword arguments
@@ -30,6 +27,7 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 ### Additional configuration keyword arguments
 ```julia
 * `num_threads=4`                      # Update number of c++ threads.
+* `check_num_chains=true`              # Check for C++ chains or Julia level chains
 * `num_cpp_chains=1`                   # Update number of c++ chains.
 * `num_julia_chains=1`                 # Update number of Julia chains.
                                        # Both initialized from num_chains
@@ -65,6 +63,8 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 * `stepsize=1.0`                       # Step size for discrete evolution
 * `stepsize_jitter=0.0`                # Random jitter on step size ( [%] )
 
+* `use_json=true`                      # Set to false for .R data files.
+
 * `summary=true`                       # Create stansummary .csv file
 * `print_summary=false`                # Display summary
 ```
@@ -73,7 +73,7 @@ Note: Currently I do not suggest to use both C++ level chains and Julia
 level chains. By default, based on  `use_cpp_chains` the `stan_sample()` 
 method will set either `num_cpp_chains=num_chains; num_julia_chains=1` 
 (the default) or `num_julia_chains=num_chains;num_cpp_chain=1`. Set the 
-postional `check_num_chains` argument in the call to `stan_sample()` to 
+`check_num_chains` keyword argument in the call to `stan_sample()` to 
 `false` to prevent this default behavior.
 
 Threads on C++ level can be used in multiple ways, e.g. to run separate 
@@ -82,12 +82,9 @@ SampleModel sets the C++ num_threads to 4. See the `graphs` subdirectory
 in the RedCardsStudy in the Examples directory for an example.
 
 """
-function stan_run(m::T, 
-    use_json=true,
-    check_num_chains=true;
-    kwargs...) where {T <: CmdStanModels}
+function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
 
-    handle_keywords!(m, kwargs, check_num_chains)
+    handle_keywords!(m, kwargs)
     
     # Diagnostics files requested?
     diagnostics = false
@@ -107,9 +104,10 @@ function stan_run(m::T,
         end
     end
 
+    # Create cmdstan data & init input files (.json or .R)
     m.data_file = String[]
     m.init_file = String[]
-    if use_json
+    if m.use_json
         :init in keys(kwargs) && update_json_files(m, kwargs[:init],
             m.num_julia_chains, "init")
         :data in keys(kwargs) && update_json_files(m, kwargs[:data],
@@ -124,15 +122,12 @@ function stan_run(m::T,
     m.sample_file = String[]
     m.log_file = String[]
     m.diagnostic_file = String[]
-    m.cmds = [stan_cmds(m, id, check_num_chains; kwargs...) for id in 1:m.num_julia_chains]
+    m.cmds = [stan_cmds(m, id; kwargs...) for id in 1:m.num_julia_chains]
 
-    #println(typeof(m.cmds))
-    #println()
     #println(m.cmds)
 
     run(pipeline(par(m.cmds), stdout=m.log_file[1]))
-    #run.(pipeline(m.cmds, stdout=m.log_file[1]))
-end
+ end
 
 """
 
@@ -142,8 +137,8 @@ $(SIGNATURES)
 
 Internal, not exported.
 """
-function stan_cmds(m::T, id::Integer, check_num_chains::Bool; kwargs...) where {T <: CmdStanModels}
-    if m.use_cpp_chains && check_num_chains
+function stan_cmds(m::T, id::Int; kwargs...) where {T <: CmdStanModels}
+    if m.use_cpp_chains && m.check_num_chains
         append!(m.sample_file, [m.output_base  * "_chain.csv"])
     else
         for id in 1:m.num_julia_chains

@@ -64,6 +64,11 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     "test_basic_runs/test_parse_interpolate.jl"
   ]
 
+  @testset "Bernoulli cpp tests" begin
+      println("\nTesting bernoulli_cpp.jl")
+      include(joinpath(TestDir, "test_bernoulli", "bernoulli_cpp.jl"))
+  end
+
   @testset "Bernoulli basic run tests" begin
     for test in basic_run_tests
       println("\nTesting: $test.")

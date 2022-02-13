@@ -8,7 +8,7 @@ $(SIGNATURES)
 
 ### Required arguments
 ```julia
-* `model`                              : SampleModel
+* `m`                              : SampleModel
 * `output_format`                      : Requested output format
 ```
 
@@ -20,38 +20,36 @@ $(SIGNATURES)
 ```
 Not exported
 """
-function read_csv_files(model::SampleModel, output_format::Symbol;
+function read_csv_files(m::SampleModel, output_format::Symbol;
   include_internals=false,
-  chains=1:model.num_chains,
+  chains=1:m.num_chains,
   start=1,
   kwargs...)
 
   local a3d, monitors, index, idx, indvec, ftype, noofsamples
   
   # File path components of sample files (missing the "_$(i).csv" part)
-  output_base = model.output_base
+  output_base = m.output_base
   name_base ="_chain"
 
   # How many samples?
-  if model.save_warmup
+  if m.save_warmup
     n_samples = floor(Int,
-      (model.num_samples+model.num_warmups)/model.thin)
+      (m.num_samples+m.num_warmups)/m.thin)
   else
-    n_samples = floor(Int, model.num_samples/model.thin)
+    n_samples = floor(Int, m.num_samples/m.thin)
   end
   
   init_a3d = true
-  cpp_chains = model.num_cpp_chains
-  julia_chains = model.num_julia_chains
-  total_number_of_chains = cpp_chains * julia_chains
   current_chain = 0
-  #println([total_number_of_chains, current_chain])
+  #println("Reading $(m.num_chains) chains.")
 
   # Read .csv files and return a3d[n_samples, parameters, n_chains]
-  for i in 1:julia_chains   # Number of exec processes
-    for k in 1:cpp_chains   # Number of cpp chains handled in cmdstan
+  for i in 1:m.num_julia_chains   # Number of exec processes
+    for k in 1:m.num_cpp_chains   # Number of cpp chains handled in cmdstan
 
-      if model.num_cpp_chains == 1 || model.num_julia_chains == 1
+      if (m.use_cpp_chains && m.check_num_chains) || 
+        !m.use_cpp_chains || m.num_cpp_chains == 1
         csvfile = output_base*name_base*"_$(i).csv"
       else
         if i == 1
@@ -80,7 +78,7 @@ function read_csv_files(model::SampleModel, output_format::Symbol;
         # Allocate a3d as we now know number of parameters
         if init_a3d
           init_a3d = false
-          a3d = fill(0.0, n_samples, n_parameters, total_number_of_chains)
+          a3d = fill(0.0, n_samples, n_parameters, m.num_chains)
         end
         
         skipchars(isspace, instream, linecomment='#')

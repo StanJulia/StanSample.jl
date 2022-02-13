@@ -5,7 +5,8 @@ mutable struct SampleModel <: CmdStanModels
     model::AbstractString;             # Stan language model program
     num_threads::Int64;                # Number of C++ threads
 
-    use_cpp_chains::Bool;              # 
+    check_num_chains::Bool;            # Enforce either C++ or Julia chains
+    use_cpp_chains::Bool;              # Enable C++ threads and chains
     num_cpp_chains::Int64;             # Number of C++ chains in each exec process
     num_julia_chains::Int64;           # Number of julia chains ( == processes)
     num_chains::Int64;                 # Actual number of chains
@@ -50,6 +51,9 @@ mutable struct SampleModel <: CmdStanModels
     tmpdir::AbstractString;            # Holds all created files
     # Cmdstan path
     exec_path::AbstractString;         # Path to the cmdstan excutable
+
+    use_json::Bool;                    # Use JSON for data and init files
+
     # Data and init file paths
     data_file::Vector{AbstractString}; # Array of data files input to cmdstan
     init_file::Vector{AbstractString}; # Array of init files input to cmdstan
@@ -115,8 +119,8 @@ function SampleModel(name::AbstractString, model::AbstractString,
     SampleModel(name, model, 
         # num_threads
         4,
-        # use_cpp_chains
-        false, 
+        # check_num_chains, use_cpp_chains
+        true, false, 
         # num_cpp_chains
         1,
         # num_julia_chains
@@ -138,29 +142,22 @@ function SampleModel(name::AbstractString, model::AbstractString,
         2pi,
         # metric, metric_file, stepsize, stepsize_jitter
         :diag_e, "", 1.0, 0.0,
+
         # Ouput settings
-        #Output(),
-        output_base,
-        # Tmpdir settings
-        tmpdir,
-        # exec_path
-        exec_path,
-        # Data files
-        AbstractString[],
-        # Init files
-        AbstractString[],  
-        # Command lines
-        Cmd[],
-        # Sample .csv files  
-        String[],
-        # Log files
-        String[],
-        # Diagnostic files
-        String[],
-        # Create stansummary result
-        true,
-        # Display stansummary result
-        false,
+        output_base,                   # Output base
+        tmpdir,                        # Tmpdir settings
+        exec_path,                     # exec_path
+
+        true,                          # Use JSON for cmdstan input files
+        AbstractString[],              # Data files
+        AbstractString[],              # Init files
+
+        Cmd[],                         # Command lines
+        String[],                      # Sample .csv files 
+        String[],                      # Log files
+        String[],                      # Diagnostic files
+        true,                          # Create stansummary result
+        false,                         # Display stansummary result
         cmdstan_home
     )
 end
@@ -171,6 +168,7 @@ function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
     println("\nC++ threads per forked process:")
     println(io, "  num_threads =             $(m.num_threads)")
     println(io, "  use_cpp_chains =          $(m.use_cpp_chains)")
+    println(io, "  check_num_chains =        $(m.check_num_chains)")
     println("\nC++ chains per forked process:")
     println(io, "  num_cpp_chains =          $(m.num_cpp_chains)")
     println("\nNo of forked Julia processes:")
@@ -218,6 +216,8 @@ function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
             println(io, "    algorithm =         Unknown")
         end
     end
+    println(io, "\nData and init files:")
+    println(io, "  use_json =                ", m.use_json)
     println(io, "\nStansummary section:")
     println(io, "  summary                   ", m.summary)
     println(io, "  print_summary             ", m.print_summary)

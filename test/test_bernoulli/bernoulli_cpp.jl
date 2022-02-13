@@ -1,6 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
-using StanSample, DataFrames
+using StanSample, DataFrames, Test
 
 ProjDir = @__DIR__
 
@@ -28,8 +28,9 @@ rc1 = stan_sample(sm; data);
 
 if success(rc1)
   st = read_samples(sm)
-  display(DataFrame(st))
+  #display(DataFrame(st))
 end
+@test size(DataFrame(st), 1) == 4000
 
 isdir(tmpdir) && rm(tmpdir; recursive=true)
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
@@ -37,8 +38,9 @@ rc2 = stan_sample(sm; use_cpp_chains=true, data);
 
 if success(rc2)
   st = read_samples(sm)
-  display(DataFrame(st))
+  #display(DataFrame(st))
 end
+@test size(DataFrame(st), 1) == 4000
 
 isdir(tmpdir) && rm(tmpdir; recursive=true)
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
@@ -47,8 +49,9 @@ rc3 = stan_sample(sm; use_cpp_chains=true, check_num_chains=false,
 
 if success(rc3)
   st = read_samples(sm)
-  display(DataFrame(st))
+  #display(DataFrame(st))
 end
+@test size(DataFrame(st), 1) == 4000
 
 isdir(tmpdir) && rm(tmpdir; recursive=true)
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
@@ -57,8 +60,9 @@ rc4 = stan_sample(sm; use_cpp_chains=true, check_num_chains=false,
 
 if success(rc4)
   st = read_samples(sm)
-  display(DataFrame(st))
+  #display(DataFrame(st))
 end
+@test size(DataFrame(st), 1) == 16000
 
 isdir(tmpdir) && rm(tmpdir; recursive=true)
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
@@ -67,8 +71,9 @@ rc4 = stan_sample(sm; use_cpp_chains=true, check_num_chains=false,
 
 if success(rc4)
   st = read_samples(sm)
-  display(DataFrame(st))
+  #display(DataFrame(st))
 end
+@test size(DataFrame(st), 1) == 4000
 
 isdir(tmpdir) && rm(tmpdir; recursive=true)
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
@@ -77,5 +82,6 @@ rc4 = stan_sample(sm; use_cpp_chains=true, check_num_chains=false,
 
 if success(rc4)
   st = read_samples(sm)
-  display(DataFrame(st))
+  #display(DataFrame(st))
 end
+@test size(DataFrame(st), 1) == 4000
