@@ -1,4 +1,4 @@
-using CSV
+using StanBase, CSV
 
 """
 Suffixes in csv file names created by StanSample.jl.
@@ -12,12 +12,33 @@ $(SIGNATURES)
 
 Returns a vector with available chain suffixes.
 """
-function available_chains(model::SampleModel)
-  result = AbstractString[]
-  for i in 1:model.num_chains
-      append!(result, ["$(i)"])
+function available_chains(m::SampleModel)
+  suffix_array = AbstractString[]
+  for i in 1:m.num_julia_chains   # Number of exec processes
+      for k in 1:m.num_cpp_chains   # Number of cpp chains handled in cmdstan
+
+        if (m.use_cpp_chains && m.check_num_chains) || 
+          !m.use_cpp_chains || m.num_cpp_chains == 1
+          if m.use_cpp_chains && m.num_cpp_chains > 1
+            csvfile_suffix = "$(k)"
+          else
+            #if m.use_cpp_chains && m.num_cpp_chains == 1
+              csvfile_suffix = "$(i)"
+            #else
+            #  csvfile_suffix = "$(k)"
+            #end
+          end
+        else
+          if i == 1
+            csvfile_suffix = "$(i)_$(k)"
+          else
+            csvfile_suffix = "$(i)_$(k + i - 1)"
+          end
+        end
+        append!(suffix_array, [csvfile_suffix])
+      end
   end
-  result
+  Dict(:chain => collect(1:length(suffix_array)), :suffix => suffix_array)
 end
 
 export
@@ -36,17 +57,19 @@ $(SIGNATURES)
 ### Optional arguments
 ```julia
 * `id=1`                     : Chain id, needs to be in 1:model.num_chains
-* `chain="1_1"               : CSV file suffix, e.g. ...chain_1_1.csv 
+* `chain="1"                 : CSV file suffix, e.g. ...chain_1_1.csv 
 ```
 
 In chain suffix `...chain_i_j`:
 ```julia 
-i : index into num_chains 
-j : index in num_cpp_chains 
+i : index in 1:num_julia_chains 
+j : index in 1:num_cpp_chains 
 ```
 
 The function checks the values of `id` and `chain`. If correct, a DataFrame
-is returned. Each call will return e new set of values.
+is returned. Each call will return a new set of values.
+
+See also `?available_chains`.
 
 """
 function stan_generate_quantities(
@@ -54,12 +77,12 @@ function stan_generate_quantities(
   kwargs...)
   
   if id > m.num_chains
-    @info "Please select an id in $(1:m.num_chains)."
+    @info "Please select an id in $(1:m.num_julia_chains)."
     return nothing
   end
   
-  if !(chain in available_chains(m))
-    @info "Chain $(chain) not in $(available_chains(m))"
+  if !(chain in available_chains(m)[:suffix])
+    @info "Chain $(chain) not in $(available_chains(m)[:suffix])"
     return nothing
   end
 

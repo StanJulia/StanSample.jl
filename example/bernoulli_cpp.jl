@@ -30,6 +30,7 @@ if success(rc1)
   st = read_samples(sm)
   display(DataFrame(st))
 end
+display(available_chains(sm))
 
 isdir(tmpdir) && rm(tmpdir; recursive=true)
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
@@ -39,6 +40,7 @@ if success(rc2)
   st = read_samples(sm)
   display(DataFrame(st))
 end
+display(available_chains(sm))
 
 isdir(tmpdir) && rm(tmpdir; recursive=true)
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
@@ -49,6 +51,7 @@ if success(rc3)
   st = read_samples(sm)
   display(DataFrame(st))
 end
+display(available_chains(sm))
 
 isdir(tmpdir) && rm(tmpdir; recursive=true)
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
@@ -59,6 +62,7 @@ if success(rc4)
   st = read_samples(sm)
   display(DataFrame(st))
 end
+display(available_chains(sm))
 
 isdir(tmpdir) && rm(tmpdir; recursive=true)
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
@@ -69,6 +73,7 @@ if success(rc4)
   st = read_samples(sm)
   display(DataFrame(st))
 end
+display(available_chains(sm))
 
 isdir(tmpdir) && rm(tmpdir; recursive=true)
 sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
@@ -79,3 +84,4 @@ if success(rc4)
   st = read_samples(sm)
   display(DataFrame(st))
 end
+display(available_chains(sm))
