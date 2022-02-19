@@ -1,8 +1,8 @@
 # Installing cmdstan.
 
-```
-# Clone the cmdstan.git repo. Big! Takes a while, by far the longest step.
+## Clone the cmdstan.git repo. Big! Takes a while, by far the longest step.
 
+```
 git clone https://github.com/stan-dev/cmdstan.git --recursive cmdstan
 
 # or e.g.
@@ -42,7 +42,8 @@ bin/stansummary output_*.csv
 
 # For Stan.jl etc. to find cmdstan, export CMDSTAN
 
-export CMDSTAN=`pwd`   # Use value of `pwd` here```
+export CMDSTAN=`pwd`   # Use value of `pwd` here
+
 ```
 
 ## Below an example of the `make/local` file mentioned above.
