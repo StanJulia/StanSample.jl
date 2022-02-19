@@ -7,7 +7,11 @@ git clone https://github.com/stan-dev/cmdstan.git --recursive cmdstan
 
 # or e.g.
 # git clone -b v2.28.2 https://github.com/stan-dev/cmdstan.git --recursive cmdstan-2.28.2
+```
 
+## Customize cmdstan.
+
+```
 cd cmdstan
 
 # Create ./make/local from ./make/local.example or copy from a previous install
@@ -28,12 +32,23 @@ echo "CXX=clang++\nSTAN_THREADS=true" > ./make/local
 # If you prefer using gcc instead of clang++ use:
 # echo "STAN_THREADS=true" > ./make/local
 
+```
+
+## Build cmdstan.
+
+```
+
 # If a previous install has been compiled in this directory:
 # make clean-all   # or
 # make -B -j9 build
 
 make -j9 build
 
+```
+
+## Test cmdstan was built correctly.
+
+```
 make examples/bernoulli/bernoulli
 
 ./examples/bernoulli/bernoulli num_threads=6 sample num_chains=4 data file=examples/bernoulli/bernoulli.data.json
@@ -46,7 +61,7 @@ export CMDSTAN=`pwd`   # Use value of `pwd` here
 
 ```
 
-## Below an example of the `make/local` file mentioned above.
+## Below an example of the `make/local` file mentioned above with the CXX and STAN_THREADS lines enabled.
 
 ```
 # To use this template, make a copy from make/local.example to make/local
@@ -65,4 +80,5 @@ STAN_THREADS=true
 # STAN_MPI=true
 # CXX=mpicxx
 # TBB_CXX_TYPE=gcc
+
 ```
