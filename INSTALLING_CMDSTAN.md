@@ -1,32 +1,48 @@
 # Installing cmdstan.
 
 ```
-# Clone cmdstan (currently cmdstan-2.29.0)
+# Clone the cmdstan.git repo. Big! Takes a while, by far the longest step.
 
 git clone https://github.com/stan-dev/cmdstan.git --recursive cmdstan
 
-# Switch to the cmdstan build directory (later on pointed to by CMDSTAN from Julia)
+# or e.g.
+# git clone -b v2.28.2 https://github.com/stan-dev/cmdstan.git --recursive cmdstan-2.28.2
 
 cd cmdstan
 
-# Create a ./make/local file (see below, derived from ./make/local-example)
+# Create ./make/local from ./make/local.example or copy from a previous install
+# ls -lia ./make/local
+#ls: ./make/local: No such file or directory
 
-make -j9 build   # or make clean-all
-                 # 9 is the number of threads used for compiling cmdstan
+# If you want to customize the ./make/local.example file
+# ls -lia ./make/local.example
+# cp -R ./make/local.example ./make/local
+# ls -lia ./make/local
 
-# Compile the Bernoulli example
+# Now un-comment the CXX=clang++ and STAN_THREADS=true lines in ./make/local.
+
+# Or do:
+touch ./make/local
+echo "CXX=clang++\nSTAN_THREADS=true" > ./make/local
+
+# If you prefer using gcc instead of clang++ use:
+# echo "STAN_THREADS=true" > ./make/local
+
+# If a previous install has been compiled in this directory:
+# make clean-all   # or
+# make -B -j9 build
+
+make -j9 build
 
 make examples/bernoulli/bernoulli
 
-# Run the example using cmdstan
+./examples/bernoulli/bernoulli num_threads=6 sample num_chains=4 data file=examples/bernoulli/bernoulli.data.json
 
-./examples/bernoulli/bernoulli num_threads=6 sample num_chains=4 data
-        file=examples/bernoulli/bernoulli.data.json
+bin/stansummary output_*.csv
 
-# Test the stanssummary binary
+# For Stan.jl etc. to find cmdstan, export CMDSTAN
 
-bin/stansummary output_1.csv
-```
+export CMDSTAN=`pwd`   # Use value of `pwd` here```
 
 Below an example of the `make/local` file mentioned above.
 
