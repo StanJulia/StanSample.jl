@@ -43,8 +43,9 @@ bin/stansummary output_*.csv
 # For Stan.jl etc. to find cmdstan, export CMDSTAN
 
 export CMDSTAN=`pwd`   # Use value of `pwd` here```
+```
 
-Below an example of the `make/local` file mentioned above.
+## Below an example of the `make/local` file mentioned above.
 
 ```
 # To use this template, make a copy from make/local.example to make/local
@@ -54,7 +55,7 @@ Below an example of the `make/local` file mentioned above.
 # everything gets rebuilt.
 
 # Change the C++ compiler if needed
-CXX=clang++                    # Only needed on macOS.
+CXX=clang++                    # Only needed on macOS if clang++ is preferred.
 
 # Enable threading
 STAN_THREADS=true
