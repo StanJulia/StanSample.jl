@@ -80,7 +80,7 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-### Version 6.2.2 (soon)
+### Version 6.3.0 (soon)
 
 1. Switch to cmdstan-2.29.0 testing.
 
