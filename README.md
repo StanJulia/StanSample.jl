@@ -32,6 +32,8 @@ ENV["CMDSTAN"] =
 
 Or you can define and export CMDSTAN in your .profile, .bashrc, .zshrc, etc.
 
+For more details see [this file](https://github.com/StanJulia/StanSample.jl/blob/master/INSTALLING_CMDSTAN.md).
+
 See the `example/bernoulli.jl` for a basic example. Many more examples and test scripts are available in this package and also in Stan.jl.
 
 ## Multi-threading and multi-chaining behavior.

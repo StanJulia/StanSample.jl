@@ -6,7 +6,7 @@
 git clone https://github.com/stan-dev/cmdstan.git --recursive cmdstan
 
 # or e.g.
-# git clone -b v2.28.2 https://github.com/stan-dev/cmdstan.git --recursive cmdstan-2.28.2
+# git clone -b v2.28.2 https://github.com/stan-dev/cmdstan.git --recursive cmdstan
 ```
 
 ## Customize cmdstan.
@@ -55,8 +55,10 @@ make examples/bernoulli/bernoulli
 
 bin/stansummary output_*.csv
 
-# For Stan.jl etc. to find cmdstan, export CMDSTAN
+```
 
+## For Stan.jl etc. to find cmdstan, export CMDSTAN
+```
 export CMDSTAN=`pwd`   # Use value of `pwd` here
 
 ```
