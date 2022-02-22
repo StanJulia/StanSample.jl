@@ -38,7 +38,8 @@ function cmdline(m::SampleModel, id)
         cmd = `$cmd num_threads=$(m.num_threads)`
         cmd = `$cmd sample num_chains=$(m.num_cpp_chains)`
     else
-        cmd = `$cmd sample num_chains=1`
+        #cmd = `$cmd sample num_chains=1`
+        cmd = `$cmd sample`
     end
 
     cmd = `$cmd num_samples=$(m.num_samples) num_warmup=$(m.num_warmups)`
