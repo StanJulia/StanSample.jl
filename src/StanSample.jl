@@ -36,7 +36,7 @@ import StanBase: update_R_files, update_json_files
 import StanBase: data_file_path, init_file_path, sample_file_path
 import StanBase: generated_quantities_file_path, log_file_path
 import StanBase: diagnostic_file_path, setup_diagnostics
-import StanBase: stan_summary, read_summary
+#import StanBase: stan_summary, read_summary
 
 function __init__()
   @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("utils/particles.jl")
@@ -52,10 +52,12 @@ include("stanrun/cmdline.jl")
 include("stanrun/diagnose.jl")
 include("stanrun/stan_generate_quantities.jl")
 
+include("stansamples/available_chains.jl")
 include("stansamples/read_samples.jl")
 include("stansamples/read_csv_files.jl")
 include("stansamples/convert_a3d.jl")
-#include("stansamples/read_generated_quantities.jl")
+include("stanSamples/stan_summary.jl")
+include("stanSamples/read_summary.jl")
 
 include("utils/namedtuples.jl")
 include("utils/tables.jl")
@@ -72,7 +74,7 @@ export
   read_summary,
   stan_summary,
   stan_generate_quantities,
-  #read_generated_quantities,
+  available_chains,
   diagnose,
   make_string,
   set_make_string
