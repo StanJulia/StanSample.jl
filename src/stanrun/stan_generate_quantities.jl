@@ -10,7 +10,7 @@ $(SIGNATURES)
 * `model`                    : SampleModel
 ```
 
-### Optional arguments
+### Optional positional arguments
 ```julia
 * `id=1`                     : Chain id, needs to be in 1:model.num_chains
 * `chain="1"                 : CSV file suffix, e.g. ...chain_1_1.csv 
