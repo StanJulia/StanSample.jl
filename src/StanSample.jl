@@ -24,7 +24,7 @@ using Requires
 
 using CSV, DelimitedFiles, Unicode, Parameters
 using NamedTupleTools, Tables, TableOperations
-using StanDump, DataFrames
+using DataFrames
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
