@@ -85,7 +85,7 @@ in the RedCardsStudy in the Examples directory for an example.
 function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
 
     handle_keywords!(m, kwargs)
-    
+
     # Diagnostics files requested?
     diagnostics = false
     if :diagnostics in keys(kwargs)
@@ -107,17 +107,11 @@ function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
     # Create cmdstan data & init input files (.json or .R)
     m.data_file = String[]
     m.init_file = String[]
-    if m.use_json
-        :init in keys(kwargs) && update_json_files(m, kwargs[:init],
-            m.num_julia_chains, "init")
-        :data in keys(kwargs) && update_json_files(m, kwargs[:data],
-            m.num_julia_chains, "data")
-    else
-        :init in keys(kwargs) && update_R_files(m, kwargs[:init],
-            m.num_julia_chains, "init")
-        :data in keys(kwargs) && update_R_files(m, kwargs[:data],
-            m.num_julia_chains, "data")
-    end
+    m.use_json || throw(ArgumentError("R files no longer supported, use JSON instead."))
+    :init in keys(kwargs) && update_json_files(m, kwargs[:init],
+                                               m.num_julia_chains, "init")
+    :data in keys(kwargs) && update_json_files(m, kwargs[:data],
+                                               m.num_julia_chains, "data")
 
     m.sample_file = String[]
     m.log_file = String[]
