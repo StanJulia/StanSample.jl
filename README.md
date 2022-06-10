@@ -82,6 +82,11 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 6.7.0
+
+1. Drops support for creating R files.
+2. Requires StanBase 4.7.0
+
 ### Version 6.4.0
 
 1. Introduced `available_chains("your model")`
