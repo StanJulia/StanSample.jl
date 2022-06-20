@@ -41,7 +41,7 @@ if success(rc)
   # chns = read_samples(sm, :mcmcchains)
   # See examples in directory `examples_mcmcchains`
 
-  df |> display
+  df
 end
 
 isdir(tmpdir) && rm(tmpdir, recursive=true)
@@ -65,5 +65,5 @@ if success(rc)
   # chns = read_samples(sm, :mcmcchains)
   # See examples in directory `examples_mcmcchains`
 
-  df |> display
+  df
 end

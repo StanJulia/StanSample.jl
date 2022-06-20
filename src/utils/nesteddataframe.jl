@@ -1,0 +1,83 @@
+function find_nested_columns(df::DataFrame)
+    n = string.(names(df))
+    nested_columns = String[]
+    for (i, s) in enumerate(n)
+        r = split(s, ".")
+        if length(r) > 1
+            append!(nested_columns, [r[1]])
+        end
+    end
+    unique(nested_columns)
+end
+
+function select_nested_column(df::DataFrame, var::Union{Symbol, String})
+    n = string.(names(df))
+    sym = string(var)
+    sel = String[]
+    for (i, s) in enumerate(n)
+        if length(s) > length(sym) && sym == n[i][1:length(sym)] && n[i][length(sym)+1] in ['.']
+            append!(sel, [n[i]])
+        end
+    end
+    length(sel) == 0 && @warn "$syms not in $n"
+    #println(sel)
+    df[:, sel]
+end
+
+function matrix(df::DataFrame, var::Union{Symbol, String})
+    colsyms = Symbol.(names(df))
+    sym = Symbol(var)
+    res = Float64[]
+
+    if sym in colsyms
+        d = df[:, sym]
+        res = zeros(length(d), length(d[1]))
+        indx = 1
+        for r in eachrow(d)
+            res[indx, :] = d[indx]
+            indx += 1
+        end
+    end
+    res
+end
+
+function convert_a3d(a3d_array, cnames, ::Val{:nesteddataframe})
+
+    # Inital DataFrame
+    df = DataFrame(a3d_array[:, :, 1], Symbol.(cnames))
+
+    # Append the other chains
+    for j in 2:size(a3d_array, 3)
+        df = vcat(df, DataFrame(a3d_array[:, :, j], Symbol.(cnames)))
+    end
+
+    nested_columns = find_nested_columns(df)
+    #println(nested_columns)
+    if length(nested_columns) == 0
+        @info "No nested columns found."
+        return df
+    end
+        
+    dft = deepcopy(df)
+    for colname in Symbol.(nested_columns)
+        r = split(string(colname), ".")
+        #println(r[1])
+        col_df = select_nested_column(dft, Symbol(r[1]))
+        col_names = names(col_df)
+        #println(col_names)
+        r = split(col_names[end] , ".")
+        #println(r)
+        if length(r) == 2
+            dft[!, colname] = [Vector(i) for i in eachrow(col_df)]
+        elseif length(r) == 3
+            dims = Meta.parse.(r[2:end])
+            #println(dims)
+            dft[!, colname] = [reshape(Vector(i), dims[1], dims[2]) for i in eachrow(col_df)]
+        end
+        for col in string.(col_names)
+            dft = DataFrames.select(dft, Not(Symbol(col)))
+        end
+    end
+    dft
+
+end

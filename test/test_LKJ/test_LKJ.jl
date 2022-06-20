@@ -73,3 +73,7 @@ if success(rc2_0s)
   sdf2_0s = read_summary(m2_0s)
   sdf2_0s[[17, 18, 19, 21, 22, 25], :] |> display
 end
+
+nd = read_samples(m2_0s, :nesteddataframe)
+@test size(nd) == (36000, 4)
+

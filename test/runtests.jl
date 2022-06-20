@@ -133,6 +133,21 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
 
+  test_LKJ = [
+    "test_LKJ/sr2_m14.6.jl",
+    "test_LKJ/test_LKJ.jl",
+  ]
+
+  @testset "Nested DataFrame" begin
+    for test in test_LKJ
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
+
+
   include(joinpath(TestDir, ))
   println()
   

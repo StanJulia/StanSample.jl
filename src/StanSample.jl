@@ -62,6 +62,7 @@ include("stansamples/read_summary.jl")
 include("utils/namedtuples.jl")
 include("utils/tables.jl")
 include("utils/dataframes.jl")
+include("utils/nesteddataframe.jl")
 
 stan_sample = stan_run
 

@@ -2,6 +2,8 @@ using StanSample
 using Distributions
 using DataFrames
 using StatsBase
+using StatsFuns
+using Test
 
 function zscore_transform(data)
     μ = mean(data)
@@ -85,3 +87,6 @@ Rho[2,2]  1.00 0.00  1.00  1.00   NaN   NaN
 Sigma[1]  1.02 0.04  0.96  1.10  1011     1
 Sigma[2]  0.81 0.03  0.77  0.85  1656     1
 =#
+
+nd = read_samples(m14_6s, :nesteddataframe)
+@test size(nd) == (4000, 6)

@@ -1,7 +1,7 @@
 # Load Julia packages (libraries)
 
 using DataFrames, CSV, Tables
-using StanSample
+using StanSample, Statistics
 using Test
 
 df = CSV.read(joinpath(@__DIR__, "..", "..", "data", "chimpanzees.csv"), DataFrame);

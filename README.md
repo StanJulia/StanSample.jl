@@ -1,4 +1,4 @@
-# StanSample v6
+# StanSample v6.8
 
 | **Project Status**          |  **Build Status** |
 |:---------------------------:|:-----------------:|
@@ -15,8 +15,6 @@
 [issues-url]: https://github.com/stanjulia/StanSample.jl/issues
 
 [project-status-img]: https://img.shields.io/badge/lifecycle-active-green.svg
-
-Note: StanSample.jl v6 is a breaking change from StanSample.jl v5.
 
 ## Purpose
 
@@ -81,6 +79,11 @@ using StanSample
 See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
+
+### Version 6.8.0 (nesteddataframe is experimental!)
+
+1. Added :nesteddataframe option to read_samples(). Maybe useful if cmdstan returns vectors or matrices.
+2. Extended the matrix() function to matrix(df, Symbol).
 
 ### Version 6.7.0
 

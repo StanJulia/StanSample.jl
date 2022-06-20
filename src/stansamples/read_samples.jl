@@ -38,9 +38,10 @@ Currently supported output_formats are:
 10. :dimarray (Appended chains DimensionalData.DimArray object)
 11. :dimarrays (DimensionalData.DimArray object)
 12. :mcmcchains (MCMCChains.Chains object)
+13. :nesteddataframe (DataFrame with vectors and matrices)
 
 Basically chains can be returned as an Array, a KeyedArray, a DimArray, a NamedTuple,
-a StanTable, a DataFrame, a Particles or an MCMCChains.Chains object.
+a StanTable, a DataFrame (possibly with nested columns), a Particles or an MCMCChains.Chains object.
 
 Options 8 to 12 are enabled by the presence of AxisKeys.jl, MonteCarloMeasurements.jl,
 DimensionalData.jl or MCMCChains.jl.

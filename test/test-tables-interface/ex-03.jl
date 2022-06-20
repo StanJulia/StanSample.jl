@@ -29,9 +29,9 @@ model {
   D ~ student_t( 2, mu , sigma );
 }
 generated quantities{
-    vector[N] log_lik;
+    vector[N] loglik;
     for (i in 1:N)
-        log_lik[i] = student_t_lpdf(D[i] | 2, mu[i], sigma);
+        loglik[i] = student_t_lpdf(D[i] | 2, mu[i], sigma);
 }
 ";
 
@@ -49,12 +49,12 @@ end
 if success(rc5_1s_t)
     nt5_1s_t = read_samples(m5_1s_t, :namedtuple)
     df5_1s_t = read_samples(m5_1s_t, :dataframe)
-    log_lik_1_t = nt5_1s_t.log_lik'
+    loglik_1_t = nt5_1s_t.loglik'
     a5_1s_t, cnames = read_samples(m5_1s_t, :array; return_parameters=true);
 end
 
 st5_1_t = StanSample.convert_a3d(a5_1s_t, cnames, Val(:table));
-@test names(st5_1_t)[end] == Symbol("log_lik.50")
+@test cmp(string(names(st5_1_t)[end]), "loglik.50") == 0
 @test size(DataFrame(st5_1_t)) == (4000, 103)
 
 mu = matrix(st5_1_t, "mu")
