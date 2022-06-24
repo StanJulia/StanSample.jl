@@ -14,6 +14,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     "test_keyedarray/test_keyedarray.jl",
   ]
   
+  #=
   @testset "Bernoulli array tests" begin
       include(joinpath(TestDir, "test_bernoulli/test_bernoulli_keyedarray_01.jl"))
   
@@ -55,7 +56,8 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
         @test size(samples) == (250, 8, 4)
       end
   end
-  
+  =#
+
   basic_run_tests = [
     "test_bernoulli/test_bernoulli_array_01.jl",
     "test_basic_runs/test_bernoulli_dict.jl",
@@ -119,6 +121,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
   
+  #=
   test_keywords = [
     "test_keywords/test_bernoulli_keyedarray_01.jl",
     "test_keywords/test_bernoulli_keyedarray_02.jl",
@@ -132,6 +135,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     end
     println()
   end
+  =#
 
   test_LKJ = [
     "test_LKJ/sr2_m14.6.jl",
@@ -145,8 +149,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     end
     println()
   end
-
-
 
   include(joinpath(TestDir, ))
   println()
