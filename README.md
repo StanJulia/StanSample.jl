@@ -1,4 +1,4 @@
-# StanSample v6.8
+# StanSample v6.9
 
 | **Project Status**          |  **Build Status** |
 |:---------------------------:|:-----------------:|
@@ -79,6 +79,11 @@ using StanSample
 See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
+
+### Version 6.9.0
+
+1. For chains read in as either a :dataframe or a :nesteddataframe the function matrix(...) has been replaced by array(...). Depending on the the eltype of the requested column, array will return a Vector, a Mtrix or an Array with 3 dimensions.
+2. The function stansummary() has been added which returns a StanSummary object (based on Stan's stansummary executable).
 
 ### Version 6.8.0 (nesteddataframe is experimental!)
 

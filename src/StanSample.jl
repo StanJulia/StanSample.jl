@@ -58,6 +58,7 @@ include("stansamples/read_csv_files.jl")
 include("stansamples/convert_a3d.jl")
 include("stansamples/stan_summary.jl")
 include("stansamples/read_summary.jl")
+include("stansamples/stansummary.jl")
 
 include("utils/namedtuples.jl")
 include("utils/tables.jl")

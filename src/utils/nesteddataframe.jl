@@ -24,6 +24,7 @@ function select_nested_column(df::DataFrame, var::Union{Symbol, String})
     df[:, sel]
 end
 
+#=
 function matrix(df::DataFrame, var::Union{Symbol, String})
     colsyms = Symbol.(names(df))
     sym = Symbol(var)
@@ -40,6 +41,61 @@ function matrix(df::DataFrame, var::Union{Symbol, String})
     end
     res
 end
+=#
+
+"""
+
+array
+
+Create a Vector, Matrix or Array from a column of a DataFrame 
+(can be a nested DataFrame).
+
+$(SIGNATURES)
+
+### Required arguments
+```julia
+* `df::DataFrame` : DataFrame
+* `var::::Union{Symbol, String}` : Column in the DataFrame
+```
+
+This is a generalization of the previously available `matrix()`
+function.
+
+Exported
+"""
+function array(df::DataFrame, var::Union{Symbol, String})
+    if eltype(names(df)) == String
+        varlocal = String(var)
+        if !(varlocal in String.(names(df)))
+            @warn "$(var) not found in df."
+            return nothing
+        end
+    else
+        varlocal = Symbol(var)
+        if !(varlocal in Symbol.(names(df)))
+            @warn "$(var) not found in df."
+            return nothing
+        end
+    end 
+
+    if eltype(df[:, varlocal]) <: Number
+        m = Vector(df[:, var])
+    elseif eltype(df[:, varlocal]) <: Vector
+        m = zeros(nrow(df), length(df[1, varlocal]))
+        i = 1 # rownumber
+        for (i, r) in enumerate(eachrow(df[:, var]))
+            m[i, :] = r[1]
+        end
+    elseif eltype(df[:, varlocal]) <: Matrix
+        m = zeros(size(df[1, varlocal], 1), size(df[1, varlocal], 2), nrow(df))
+        i = 1 # rownumber
+        for (i, r) in enumerate(eachrow(df[:, var]))
+            m[:, :, i] = r[1]
+        end
+    end
+    m
+end
+
 
 function convert_a3d(a3d_array, cnames, ::Val{:nesteddataframe})
 
@@ -81,3 +137,6 @@ function convert_a3d(a3d_array, cnames, ::Val{:nesteddataframe})
     dft
 
 end
+
+export
+    array
