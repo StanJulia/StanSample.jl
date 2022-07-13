@@ -77,3 +77,7 @@ end
 nd = read_samples(m2_0s, :nesteddataframe)
 @test size(nd) == (36000, 4)
 
+for i in 1:10
+  @test nd.Omega[i] == array(nd, :Omega)[:, :, i]
+end
+

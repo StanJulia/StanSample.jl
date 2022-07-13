@@ -45,7 +45,7 @@ end
 
 """
 
-array
+array(df, var)
 
 Create a Vector, Matrix or Array from a column of a DataFrame 
 (can be a nested DataFrame).
