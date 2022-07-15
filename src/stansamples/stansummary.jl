@@ -1,51 +1,28 @@
 import DataFrames: describe
-import Base: show
+import DataFrames: getindex
 
-"""
-
-Struct to hold a DataFrame created by stan_summary().
-
-Basically a DataFrame but expects a column "parameters".
-
-Exported
-
-"""
-mutable struct StanSummary
-    df::DataFrame
-end
-
-function Base.show(io::IO, ::MIME"text/plain", ms::StanSummary)
-    show(ms.df)
-end
-
-"""
-
-Element selection operator on a StanSummary.
-
-$(SIGNATURES)
-
-Basically a DataFrame but expects a column "parameters".
-
-Exported
-
-"""
-function (ss::StanSummary)(par, stat)
-
-    varlocalx = String(par)
-    varlocaly = String(stat)
-    
-    if !(varlocalx in ss.df.parameters)
-        @warn "Variable \"$(varlocalx)\" not found in $(ss.df.parameters)."
-        return nothing
-    elseif !(varlocaly in names(ss.df))
-        @warn "Variable $(varlocaly) not found in $(names(ss.df))."
+function getindex(df::DataFrame, r::T, c) where {T<:Union{Symbol, String}}
+    colstrings = String.(names(df))
+    if !("parameters" in colstrings)
+        @warn "DataFrame `df` does not have a column named `parameters`."
         return nothing
     end
- 
-    return ss.df[ss.df.parameters .== String(varlocalx), 
-        String(varlocaly)][1]
+    if eltype(df.parameters) <: Union{Vector{String}, Vector{Symbol}}
+        @warn "DataFrame `df.parameters` is not of type `Union{String, Symbol}'."
+        return nothing
+    end
+    rs = String(r)
+    cs = String(c)
+    if !(rs in String.(df.parameters))
+        @warn "Parameter `$(r)` is not in $(df.parameters)."
+        return nothing
+    end
+    if !(cs in colstrings)
+        @warn "Statistic `$(c)` is not in $(colstrings)."
+        return nothing
+    end
+    return df[df.parameters .== rs, cs][1]
 end
-
 
 """
 
@@ -99,7 +76,7 @@ function describe(model::SampleModel, params;
         end
     end
 
-    StanSummary(dfnew)
+    dfnew
 end
 
 function describe(model::SampleModel; showall=false)
@@ -108,9 +85,8 @@ function describe(model::SampleModel; showall=false)
     if !showall
         sdf = sdf[8:end, :] 
     end
-    StanSummary(sdf)
+    sdf
 end
 
 export
-    StanSummary,
     describe

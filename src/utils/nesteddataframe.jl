@@ -24,25 +24,6 @@ function select_nested_column(df::DataFrame, var::Union{Symbol, String})
     df[:, sel]
 end
 
-#=
-function matrix(df::DataFrame, var::Union{Symbol, String})
-    colsyms = Symbol.(names(df))
-    sym = Symbol(var)
-    res = Float64[]
-
-    if sym in colsyms
-        d = df[:, sym]
-        res = zeros(length(d), length(d[1]))
-        indx = 1
-        for r in eachrow(d)
-            res[indx, :] = d[indx]
-            indx += 1
-        end
-    end
-    res
-end
-=#
-
 """
 
 array(df, var)

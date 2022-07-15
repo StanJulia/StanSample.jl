@@ -71,13 +71,17 @@ rc2_0s = stan_sample(m2_0s; num_samples=9000, data)
 
 if success(rc2_0s)
   sdf2_0s = read_summary(m2_0s)
-  sdf2_0s[[17, 18, 19, 21, 22, 25], :] |> display
+  ss2_0s = describe(m2_0s)
+  ss2_0s |> display
 end
 
 nd = read_samples(m2_0s, :nesteddataframe)
 @test size(nd) == (36000, 4)
 
-for i in 1:10
-  @test nd.Omega[i] == array(nd, :Omega)[:, :, i]
+@testset "array()" begin
+  for i in 1:10
+    @test nd.Omega[i] == array(nd, :Omega)[:, :, i]
+  end
+  @test ss2_0s["sigma[1]", "mean"] ≈ 1.2 atol=0.1
 end
 
