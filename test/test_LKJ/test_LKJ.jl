@@ -82,6 +82,6 @@ nd = read_samples(m2_0s, :nesteddataframe)
   for i in 1:10
     @test nd.Omega[i] == array(nd, :Omega)[:, :, i]
   end
-  @test ss2_0s["sigma[1]", "mean"] ≈ 1.2 atol=0.1
+  @test ss2_0s["sigma[1]", "mean"] ≈ 1.2 atol=0.5
 end
 
