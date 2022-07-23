@@ -51,9 +51,34 @@ function destroy(sm::StanModel)
           sm.stanmodel)
 end
 
+"""
+
+Error thrown when a BridgeStan shared library fails to compile. 
+
+$(TYPEDEF)
+
+# Extended help
+
+Accessing fields directly is part of the API.
+
+$(FIELDS)
+"""
+struct BridgeStanError <: Exception
+    name::String
+    message::String
+end
+
+function Base.showerror(io::IO, e::BridgeStanError)
+    print(io, "\nError when compiling BridgeStan shared library ", e.name, ":\n",
+          e.message)
+end
+
+
+
 export
     StanModel,
     log_density_gradient!,
-    destroy
+    destroy,
+    BridgeStanError
 
 #end

@@ -130,7 +130,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
                 stderr = bridge_output))
         end
         if !is_ok
-            throw(StanModelError(name, String(take!(bridge_output))))
+            throw(BridgeStanError(name, String(take!(bridge_output))))
         end
     end
 
