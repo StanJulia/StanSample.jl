@@ -80,11 +80,15 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-### Version 6.9.0
+### Version 6.9.2
 
-1. For chains read in as either a :dataframe or a :nesteddataframe the function matrix(...) has been replaced by array(...). Depending on the the eltype of the requested column, array will return a Vector, a Mtrix or an Array with 3 dimensions.
+1. Experimental support for [BridgeStan](https://gitlab.com/roualdes/bridgestan).
+
+### Version 6.9.0-1
+
+1. For chains read in as either a :dataframe or a :nesteddataframe the function matrix(...) has been replaced by array(...). Depending on the the eltype of the requested column, array will return a Vector, a Matrix or an Array with 3 dimensions.
 2. The function describe() has been added which returns a df with results based on Stan's stansummary executable.
-3. A new methos has been added to DataFrames.getindex to extract cells in stansummary DataFrame, e.g. ss1_1[:a, :ess].
+3. A new method has been added to DataFrames.getindex to extract cells in stansummary DataFrame, e.g. ss1_1[:a, :ess].
 
 ### Version 6.8.0 (nesteddataframe is experimental!)
 
