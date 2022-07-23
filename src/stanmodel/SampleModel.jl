@@ -51,6 +51,8 @@ mutable struct SampleModel <: CmdStanModels
     tmpdir::AbstractString;            # Holds all created files
     # Cmdstan path
     exec_path::AbstractString;         # Path to the cmdstan excutable
+    # BridgeStan path
+    bridge_path::AbstractString;       # Path to the BridgeStan ..._model.so
 
     use_json::Bool;                    # Use JSON for data and init files
 
@@ -104,7 +106,11 @@ function SampleModel(name::AbstractString, model::AbstractString,
 
     output_base = joinpath(tmpdir, name)
     exec_path = executable_path(output_base)
+
     cmdstan_home = CMDSTAN_HOME
+
+    bridge_path = isdir(joinpath(cmdstan_home, "..", "bridgestan")) ? 
+        joinpath(cmdstan_home, "..", "bridgestan") : ""
 
     error_output = IOBuffer()
     is_ok = cd(cmdstan_home) do
@@ -115,6 +121,19 @@ function SampleModel(name::AbstractString, model::AbstractString,
     if !is_ok
         throw(StanModelError(name, String(take!(error_output))))
     end
+
+    if length(bridge_path) > 0
+        bridge_output = IOBuffer()
+        is_ok = cd(bridge_path) do
+            target = tmpdir * "/$(name)_model.so"            
+            success(pipeline(`$(make_command())  -f $(bridge_path)/makefile $(target)`;
+                stderr = bridge_output))
+        end
+        if !is_ok
+            throw(StanModelError(name, String(take!(bridge_output))))
+        end
+    end
+
 
     SampleModel(name, model, 
         # num_threads
@@ -147,6 +166,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         output_base,                   # Output base
         tmpdir,                        # Tmpdir settings
         exec_path,                     # exec_path
+        bridge_path,                   # BridgeStan path
 
         true,                          # Use JSON for cmdstan input files
         AbstractString[],              # Data files

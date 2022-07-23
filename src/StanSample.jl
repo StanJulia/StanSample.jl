@@ -36,7 +36,6 @@ import StanBase: update_json_files
 import StanBase: data_file_path, init_file_path, sample_file_path
 import StanBase: generated_quantities_file_path, log_file_path
 import StanBase: diagnostic_file_path, setup_diagnostics
-#import StanBase: stan_summary, read_summary
 
 function __init__()
   @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("utils/particles.jl")
@@ -64,6 +63,8 @@ include("utils/namedtuples.jl")
 include("utils/tables.jl")
 include("utils/dataframes.jl")
 include("utils/nesteddataframe.jl")
+
+include("bridgestan/JBS.jl")
 
 stan_sample = stan_run
 

@@ -32,3 +32,20 @@ if success(rc)
   st = read_samples(sm)
   display(DataFrame(st))
 end
+
+bernoulli_lib = joinpath(tmpdir, "bernoulli_model.so")
+bernoulli_data = joinpath(tmpdir, "bernoulli_data_1.json")
+blib = Libc.Libdl.dlopen(bernoulli_lib)
+
+smb = StanModel(blib, bernoulli_data);
+x = rand(smb.dims);
+q = @. log(x / (1 - x));        # unconstrained scale
+
+log_density_gradient!(smb, q, jacobian = 0)
+
+println()
+println("log_density and gradient of Bernoulli model:")
+println((smb.log_density, smb.gradient))
+println()
+
+## free(smb)
