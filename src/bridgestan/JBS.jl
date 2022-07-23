@@ -1,3 +1,5 @@
+#module JBS
+
 mutable struct StanModelStruct
 end
 
@@ -54,3 +56,4 @@ export
     log_density_gradient!,
     destroy
 
+#end

@@ -65,6 +65,7 @@ include("utils/dataframes.jl")
 include("utils/nesteddataframe.jl")
 
 include("bridgestan/JBS.jl")
+#using ..JBS
 
 stan_sample = stan_run
 
