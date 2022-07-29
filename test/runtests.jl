@@ -137,6 +137,20 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   end
   =#
 
+  test_JSON = [
+    "test_JSON/test_multidimensional_input_data.jl",
+    "test_JSON/test_andy_pohl_model.jl"
+
+    ]
+
+  @testset "JSON" begin
+    for test in test_JSON
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
   test_LKJ = [
     "test_LKJ/sr2_m14.6.jl",
     "test_LKJ/test_LKJ.jl",

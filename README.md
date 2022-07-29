@@ -1,4 +1,4 @@
-# StanSample v7.0
+# StanSample v6.9.3
 
 | **Project Status**          |  **Build Status** |
 |:---------------------------:|:-----------------:|
@@ -79,6 +79,14 @@ using StanSample
 See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
+
+###
+
+1. A much better test has been added for multidimensional input arrays thanks to Andy Pohl (`test/test_JSON`).
+
+### Version 6.9.2
+
+1. More general handling of Array input data to cmdstan if the Array has more than 2 dimensions.
 
 ### Version 6.9.2
 
