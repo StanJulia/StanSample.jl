@@ -89,5 +89,5 @@ stan_sample(
     save_warmup=false
 )
 
-samps = DataFrame(read_samples(stan_model))
+samps = read_samples(stan_model, :dataframe)
 println(describe(samps))

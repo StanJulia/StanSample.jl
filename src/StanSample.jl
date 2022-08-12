@@ -45,6 +45,7 @@ function __init__()
 end
 
 include("stanmodel/SampleModel.jl")
+include("stanmodel/create_smb.jl")
 
 include("stanrun/stan_run.jl")
 include("stanrun/cmdline.jl")

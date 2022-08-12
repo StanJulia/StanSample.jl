@@ -34,12 +34,8 @@ if success(rc)
   display(DataFrame(st))
 end
 
-bernoulli_lib = joinpath(tmpdir, "bernoulli_model.so")
-if isfile(bernoulli_lib)
-    blib = Libc.Libdl.dlopen(bernoulli_lib)
-
-    bernoulli_data = joinpath(tmpdir, "bernoulli_data_1.json")
-    smb = StanModel(blib, bernoulli_data)
+smb = create_smb(sm)
+if typeof(smb) == StanModel
     x = rand(smb.dims)
     q = @. log(x / (1 - x))        # unconstrained scale
 
@@ -49,8 +45,6 @@ if isfile(bernoulli_lib)
     println("log_density and gradient of Bernoulli model:")
     println((smb.log_density, smb.gradient))
     println()
-
-    ## free(smb)
 
     function sim(smb::StanModel, x=0.1:0.1:0.9)
         y = zeros(length(x))
@@ -67,7 +61,4 @@ if isfile(bernoulli_lib)
         return DataFrame(x=x, q=q, log_density=ld, gradient=g)
     end
     sim(smb) |> display
-else
-    @info "Shared library `bernoulli_model.so` has not been created."
-    @info "Maybe BridgeStan has not been installed in $(ENV["CMDSTAN"])?"
 end
