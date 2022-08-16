@@ -61,7 +61,7 @@ function cmdline(m::SampleModel, id)
     end
     cmd = `$cmd gamma=$(m.gamma) delta=$(m.delta) kappa=$(m.kappa)`
     cmd = `$cmd t0=$(m.t0) init_buffer=$(m.init_buffer)`
-    cmd = `$cmd term_buffer=$(m.init_buffer) window=$(m.window)`
+    cmd = `$cmd term_buffer=$(m.term_buffer) window=$(m.window)`
 
     # Algorithm section
     cmd = `$cmd algorithm=$(string(m.algorithm)) engine=$(string(m.engine))`
