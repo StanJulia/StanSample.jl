@@ -1,7 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
 using StanSample, DataFrames
-#using .JBS
 
 ProjDir = @__DIR__
 
@@ -30,23 +29,24 @@ sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
 rc = stan_sample(sm; data);
 
 if success(rc)
-  st = read_samples(sm)
-  display(DataFrame(st))
+    st = read_samples(sm)
+    display(DataFrame(st))
 end
 
 smb = create_smb(sm)
-if typeof(smb) == StanModel
-    x = rand(smb.dims)
+
+if typeof(smb) == bridgestan.StanModel
+    x = rand(bridgestan.param_unc_num(smb))
     q = @. log(x / (1 - x))        # unconstrained scale
 
-    log_density_gradient!(smb, q, jacobian = 0)
+    lp, grad = bridgestan.log_density_gradient(smb, q, jacobian = 0)
 
     println()
     println("log_density and gradient of Bernoulli model:")
-    println((smb.log_density, smb.gradient))
+    println((lp, grad))
     println()
 
-    function sim(smb::StanModel, x=0.1:0.1:0.9)
+    function sim(smb::bridgestan.StanModel, x=LinRange(0.1, 0.9, 100))
         y = zeros(length(x))
         q = zeros(length(x))
         ld = zeros(length(x))
@@ -54,11 +54,13 @@ if typeof(smb) == StanModel
         for (i, p) in enumerate(x)
             y[i] = p
             q[i] = @. log(p / (1 - p))        # unconstrained scale
-            log_density_gradient!(smb, q[i], jacobian = 0)
-            ld[i] = smb.log_density[1]
-            g[i] = smb.gradient[1]
+            lp, grad = bridgestan.log_density_gradient(smb, q[i], jacobian = 0)
+            ld[i] = lp[1]
+            g[i] = grad[1]
         end
         return DataFrame(x=x, q=q, log_density=ld, gradient=g)
     end
-    sim(smb) |> display
+
+  sim(smb) |> display
+
 end
