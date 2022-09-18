@@ -1,4 +1,4 @@
-# StanSample v6.9.3
+# StanSample v6.10.0
 
 | **Project Status**          |  **Build Status** |
 |:---------------------------:|:-----------------:|
@@ -20,7 +20,11 @@
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
-Thus, you need a working installation of [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html), the path of which you should specify in either `CMDSTAN` or `JULIA_CMDSTAN_HOME`, e.g. in your `~/.julia/config/startup.jl` include a line like:
+If [BridgeStan](https://gitlab.com/roualdes/bridgestan) is installed "next" to `cmdstan`, bridgestan's features are also included. An example is part of `./example/bernoulli.jl`.
+
+## Prerequisites
+
+You need a working installation of [Stan's cmdstan](https://mc-stan.org/users/interfaces/cmdstan.html), the path of which you should specify in either `CMDSTAN` or `JULIA_CMDSTAN_HOME`, e.g. in your `~/.julia/config/startup.jl` include a line like:
 
 ```Julia
 # CmdStan setup
@@ -80,7 +84,11 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-###
+### Version 6.10.0
+
+1. Support for the updated version of BridgeStan.
+
+### Version 6.9.3
 
 1. A much better test has been added for multidimensional input arrays thanks to Andy Pohl (`test/test_JSON`).
 
