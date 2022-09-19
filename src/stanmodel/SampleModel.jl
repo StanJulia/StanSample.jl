@@ -143,7 +143,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         # num_cpp_chains
         1,
         # num_julia_chains
-        1,
+        4,
         # num_chains
         4,
         # num_samples, num_warmups, save_warmups

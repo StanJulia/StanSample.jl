@@ -81,14 +81,16 @@ export
     set_make_string
 
 if isdir(joinpath(CMDSTAN_HOME, "..", "bridgestan")) &&
-    isfile(joinpath(CMDSTAN_HOME, "..", "bridgestan", "bridgestan.jl"))
+    isfile(joinpath(CMDSTAN_HOME, "..", "bridgestan", "julia",
+        "src", "BridgeStan.jl"))
     
-    include(joinpath(CMDSTAN_HOME, "..", "bridgestan", "bridgestan.jl"))
+    include(joinpath(CMDSTAN_HOME, "..", "bridgestan", "julia",
+        "src", "BridgeStan.jl"))
 
     include("bridgestan/create_smb.jl")
 
     export
-        bridgestan,
+        BridgeStan,
         StanModel
 end
 
