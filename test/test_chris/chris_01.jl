@@ -1,5 +1,5 @@
 cd(@__DIR__)
-using StanSample, Random, MCMCChains
+using StanSample, Random, MCMCChains, Serialization
 tempdir = pwd() * "/tmp"
 ####################################################################
 #                                     Generate Data
@@ -44,28 +44,18 @@ rc_01 = stan_sample(
     save_warmup = false
 )
 
+# Serialize after calling stan_sample!
+serialize(joinpath(sm_01.tmpdir, "sm_01"), sm_01)
+
 if success(rc_01)
-     post_01 = read_samples(sm_01, :array)
-     mean(post_01; dims=1) |> display
      chn_01 = read_samples(sm_01, :mcmcchains)
      chn_01 |> display
 end
 
-sdf_01 = read_summary(sm_01)
-#sdf_01[:, 1:5] |> display
-#sdf_01[:, [1, 6,7,8, 9, 10]] |> display
-
-sm_02 = SampleModel("temp", model, tempdir)
-#sm_02.num_julia_chains = sm_02.num_chains
+sm_02 = deserialize(joinpath(sm_01.tmpdir, "sm_01"))
 
 if success(rc_01)
-     post_02 = read_samples(sm_02, :array)
-     mean(post_02; dims=1) |> display
      chn_02 = read_samples(sm_02, :mcmcchains)
      chn_02 |> display
 end
-
-sdf_02 = read_summary(sm_02)
-sdf_02[:, 1:5] |> display
-sdf_02[:, [1, 6,7,8, 9, 10]] |> display
 
