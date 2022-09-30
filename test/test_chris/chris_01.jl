@@ -15,9 +15,9 @@ stan_data = Dict(
 
 model = "
 data{
-     // total observations
-     int n_obs;
-     // observations
+    // total observations
+    int n_obs;
+    // observations
     vector[n_obs] y;
 }
 

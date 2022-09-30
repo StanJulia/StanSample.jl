@@ -47,16 +47,13 @@ if typeof(smb) == BridgeStan.StanModel
     println()
 
     function sim(smb::BridgeStan.StanModel, x=LinRange(0.1, 0.9, 100))
-        y = zeros(length(x))
         q = zeros(length(x))
         ld = zeros(length(x))
-        g = zeros(length(x))
+        g = Vector{Vector{Float64}}(undef, length(x))
         for (i, p) in enumerate(x)
-            y[i] = p
-            q[i] = @. log(p / (1 - p))        # unconstrained scale
-            lp, grad = BridgeStan.log_density_gradient(smb, [q[i]], jacobian = 0)
-            ld[i] = lp[1]
-            g[i] = grad[1]
+            q[i] = @. log(p / (1 - p)) # unconstrained scale
+            ld[i], g[i] = BridgeStan.log_density_gradient(smb, q[i:i],
+                jacobian = 0)
         end
         return DataFrame(x=x, q=q, log_density=ld, gradient=g)
     end
