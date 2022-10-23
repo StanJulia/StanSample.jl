@@ -84,12 +84,3 @@ STAN_THREADS=true
 # TBB_CXX_TYPE=gcc
 
 ```
-
-## Installing BridgeStan
-
-See the instruction for [BridgeStan](https://gitlab.com/roualdes/bridgestan) where:
-
-```
-$ cd <parent-dir> # This is the <parent-dir> of CMDSTAN
-$ git clone https://gitlab.com/roualdes/bridgestan.git
-```
