@@ -84,6 +84,10 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 6.11.0
+
+1. Support for BridgeStan as a dependency of StanSample.jl (Thanks to Seth Axen)
+
 ### Version 6.10.0
 
 1. Support for the updated version of BridgeStan.
