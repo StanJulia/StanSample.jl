@@ -20,7 +20,7 @@
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
-If [BridgeStan](https://gitlab.com/roualdes/bridgestan) is installed "next" to `cmdstan`, bridgestan's features are also included. An example is part of `./example/bernoulli.jl`.
+[BridgeStan](https://gitlab.com/roualdes/bridgestan)'s features are included in this repo. An example is part of `./example/bernoulli.jl`.
 
 ## Prerequisites
 
