@@ -42,6 +42,7 @@ function __init__()
     @require DimensionalData="0703355e-b756-11e9-17c0-8b28908087d0" include("utils/dimarray.jl")
     @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("utils/mcmcchains.jl")
     @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("utils/keyedarray.jl")
+    ENV["BRIDGESTAN"] = BRIDGESTAN_HOME
 end
 
 include("stanmodel/SampleModel.jl")
@@ -80,20 +81,11 @@ export
     make_string,
     set_make_string
 
-if isdir(joinpath(CMDSTAN_HOME, "..", "bridgestan")) &&
-    isfile(joinpath(CMDSTAN_HOME, "..", "bridgestan", "julia",
-        "src", "BridgeStan.jl"))
-    
-    include(joinpath(CMDSTAN_HOME, "..", "bridgestan", "julia",
-        "src", "BridgeStan.jl"))
 
-    include("bridgestan/create_smb.jl")
+const BRIDGESTAN_HOME = get!(ENV, "BRIDGESTAN", abspath(joinpath(@__DIR__, "..", "deps", "data", "bridgestan")))
+include(joinpath(BRIDGESTAN_HOME, "julia", "src", "BridgeStan.jl"))
+include("bridgestan/create_smb.jl")
 
-    export
-        BridgeStan,
-        StanModel
-end
-
-
+export BridgeStan, StanModel
 
 end # module
