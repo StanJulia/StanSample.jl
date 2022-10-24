@@ -34,7 +34,7 @@ function create_smb(sm::SampleModel,
         smb = BridgeStan.StanModel(lib, data_file)
     else
         @info "Shared library `$(sm.name)_model.so` has not been created."
-        @info "Maybe BridgeStan has not been installed in $(ENV["CMDSTAN"])?"
+        @info "Maybe BridgeStan has not been installed in $(BRIDGESTAN_HOME)?"
         return nothing
     end
     smb

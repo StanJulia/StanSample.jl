@@ -109,8 +109,8 @@ function SampleModel(name::AbstractString, model::AbstractString,
 
     cmdstan_home = CMDSTAN_HOME
 
-    bridge_path = isdir(joinpath(cmdstan_home, "..", "bridgestan")) ? 
-        joinpath(cmdstan_home, "..", "bridgestan") : ""
+    bridge_path = isdir(BRIDGESTAN_HOME) ? 
+        joinpath(BRIDGESTAN_HOME) : ""
 
     error_output = IOBuffer()
     is_ok = cd(cmdstan_home) do
