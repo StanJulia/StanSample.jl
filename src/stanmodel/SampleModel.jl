@@ -126,7 +126,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         bridge_output = IOBuffer()
         is_ok = cd(bridge_path) do
             target = tmpdir * "/$(name)_model.so"            
-            success(pipeline(`$(make_command())  -f $(bridge_path)/makefile $(target)`;
+            success(pipeline(`$(make_command())  -f $(bridge_path)/Makefile $(target)`;
                 stderr = bridge_output))
         end
         if !is_ok
