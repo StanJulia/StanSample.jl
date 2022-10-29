@@ -3,6 +3,14 @@ using StanSample
 using InferenceObjects
 using PosteriorDB
 
+# the posteriordb part, getting model code and data
+posterior_name = "diamonds-diamonds"
+pdb = database()
+post = posterior(pdb, posterior_name)
+model_data = Dict(string(k) => v for (k, v) in load_values(dataset(post)))
+model_code = implementation(model(post), "stan")
+
+
 df = CSV.read(joinpath(@__DIR__, "..", "..", "data", "chimpanzees.csv"), DataFrame);
 
 # Define the Stan language model
@@ -54,11 +62,5 @@ idata |> display
 
 idata.posterior |> display
 
-# the posteriordb part, getting model code and data
-posterior_name = m10_4s.name
-pdb = database()
-post = posterior(pdb, posterior_name)
-model_data = Dict(string(k) => v for (k, v) in load_values(dataset(post)))
-model_code = implementation(model(post), "stan")
 
 

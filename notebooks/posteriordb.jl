@@ -27,6 +27,21 @@ html"""
 </style>
 """
 
+# ╔═╡ 8cdde5de-c9d9-4e89-81e2-d8550dc223f8
+md" #### The posteriordb part, getting model code and data."
+
+# ╔═╡ ee40f80e-2be6-4d01-b341-16e2fb90ce05
+begin
+	posterior_name = "diamonds-diamonds"
+	pdb = database()
+	post = posterior(pdb, posterior_name)
+	model_code = implementation(model(post), "stan")
+	model_data = Dict(string(k) => v for (k, v) in load_values(dataset(post)))
+end
+
+# ╔═╡ 2423ee43-baf0-43b9-b2ce-fdab088e546d
+md" #### Working with InferenceObjects."
+
 # ╔═╡ fabc9054-2faa-482f-a496-a5521a26baca
 chimps = CSV.read(joinpath(@__DIR__, "..", "data", "chimpanzees.csv"), DataFrame);
 
@@ -65,10 +80,13 @@ data10_4 = (N = size(chimps, 1), N_actors = length(unique(chimps.actor)),
     actor = chimps.actor, pulled_left = chimps.pulled_left,
     prosoc_left = chimps.prosoc_left, condition = chimps.condition);
 
-# ╔═╡ 95d44981-d021-4f6b-8827-71fef8338094
-# Sample using cmdstan
+# ╔═╡ 74d3ab6f-e5aa-410c-a500-c8e31de5483e
+md" #### Sample using cmdstan."
 
-# the stan part
+# ╔═╡ 3f52551c-575d-48a6-a004-9211bc16f49e
+md" ##### The Stan part."
+
+# ╔═╡ 95d44981-d021-4f6b-8827-71fef8338094
 begin
 	m10_4s = SampleModel("m10.4s", stan10_4)
 	rc10_4s = stan_sample(m10_4s; data=data10_4)
@@ -81,25 +99,11 @@ begin
 	keys(stan_nts)
 end
 
+# ╔═╡ 62c0ac13-325f-4a7c-9d48-a191aa13d92e
+md" #### The InferenceObjects part."
+
 # ╔═╡ fdd59882-4ad7-411a-acd7-ce5e476b604b
-# the inferenceobjects part
 idata = convert_to_inference_data(stan_nts)
-
-# ╔═╡ c0ef1a10-d530-4551-84c4-6e76faea6da3
-idata
-
-# ╔═╡ aa484598-536b-4b0c-9a2d-5d10a55c0f98
-idata.posterior
-
-# ╔═╡ ee40f80e-2be6-4d01-b341-16e2fb90ce05
-# the posteriordb part, getting model code and data
-begin
-	posterior_name = m10_4s.name
-	pdb = database()
-	post = posterior(pdb, posterior_name)
-	model_data = Dict(string(k) => v for (k, v) in load_values(dataset(post)))
-	model_code = implementation(model(post), "stan")
-end
 
 # ╔═╡ c0971260-7b35-4c0c-b763-fe8fc864813d
 ref = reference_posterior(post)
@@ -1154,15 +1158,18 @@ version = "17.4.0+0"
 # ╠═34a9e246-547e-11ed-2c8e-5d545ad2b268
 # ╠═9339e545-32ee-4304-ba49-d34befb45fe3
 # ╠═eb3f1ef8-b171-47b2-b89a-361f846a9087
+# ╟─8cdde5de-c9d9-4e89-81e2-d8550dc223f8
+# ╠═ee40f80e-2be6-4d01-b341-16e2fb90ce05
+# ╟─2423ee43-baf0-43b9-b2ce-fdab088e546d
 # ╠═fabc9054-2faa-482f-a496-a5521a26baca
 # ╠═39b94bcf-fa50-48c5-867f-4d2025e859b1
 # ╠═ba93ccba-e1b9-4fb4-9d96-a499e75196c8
+# ╟─74d3ab6f-e5aa-410c-a500-c8e31de5483e
+# ╟─3f52551c-575d-48a6-a004-9211bc16f49e
 # ╠═95d44981-d021-4f6b-8827-71fef8338094
 # ╠═5d7f7411-5281-4cdd-9852-cbffa8176213
+# ╟─62c0ac13-325f-4a7c-9d48-a191aa13d92e
 # ╠═fdd59882-4ad7-411a-acd7-ce5e476b604b
-# ╠═c0ef1a10-d530-4551-84c4-6e76faea6da3
-# ╠═aa484598-536b-4b0c-9a2d-5d10a55c0f98
-# ╠═ee40f80e-2be6-4d01-b341-16e2fb90ce05
 # ╠═c0971260-7b35-4c0c-b763-fe8fc864813d
 # ╠═145de7a2-55f2-4d49-aa58-3bec4be8f379
 # ╠═818b070a-438f-4040-a985-44d501a5dd3d
