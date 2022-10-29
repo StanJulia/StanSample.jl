@@ -1,9 +1,11 @@
 cd(@__DIR__)
+
 using StanSample, Random, MCMCChains, Serialization
+
 tempdir = pwd() * "/tmp"
-####################################################################
-#                                     Generate Data
-####################################################################
+
+# Generate Data
+
 seed = 350
 Random.seed!(seed)
 n_obs = 50
@@ -13,7 +15,9 @@ stan_data = Dict(
     "y" => y,
     "n_obs" => n_obs)
 
-model = "
+# Stan Language Model
+
+stan_01 = "
 data{
     // total observations
     int n_obs;
@@ -31,9 +35,13 @@ model {
     sigma ~ gamma(1, 1);
     y ~ normal(mu, sigma); 
 }"
-sm_01 = SampleModel("temp", model, tempdir)
 
-# run the sampler
+# Create SampleModel
+
+sm_01 = SampleModel("temp", stan_01)
+
+# Run the sampler
+
 rc_01 = stan_sample(
     sm_01;
     data = stan_data,
@@ -45,6 +53,7 @@ rc_01 = stan_sample(
 )
 
 # Serialize after calling stan_sample!
+
 serialize(joinpath(sm_01.tmpdir, "sm_01"), sm_01)
 
 if success(rc_01)
