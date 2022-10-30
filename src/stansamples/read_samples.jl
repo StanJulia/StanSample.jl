@@ -75,7 +75,7 @@ set of variables, in this example the `log_lik.1, log_lik.2, etc.`.
 Currently :table is the default chain output_format (a StanTable object).
 
 In general it is safer to specify the desired output_format as this area
-is still under heavy development in the Julia eco system. The default
+is still under heavy development in the StanJulia eco system. The default
 has changed frequently!
 
 """
