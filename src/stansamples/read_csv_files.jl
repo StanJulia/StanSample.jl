@@ -103,7 +103,7 @@ function read_csv_files(m::SampleModel, output_format::Symbol;
   
   cnames = convert.(String, idx[indvec])
   if include_internals
-    snames = [Symbol(cnames[i]) for i in 1:length(cnames)]
+    snames = [cnames[i] for i in 1:length(cnames)]
     indices = 1:length(cnames)
   else
     pi = filter(p -> length(p) > 2 && p[end-1:end] == "__", cnames)
