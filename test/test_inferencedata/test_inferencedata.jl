@@ -61,11 +61,13 @@ m_schools = SampleModel("eight_schools", stan_schools, tmpdir)
 rc = stan_sample(m_schools; data)
 
 @assert success(rc)
+
 stan_nts = read_samples(m_schools, :namedtuples; include_internals=true)
 keys(stan_nts) |> display
 
 # (:treedepth__, :theta_tilde, :energy__, :y_hat, :divergent__, :accept_stat__, 
 #   :n_leapfrog__, :mu, :lp__, :stepsize__, :tau, :theta, :log_lik)
+
 post = NamedTupleTools.select(stan_nts, (:mu, :theta, :theta_tilde, :tau))
 y_hat = NamedTupleTools.select(stan_nts, (:y_hat,))
 log_lik = NamedTupleTools.select(stan_nts, (:log_lik,))
