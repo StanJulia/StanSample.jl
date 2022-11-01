@@ -85,7 +85,7 @@ function select_nt_ranges(nt::NamedTuple, ranges=[1:1000, 1001:2000])
 end
 
 
-post_warmup, post = select_nt_ranges(stan_nts)
+post_warmup, post = select_nt_ranges(stan_nts) # Use "default" ranges from SampleModel
 #y_hat_warmup, y_hat = select_nt_ranges(NamedTupleTools.select(stan_nts, (:y_hat,)))
 #log_lik_warmup, log_lik = select_nt_ranges(NamedTupleTools.select(stan_nts, (:log_lik,)))
 #internals_warmup, internals_nts = select_nt_ranges(NamedTupleTools.select(stan_nts,
@@ -93,7 +93,7 @@ post_warmup, post = select_nt_ranges(stan_nts)
 
 idata = from_namedtuple(
     post; 
-    posterior_predictive = :y_hat, 
+    posterior_predictive = (:y_hat, ), 
     log_likelihood = :log_lik, 
     sample_stats = (:lp__, :treedepth__, :stepsize__, :n_leapfrog__, :energy__, :divergent__, :accept_stat__),
     #warmup_posterior = post_warmup

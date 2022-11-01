@@ -93,7 +93,7 @@ md" #### Sample using cmdstan."
 begin
 	tmpdir = joinpath(pwd(), "tmp")
 	m_schools = SampleModel("eight_schools", stan_schools, tmpdir)
-	rc = stan_sample(m_schools; data)
+	rc = stan_sample(m_schools; data, save_warmup=true)
 end;
 
 # ╔═╡ 497ac4d2-5af2-4682-84eb-8f28e8e9d488
@@ -123,14 +123,14 @@ end
 
 # ╔═╡ 42f3a4dd-1322-433e-83ce-944ae56100a8
 begin
-	post_warmup, post = select_nt_ranges(NamedTupleTools.select(stan_nts, (:mu, :theta, :theta_tilde, :tau)))
+	post_warmup, post = select_nt_ranges(stan_nts)
 	y_hat_warmup, y_hat = select_nt_ranges(NamedTupleTools.select(stan_nts, (:y_hat,)))
 	log_lik_warmup, log_lik = select_nt_ranges(NamedTupleTools.select(stan_nts, (:log_lik,)))
 	internals_warmup, internals_nts = select_nt_ranges(NamedTupleTools.select(stan_nts,
 	    (:treedepth__, :energy__, :divergent__, :accept_stat__, :n_leapfrog__, :lp__, :stepsize__)))
 
 	idata = from_namedtuple(
-		stan_nts; 
+		post; 
 		posterior_predictive = :y_hat, 
 		log_likelihood = :log_lik, 
 		sample_stats = (:lp__, :treedepth__, :stepsize__, :n_leapfrog__, :energy__, :divergent__, :accept_stat__),
