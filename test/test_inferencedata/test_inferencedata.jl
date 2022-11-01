@@ -86,6 +86,7 @@ end
 
 
 post_warmup, post = select_nt_ranges(stan_nts) # Use "default" ranges from SampleModel
+
 #y_hat_warmup, y_hat = select_nt_ranges(NamedTupleTools.select(stan_nts, (:y_hat,)))
 #log_lik_warmup, log_lik = select_nt_ranges(NamedTupleTools.select(stan_nts, (:log_lik,)))
 #internals_warmup, internals_nts = select_nt_ranges(NamedTupleTools.select(stan_nts,
@@ -93,11 +94,31 @@ post_warmup, post = select_nt_ranges(stan_nts) # Use "default" ranges from Sampl
 
 idata = from_namedtuple(
     post; 
-    posterior_predictive = (:y_hat, ), 
-    log_likelihood = :log_lik, 
+    posterior_predictive = (:y_hat,), 
+    log_likelihood = (:log_lik,), 
     sample_stats = (:lp__, :treedepth__, :stepsize__, :n_leapfrog__, :energy__, :divergent__, :accept_stat__),
     #warmup_posterior = post_warmup
 )
+
+# What would be ideal:
+
+#=
+idata = from_namedtuple(
+    stan_nts; 
+    posterior = (keys=(:mu, :theta, :theta_tilde, :tau), range=1001:2000),
+    posterior_predictive = (keys=(:y_hat => :y,), range=1001:2000),
+    log_likelihood = (keys=(:log_lik => :y,), range=1001:2000),
+    sample_stats = (
+        keys=(:lp__, :treedepth__, :stepsize__, :n_leapfrog__, :energy__, :divergent__, :accept_stat__),
+        range=1001:2000),
+
+    #warmup_posterior = (keys=(:mu, :theta, :theta_tilde, :tau), range=1:2000),
+    # etc.
+)
+=#
+
+# With a Dict based InferenceData object a similar result is possible with above `select_nt_ranges()` calls.
+
 
 println()
 idata |> display
