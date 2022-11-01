@@ -13,5 +13,5 @@ $(SIGNATURES)
 
 """
 function convert(m::SampleModel, ::Val{:inferencedata})
-    stan_nts = read_samples(m, :namedtuples)
+    stan_nts = read_samples(m, :namedtuples; include_internals=true)
 end

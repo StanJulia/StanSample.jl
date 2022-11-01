@@ -56,9 +56,9 @@ data = Dict(
 # Sample using cmdstan
 
 # the stan part
-tmpdir = joinpath(pwd(), "tmp")
+tmpdir = joinpath(pwd(), "notebooks", "tmp")
 m_schools = SampleModel("eight_schools", stan_schools, tmpdir)
-rc = stan_sample(m_schools; data)
+rc = stan_sample(m_schools; data, save_warmup=true)
 
 @assert success(rc)
 
@@ -68,19 +68,36 @@ keys(stan_nts) |> display
 # (:treedepth__, :theta_tilde, :energy__, :y_hat, :divergent__, :accept_stat__, 
 #   :n_leapfrog__, :mu, :lp__, :stepsize__, :tau, :theta, :log_lik)
 
-post = NamedTupleTools.select(stan_nts, (:mu, :theta, :theta_tilde, :tau))
-y_hat = NamedTupleTools.select(stan_nts, (:y_hat,))
-log_lik = NamedTupleTools.select(stan_nts, (:log_lik,))
-internals_nts = NamedTupleTools.select(stan_nts, (:treedepth__, :energy__, :divergent__, :accept_stat__,
-    :n_leapfrog__, :lp__, :stepsize__))
+
+function select_nt_ranges(nt::NamedTuple, ranges=[1:1000, 1001:2000])
+    dct = convert(Dict, nt)
+    dct1 = Dict{Symbol, Any}()
+    for key in keys(dct)
+        dct1[key] = dct[key][ranges[1]]
+    end
+    nt1 = namedtuple(dct1)
+    dct2 = Dict{Symbol, Any}()
+    for key in keys(dct)
+        dct2[key] = dct[key][ranges[2]]
+    end
+    nt2 = namedtuple(dct2)
+    [nt1, nt2]
+end
+
+
+post_warmup, post = select_nt_ranges(stan_nts)
+#y_hat_warmup, y_hat = select_nt_ranges(NamedTupleTools.select(stan_nts, (:y_hat,)))
+#log_lik_warmup, log_lik = select_nt_ranges(NamedTupleTools.select(stan_nts, (:log_lik,)))
+#internals_warmup, internals_nts = select_nt_ranges(NamedTupleTools.select(stan_nts,
+#    (:treedepth__, :energy__, :divergent__, :accept_stat__, :n_leapfrog__, :lp__, :stepsize__)))
 
 idata = from_namedtuple(
-        post,
-        y_hat,
-        internals_nts,
-        nothing,
-        log_lik
-    )
+    post; 
+    posterior_predictive = :y_hat, 
+    log_likelihood = :log_lik, 
+    sample_stats = (:lp__, :treedepth__, :stepsize__, :n_leapfrog__, :energy__, :divergent__, :accept_stat__),
+    #warmup_posterior = post_warmup
+)
 
 println()
 idata |> display
@@ -93,3 +110,4 @@ idata.log_likelihood |> display
 println()
 idata.sample_stats |> display
 
+from_namedtuple(stan_nts; posterior_predictive=:y_hat, log_likelihood=:log_lik)
