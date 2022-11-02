@@ -97,6 +97,7 @@ function cmdline(m::SampleModel, id)
     if length(m.diagnostic_file) > 0
       cmd = `$cmd diagnostic_file=$(m.diagnostic_file[id])`
     end
+    cmd = `$cmd sig_figs=$(m.sig_figs)`
 
     # Refresh rate
     cmd = `$cmd refresh=$(m.refresh)`

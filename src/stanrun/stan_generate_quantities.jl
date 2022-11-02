@@ -64,6 +64,7 @@ function stan_generate_quantities(
     
     fname = "$(m.output_base)_generated_quantities_$chain.csv"
     cmd = `$cmd output file=$fname`
+    cmd = `$cmd sig_figs=$(m.sig_figs)`
   end 
   
   cd(m.tmpdir) do

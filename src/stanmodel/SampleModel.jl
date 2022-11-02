@@ -66,6 +66,9 @@ mutable struct SampleModel <: CmdStanModels
     log_file::Vector{String};          # Log file array
     diagnostic_file::Vector{String};   # Diagnostic file array
 
+    # Output control
+    sig_figs::Int;                     # Number of significant digits for values in output files
+
     # Stansummary settings
     summary::Bool;                     # Store cmdstan's summary as a .csv file
     print_summary::Bool;               # Print the summary
@@ -176,6 +179,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         String[],                      # Sample .csv files 
         String[],                      # Log files
         String[],                      # Diagnostic files
+        6,                             # Default number of sig_figs
         true,                          # Create stansummary result
         false,                         # Display stansummary result
         cmdstan_home
@@ -238,6 +242,8 @@ function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
     end
     println(io, "\nData and init files:")
     println(io, "  use_json =                ", m.use_json)
+    println(io, "\nOutput control:")
+    println(io, "  sig_figs =                ", m.sig_figs)
     println(io, "\nStansummary section:")
     println(io, "  summary                   ", m.summary)
     println(io, "  print_summary             ", m.print_summary)

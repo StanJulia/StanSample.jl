@@ -65,6 +65,8 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 
 * `use_json=true`                      # Set to false for .R data files.
 
+* `sig_figs=6`                         # Number of significant digits in output files
+
 * `summary=true`                       # Create stansummary .csv file
 * `print_summary=false`                # Display summary
 ```
