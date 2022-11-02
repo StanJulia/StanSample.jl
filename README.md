@@ -84,6 +84,23 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 6.11.5
+
+1. Add sig_figs field to SampleModel (thanks to Andrew Radcliffe).
+
+This change enables the user to control the number of significant digits which are preserved in the output. sig_figs=6 is the default cmdstan option, which is what StanSample has been defaulting to.
+
+Typically, a user should prefer to generate outputs with sig_figs=18 so that the f64's are uniquely identified. It might be wise to make such a recommendation in the documentation, but I suppose that casual users would complain about the correspondingly increased .csv sizes (and subsequent read times).
+
+### Version 6.11.4
+
+1. Dropped conversion to Symbols in `read_csv_files()` if internals are requested (`include_internals=true`)
+2. Added InferenceObjects and PosteriorDB as dependencies.
+
+This is part of the work with Set Haxen to enable working with InferenceData objects in a future release (probably v6.12).
+
+Once PosteriorDB is available I'l probably release v7.
+
 ### Version 6.11.1
 
 1. Fix bridge_path in SampleModel.
