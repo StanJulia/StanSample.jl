@@ -83,6 +83,10 @@ chains and to speed up certain operations. By default StanSample.jl's
 SampleModel sets the C++ num_threads to 4. See the `graphs` subdirectory
 in the RedCardsStudy in the Examples directory for an example.
 
+Typically, a user should consider to generate outputs with sig_figs=18 so that
+the f64's are uniquely identified. It will increase .csv sizes (and might affect
+subsequent read times).
+
 """
 function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
 
