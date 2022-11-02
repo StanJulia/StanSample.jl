@@ -100,7 +100,7 @@ idata = from_namedtuple(
     #warmup_posterior = post_warmup
 )
 
-# What would be ideal:
+# What would be ideal, kind of pseudo code:
 
 #=
 idata = from_namedtuple(
@@ -112,12 +112,13 @@ idata = from_namedtuple(
         keys=(:lp__, :treedepth__, :stepsize__, :n_leapfrog__, :energy__, :divergent__, :accept_stat__),
         range=1001:2000),
 
-    #warmup_posterior = (keys=(:mu, :theta, :theta_tilde, :tau), range=1:2000),
+    #warmup_posterior = (keys=(:mu, :theta, :theta_tilde, :tau), range=1:1000),
     # etc.
 )
 =#
 
-# With a Dict based InferenceData object a similar result is possible with above `select_nt_ranges()` calls.
+# With a Dict based InferenceData object a similar result is possible with above `select_nt_ranges()` 
+# and `NamedTupleTools.select()` calls.
 
 
 println()
