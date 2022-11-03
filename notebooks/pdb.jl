@@ -178,8 +178,8 @@ CSV = "~0.10.7"
 DataFrames = "~1.4.2"
 InferenceObjects = "~0.2.2"
 NamedTupleTools = "~0.14.1"
-PosteriorDB = "~0.1.0"
-StanSample = "~6.11.4"
+PosteriorDB = "~0.2.0"
+StanSample = "~6.11.3"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -188,7 +188,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.9.0-DEV"
 manifest_format = "2.0"
-project_hash = "f2b48379f472e9e6e08bc5da1bb00b67c82de981"
+project_hash = "8e55288223e3e291efa7fcb5b776ae417f596503"
 
 [[deps.ANSIColoredPrinters]]
 git-tree-sha1 = "574baf8110975760d391c710b6341da1afa48d8c"
@@ -523,9 +523,9 @@ uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
 
 [[deps.HostCPUFeatures]]
 deps = ["BitTwiddlingConvenienceFunctions", "IfElse", "Libdl", "Static"]
-git-tree-sha1 = "b7b88a4716ac33fe31d6556c02fc60017594343c"
+git-tree-sha1 = "d076c069de9afda45e379f4be46f1f54bdf37ca9"
 uuid = "3e5b6fbb-0976-4d2c-9146-d79de83f2fb0"
-version = "0.1.8"
+version = "0.1.9"
 
 [[deps.HypergeometricFunctions]]
 deps = ["DualNumbers", "LinearAlgebra", "OpenLibm_jll", "SpecialFunctions", "Test"]
@@ -710,9 +710,9 @@ version = "2022.2.0+0"
 
 [[deps.MLJModelInterface]]
 deps = ["Random", "ScientificTypesBase", "StatisticalTraits"]
-git-tree-sha1 = "0a36882e73833d60dac49b00d203f73acfd50b85"
+git-tree-sha1 = "4040c0da2bd05130687cc258c1318acd32bace90"
 uuid = "e80e1ace-859a-464e-9ed9-23947d8ae3ea"
-version = "1.7.0"
+version = "1.7.1"
 
 [[deps.MacroTools]]
 deps = ["Markdown", "Random"]
@@ -837,9 +837,9 @@ version = "1.4.2"
 
 [[deps.PosteriorDB]]
 deps = ["Artifacts", "JSON3", "ZipFile"]
-git-tree-sha1 = "ebe4e1083d133094a1b8b23227b7b74b292f3b5b"
+git-tree-sha1 = "e6fccbb28ff9bab27671050a0cc04105b3f983f6"
 uuid = "1c4bc282-d2f5-44f9-b6d1-8c4424a23ad4"
-version = "0.1.0"
+version = "0.2.0"
 
 [[deps.Preferences]]
 deps = ["TOML"]
@@ -999,10 +999,10 @@ uuid = "d0ee94f6-a23d-54aa-bbe9-7f572d6da7f5"
 version = "4.7.4"
 
 [[deps.StanSample]]
-deps = ["CSV", "CompatHelperLocal", "DataFrames", "DelimitedFiles", "Distributed", "DocStringExtensions", "InferenceObjects", "JSON", "MCMCChains", "MonteCarloMeasurements", "NamedTupleTools", "OrderedCollections", "Parameters", "PosteriorDB", "Random", "Reexport", "Requires", "Serialization", "StanBase", "TableOperations", "Tables", "Unicode"]
-git-tree-sha1 = "74d8b8c977656b300905f7fd3325ec4446a5724a"
+deps = ["CSV", "CompatHelperLocal", "DataFrames", "DelimitedFiles", "Distributed", "DocStringExtensions", "JSON", "MCMCChains", "MonteCarloMeasurements", "NamedTupleTools", "OrderedCollections", "Parameters", "Random", "Reexport", "Requires", "Serialization", "StanBase", "TableOperations", "Tables", "Unicode"]
+git-tree-sha1 = "d5a56e21409ffcca49c7cae72d205d544447abe6"
 uuid = "c1514b29-d3a0-5178-b312-660c88baa699"
-version = "6.11.4"
+version = "6.11.3"
 
 [[deps.Static]]
 deps = ["IfElse"]
