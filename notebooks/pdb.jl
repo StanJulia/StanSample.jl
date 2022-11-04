@@ -83,7 +83,7 @@ data = Dict(
     "J" => 8,
     "y" => [28.0, 8.0, -3.0, 7.0, -1.0, 1.0, 18.0, 12.0],
     "sigma" => [15.0, 10.0, 16.0, 11.0, 9.0, 11.0, 10.0, 18.0]
-)
+);
 
 # ╔═╡ 2987b859-affb-4368-87c9-31e66e191101
 md" #### Sample using cmdstan."
@@ -104,12 +104,24 @@ function select_nt_ranges(nt::NamedTuple, ranges=[1:1000, 1001:2000])
 	dct = convert(Dict, nt)
 	dct1 = Dict{Symbol, Any}()
 	for key in keys(dct)
-		dct1[key] = dct[key][ranges[1]]
+		if length(size(dct[key])) == 2
+			dct1[key] = dct[key][ranges[1],:]
+ 		elseif length(size(dct[key])) == 3
+			dct1[key] = dct[key][:, ranges[1],:]
+		else
+			@warn "Size of NamedTuple component is $(length(size(dct[key]))), should be 2 or 3."
+		end
 	end
 	nt1 = namedtuple(dct1)
 	dct2 = Dict{Symbol, Any}()
 	for key in keys(dct)
-		dct2[key] = dct[key][ranges[2]]
+		if length(size(dct[key])) == 2
+			dct1[key] = dct[key][ranges[1],:]
+ 		elseif length(size(dct[key])) == 3
+			dct1[key] = dct[key][:, ranges[1],:]
+		else
+			@warn "Size of NamedTuple component is $(length(size(dct[key]))), should be 2 or 3."
+		end
 	end
 	nt2 = namedtuple(dct2)
 	[nt1, nt2]
@@ -121,46 +133,77 @@ begin
 	keys(stan_nts)
 end
 
-# ╔═╡ 42f3a4dd-1322-433e-83ce-944ae56100a8
+# ╔═╡ 97035503-da22-4baa-87fa-4384a6acbf72
 begin
-	post_warmup, post = select_nt_ranges(stan_nts)
+	post_warmup, post = select_nt_ranges(NamedTupleTools.select(stan_nts, (:mu, :theta, :theta_tilde, :tau)))
 	y_hat_warmup, y_hat = select_nt_ranges(NamedTupleTools.select(stan_nts, (:y_hat,)))
 	log_lik_warmup, log_lik = select_nt_ranges(NamedTupleTools.select(stan_nts, (:log_lik,)))
 	internals_warmup, internals_nts = select_nt_ranges(NamedTupleTools.select(stan_nts,
 	    (:treedepth__, :energy__, :divergent__, :accept_stat__, :n_leapfrog__, :lp__, :stepsize__)))
-
+	
 	idata = from_namedtuple(
-		post; 
-		posterior_predictive = :y_hat, 
-		log_likelihood = :log_lik, 
-		sample_stats = (:lp__, :treedepth__, :stepsize__, :n_leapfrog__, :energy__, :divergent__, :accept_stat__),
-		#warmup_posterior = post_warmup,
+		stan_nts;
+	    posterior_predictive = (:y_hat,), 
+	    log_likelihood = (:log_lik,), 
+	    sample_stats = (:treedepth__, :energy__, :divergent__, :accept_stat__, :n_leapfrog__, :lp__, :stepsize__),
 	)
 end
 
-# ╔═╡ 0ed9cde9-86c0-416e-bdb6-5acff7e4a37e
-idata
+# ╔═╡ 4d782643-6f52-4a87-b3e8-5a5fbb932b1e
+begin
+	stan_key_map = (
+	           n_leapfrog__=:n_steps,
+	           treedepth__=:tree_depth,
+	           energy__=:energy,
+	           lp__=:lp,
+	           stepsize__=:step_size,
+	           divergent__=:diverging,
+	           accept_stat__=:acceptance_rate,
+	       );
+	
+	sample_stats_rekey = InferenceObjects.Dataset((; (stan_key_map[k] => idata.sample_stats[k] for k in 
+		keys(idata.sample_stats))...));
+	
+	idata2 = merge(idata, InferenceData(; sample_stats=sample_stats_rekey))
+end
+
+# ╔═╡ 329a2d5f-5c9a-4882-93b2-760db586a81d
+idata3 = let
+           idata_warmup = idata2[draw=1:1000]
+           idata_postwarmup = idata2[draw=1001:2000]
+           idata_warmup_rename = InferenceData(NamedTuple(Symbol("warmup_$k") => idata_warmup[k] for k in keys(idata_warmup)))
+           merge(idata_postwarmup, idata_warmup_rename)
+       end
+
+# ╔═╡ 7e9091a1-d167-429a-bf56-6e8ebe5f78a1
+idata3
 
 # ╔═╡ de672c0c-6da0-4e70-b2be-eb50c54a4bd9
-idata.posterior
+idata3.posterior
 
 # ╔═╡ 63297435-444a-4a3d-88b2-69abd03f3af4
-idata.posterior.mu
+idata3.posterior.mu
 
 # ╔═╡ 242bf3b1-efbf-45ee-887b-eed57c52fce3
-idata.posterior.theta
+idata3.posterior.theta
 
 # ╔═╡ 76683fc8-e7d0-403d-979d-d3028f00cda4
-Array(idata.posterior.theta)
+Array(idata3.posterior.theta)
 
 # ╔═╡ 481ac3c1-acbe-4fa5-a0f2-9300467df322
-idata.posterior_predictive
+idata3.posterior_predictive
 
 # ╔═╡ 4f94a0e8-5e81-43a0-98d7-5c344e3ba382
-idata.log_likelihood
+idata3.log_likelihood
 
 # ╔═╡ c8b425d2-7a62-4bf5-b7a1-f1918499bc42
-idata.sample_stats
+idata3.sample_stats
+
+# ╔═╡ 00659f1c-214e-4f45-9a7e-480b8ec50895
+idata3.warmup_sample_stats
+
+# ╔═╡ 09fad001-36db-48c3-938c-000e2c892281
+idata3.warmup_sample_stats.lp
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -176,10 +219,10 @@ StanSample = "c1514b29-d3a0-5178-b312-660c88baa699"
 [compat]
 CSV = "~0.10.7"
 DataFrames = "~1.4.2"
-InferenceObjects = "~0.2.2"
+InferenceObjects = "~0.2.3"
 NamedTupleTools = "~0.14.1"
 PosteriorDB = "~0.2.0"
-StanSample = "~6.11.3"
+StanSample = "~6.11.6"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -349,7 +392,7 @@ version = "0.1.25"
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "0.5.4+0"
+version = "1.0.0+0"
 
 [[deps.CompositionsBase]]
 git-tree-sha1 = "455419f7e328a1a2493cabc6428d79e951349769"
@@ -546,9 +589,9 @@ version = "0.1.1"
 
 [[deps.InferenceObjects]]
 deps = ["Compat", "Dates", "DimensionalData"]
-git-tree-sha1 = "e2beaca65d1d821696fbdc9937df51680c8c9338"
+git-tree-sha1 = "03964a9a1919a8a4ce202a41b96389701a604c60"
 uuid = "b5cf5a8d-e756-4ee3-b014-01d49d192c00"
-version = "0.2.2"
+version = "0.2.3"
 
 [[deps.InitialValues]]
 git-tree-sha1 = "4da0f88e9a39111c2fa3add390ab15f3a44f3ca3"
@@ -819,10 +862,10 @@ uuid = "d96e819e-fc66-5662-9728-84c9c7592b0a"
 version = "0.12.3"
 
 [[deps.Parsers]]
-deps = ["Dates"]
-git-tree-sha1 = "6c01a9b494f6d2a9fc180a08b182fcb06f0958a0"
+deps = ["Dates", "SnoopPrecompile"]
+git-tree-sha1 = "cceb0257b662528ecdf0b4b4302eb00e767b38e7"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "2.4.2"
+version = "2.5.0"
 
 [[deps.Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
@@ -999,10 +1042,10 @@ uuid = "d0ee94f6-a23d-54aa-bbe9-7f572d6da7f5"
 version = "4.7.4"
 
 [[deps.StanSample]]
-deps = ["CSV", "CompatHelperLocal", "DataFrames", "DelimitedFiles", "Distributed", "DocStringExtensions", "JSON", "MCMCChains", "MonteCarloMeasurements", "NamedTupleTools", "OrderedCollections", "Parameters", "Random", "Reexport", "Requires", "Serialization", "StanBase", "TableOperations", "Tables", "Unicode"]
-git-tree-sha1 = "d5a56e21409ffcca49c7cae72d205d544447abe6"
+deps = ["CSV", "CompatHelperLocal", "DataFrames", "DelimitedFiles", "Distributed", "DocStringExtensions", "InferenceObjects", "JSON", "MCMCChains", "MonteCarloMeasurements", "NamedTupleTools", "OrderedCollections", "Parameters", "PosteriorDB", "Random", "Reexport", "Requires", "Serialization", "StanBase", "TableOperations", "Tables", "Unicode"]
+git-tree-sha1 = "e5398be8b22ae371ab3a32150cce210c44fa302b"
 uuid = "c1514b29-d3a0-5178-b312-660c88baa699"
-version = "6.11.3"
+version = "6.11.6"
 
 [[deps.Static]]
 deps = ["IfElse"]
@@ -1196,8 +1239,10 @@ version = "17.4.0+0"
 # ╠═497ac4d2-5af2-4682-84eb-8f28e8e9d488
 # ╠═bd1406e7-c507-4d17-8a96-703458f8e34b
 # ╠═547e9bb1-af5f-4a94-9842-b86b741eac8b
-# ╠═42f3a4dd-1322-433e-83ce-944ae56100a8
-# ╠═0ed9cde9-86c0-416e-bdb6-5acff7e4a37e
+# ╠═97035503-da22-4baa-87fa-4384a6acbf72
+# ╠═4d782643-6f52-4a87-b3e8-5a5fbb932b1e
+# ╠═329a2d5f-5c9a-4882-93b2-760db586a81d
+# ╠═7e9091a1-d167-429a-bf56-6e8ebe5f78a1
 # ╠═de672c0c-6da0-4e70-b2be-eb50c54a4bd9
 # ╠═63297435-444a-4a3d-88b2-69abd03f3af4
 # ╠═242bf3b1-efbf-45ee-887b-eed57c52fce3
@@ -1205,5 +1250,7 @@ version = "17.4.0+0"
 # ╠═481ac3c1-acbe-4fa5-a0f2-9300467df322
 # ╠═4f94a0e8-5e81-43a0-98d7-5c344e3ba382
 # ╠═c8b425d2-7a62-4bf5-b7a1-f1918499bc42
+# ╠═00659f1c-214e-4f45-9a7e-480b8ec50895
+# ╠═09fad001-36db-48c3-938c-000e2c892281
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
