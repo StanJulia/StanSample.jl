@@ -96,11 +96,11 @@ function select_nt_ranges(nt::NamedTuple, ranges=[1:1000, 1001:2000])
     [nt1, nt2]
 end
 
-post_warmup, post = select_nt_ranges(NamedTupleTools.select(stan_nts, (:mu, :theta, :theta_tilde, :tau)))
-y_hat_warmup, y_hat = select_nt_ranges(NamedTupleTools.select(stan_nts, (:y_hat,)))
-log_lik_warmup, log_lik = select_nt_ranges(NamedTupleTools.select(stan_nts, (:log_lik,)))
-internals_warmup, internals_nts = select_nt_ranges(NamedTupleTools.select(stan_nts,
-    (:treedepth__, :energy__, :divergent__, :accept_stat__, :n_leapfrog__, :lp__, :stepsize__)))
+#post_warmup, post = select_nt_ranges(NamedTupleTools.select(stan_nts, (:mu, :theta, :theta_tilde, :tau)))
+#y_hat_warmup, y_hat = select_nt_ranges(NamedTupleTools.select(stan_nts, (:y_hat,)))
+#log_lik_warmup, log_lik = select_nt_ranges(NamedTupleTools.select(stan_nts, (:log_lik,)))
+#internals_warmup, internals_nts = select_nt_ranges(NamedTupleTools.select(stan_nts,
+#    (:treedepth__, :energy__, :divergent__, :accept_stat__, :n_leapfrog__, :lp__, :stepsize__)))
 
 idata = from_namedtuple(
     stan_nts;
@@ -154,3 +154,8 @@ idata3.warmup_sample_stats |> display
 
 println()
 idata3.warmup_sample_stats.lp |> display
+
+println()
+idata3.sample_stats.lp |> display
+
+

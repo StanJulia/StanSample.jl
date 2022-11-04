@@ -205,6 +205,9 @@ idata3.warmup_sample_stats
 # ╔═╡ 09fad001-36db-48c3-938c-000e2c892281
 idata3.warmup_sample_stats.lp
 
+# ╔═╡ d9a920c2-5c15-466a-a589-9ab70296f16a
+idata3.sample_stats.lp
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -231,7 +234,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.9.0-DEV"
 manifest_format = "2.0"
-project_hash = "8e55288223e3e291efa7fcb5b776ae417f596503"
+project_hash = "8755eaa788b19bd5d44831987fa433638c390bde"
 
 [[deps.ANSIColoredPrinters]]
 git-tree-sha1 = "574baf8110975760d391c710b6341da1afa48d8c"
@@ -1252,5 +1255,6 @@ version = "17.4.0+0"
 # ╠═c8b425d2-7a62-4bf5-b7a1-f1918499bc42
 # ╠═00659f1c-214e-4f45-9a7e-480b8ec50895
 # ╠═09fad001-36db-48c3-938c-000e2c892281
+# ╠═d9a920c2-5c15-466a-a589-9ab70296f16a
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
