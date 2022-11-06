@@ -56,106 +56,42 @@ data = Dict(
 # Sample using cmdstan
 
 # the stan part
-tmpdir = joinpath(pwd(), "notebooks", "tmp")
+tmpdir = joinpath(pwd(), "test", "test_inferencedata", "tmp")
 m_schools = SampleModel("eight_schools", stan_schools, tmpdir)
 rc = stan_sample(m_schools; data, save_warmup=true)
 
 @assert success(rc)
 
-stan_nts = read_samples(m_schools, :namedtuples; include_internals=true)
-keys(stan_nts) |> display
+include_warmup = m_schools.save_warmup ? true : false
+idata = inferencedata(m_schools; include_internals=true, include_warmup)
 
-# (:treedepth__, :theta_tilde, :energy__, :y_hat, :divergent__, :accept_stat__, 
-#   :n_leapfrog__, :mu, :lp__, :stepsize__, :tau, :theta, :log_lik)
+println()
+idata |> display
 
+println()
+idata.posterior |> display
 
-function select_nt_ranges(nt::NamedTuple, ranges=[1:1000, 1001:2000])
-    dct = convert(Dict, nt)
-    dct1 = Dict{Symbol, Any}()
-    for key in keys(dct)
-        if length(size(dct[key])) == 2
-            dct1[key] = dct[key][ranges[1],:]
-        elseif length(size(dct[key])) == 3
-            dct1[key] = dct[key][:, ranges[1],:]
-        else
-            @warn "Size of NamedTuple component is $(length(size(dct[key]))), should be 2 or 3."
-        end
-    end
-    nt1 = namedtuple(dct1)
-    dct2 = Dict{Symbol, Any}()
-    for key in keys(dct)
-        if length(size(dct[key])) == 2
-            dct1[key] = dct[key][ranges[1],:]
-        elseif length(size(dct[key])) == 3
-            dct1[key] = dct[key][:, ranges[1],:]
-        else
-            @warn "Size of NamedTuple component is $(length(size(dct[key]))), should be 2 or 3."
-        end
-    end
-    nt2 = namedtuple(dct2)
-    [nt1, nt2]
+println()
+idata.posterior.theta |> display
+
+println()
+idata.posterior_predictive |> display
+
+println()
+idata.log_likelihood |> display
+
+println()
+idata.sample_stats |> display
+
+println()
+idata.sample_stats.lp |> display
+
+if include_warmup
+    println()
+    idata.warmup_sample_stats |> display
+
+    println()
+    idata.warmup_sample_stats.lp |> display
 end
-
-#post_warmup, post = select_nt_ranges(NamedTupleTools.select(stan_nts, (:mu, :theta, :theta_tilde, :tau)))
-#y_hat_warmup, y_hat = select_nt_ranges(NamedTupleTools.select(stan_nts, (:y_hat,)))
-#log_lik_warmup, log_lik = select_nt_ranges(NamedTupleTools.select(stan_nts, (:log_lik,)))
-#internals_warmup, internals_nts = select_nt_ranges(NamedTupleTools.select(stan_nts,
-#    (:treedepth__, :energy__, :divergent__, :accept_stat__, :n_leapfrog__, :lp__, :stepsize__)))
-
-idata = from_namedtuple(
-    stan_nts;
-    posterior_predictive = (:y_hat,), 
-    log_likelihood = (:log_lik,), 
-    sample_stats = (:treedepth__, :energy__, :divergent__, :accept_stat__, :n_leapfrog__, :lp__, :stepsize__),
-)
-
-stan_key_map = (
-           n_leapfrog__=:n_steps,
-           treedepth__=:tree_depth,
-           energy__=:energy,
-           lp__=:lp,
-           stepsize__=:step_size,
-           divergent__=:diverging,
-           accept_stat__=:acceptance_rate,
-       );
-
-sample_stats_rekey = InferenceObjects.Dataset((; (stan_key_map[k] => idata.sample_stats[k] for k in 
-    keys(idata.sample_stats))...));
-
-idata2 = merge(idata, InferenceData(; sample_stats=sample_stats_rekey))
-
-idata3 = let
-           idata_warmup = idata2[draw=1:1000]
-           idata_postwarmup = idata2[draw=1001:2000]
-           idata_warmup_rename = InferenceData(NamedTuple(Symbol("warmup_$k") => idata_warmup[k] for k in keys(idata_warmup)))
-           merge(idata_postwarmup, idata_warmup_rename)
-       end
-
-println()
-idata3 |> display
-
-println()
-idata3.posterior |> display
-
-println()
-idata3.posterior.theta |> display
-
-println()
-idata3.posterior_predictive |> display
-
-println()
-idata3.log_likelihood |> display
-
-println()
-idata3.sample_stats |> display
-
-println()
-idata3.warmup_sample_stats |> display
-
-println()
-idata3.warmup_sample_stats.lp |> display
-
-println()
-idata3.sample_stats.lp |> display
 
 
