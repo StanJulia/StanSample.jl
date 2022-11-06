@@ -35,9 +35,7 @@ function inferencedata(m::SampleModel; kwargs...)
         sample_stats = (:treedepth__, :energy__, :divergent__, :accept_stat__, :n_leapfrog__, :lp__, :stepsize__),
         log_likelihood = (:log_lik,), )
 
-        predictive_key_map = (
-        y_hat=:y,
-    )
+    predictive_key_map = (y_hat=:y,)
 
     predictive_rekey = InferenceObjects.Dataset((; (predictive_key_map[k] => idata.posterior_predictive[k] for k in     keys(idata.posterior_predictive))...));
     idata2 = merge(idata, InferenceData(; posterior_predictive=predictive_rekey))
@@ -70,7 +68,7 @@ function inferencedata(m::SampleModel; kwargs...)
            idata_postwarmup = idata2[draw=1001:2000]
            idata_warmup_rename = InferenceData(NamedTuple(Symbol("warmup_$k") => idata_warmup[k] for k in keys(idata_warmup)))
            merge(idata_postwarmup, idata_warmup_rename)
-       end
+        end
 
         return idata3  
     else
