@@ -3,9 +3,6 @@ using StanSample
 using InferenceObjects
 using PosteriorDB
 
-ProjDir = @__DIR__
-include(joinpath(ProjDir, "inferenceData2.jl"))
-
 # the posteriordb part, getting model code and data
 
 posterior_name = "diamonds-diamonds"
@@ -66,7 +63,7 @@ rc = stan_sample(m_schools; data, save_warmup=true)
 @assert success(rc)
 
 include_warmup = m_schools.save_warmup ? true : false
-idata = inferencedata2(m_schools; include_internals=true, include_warmup)
+idata = inferencedata(m_schools; include_internals=true, include_warmup)
 
 println()
 idata |> display
@@ -75,6 +72,26 @@ println()
 idata.posterior |> display
 
 println()
+idata.posterior.theta |> display
+
+println()
+idata.posterior_predictive |> display
+
+println()
+idata.log_likelihood |> display
+
+println()
 idata.sample_stats |> display
+
+println()
+idata.sample_stats.lp |> display
+
+if include_warmup
+    println()
+    idata.warmup_sample_stats |> display
+
+    println()
+    idata.warmup_sample_stats.lp |> display
+end
 
 
