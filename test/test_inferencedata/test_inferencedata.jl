@@ -53,21 +53,35 @@ rc = stan_sample(m_schools; data, save_warmup=true)
 
 @assert success(rc)
 
-idata = inferencedata(m_schools; include_posterior_predictive=true, include_sample_stats=true,
-    include_log_likelihood=true)
+options = (include_log_likelihood=true, include_sample_stats=true,
+    include_posterior_predictive=true)
 
+options |> display
+
+idata = inferencedata(m_schools; options...)
+
+println("\nGroups defined:")
 idata |> display
 
-println()
+println("\nPosterior:")
 idata.posterior |> display
 
-println()
-idata.posterior_predictive |> display
+if options.include_posterior_predictive
+    println("\nPosterior predictive:")
+    idata.posterior_predictive |> display
+end
 
-println()
-idata.log_likelihood |> display
+if options.include_log_likelihood
+    println("\nLog-likelihood:")
+    idata.log_likelihood |> display
+end
 
-println()
-idata.sample_stats |> display
+if options.include_sample_stats
+    println("\nSample_stats:")
+    idata.sample_stats |> display
+end
 
-
+if m_schools.save_warmup
+    println("\nWarmup sample stats:")
+    idata.warmup_sample_stats |> display
+end
