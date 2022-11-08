@@ -1,8 +1,8 @@
 function inferencedata(m::SampleModel; kwargs...)
 
     # Used keyword arguments
-    used_keywords = [:include_internals, :include_log_likelihood,
-        :include_sample_stats, :include_posterior_predictive]
+    used_keywords = [:include_log_likelihood, :include_sample_stats,
+        :include_posterior_predictive]
 
     # Default is only posterior values
     include_log_likelihood = false
