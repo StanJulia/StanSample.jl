@@ -1,4 +1,4 @@
-function inferencedata2(m::SampleModel; kwargs...)
+function inferencedata(m::SampleModel; kwargs...)
 
     # Used keyword arguments
     used_keywords = [:include_internals, :include_log_likelihood,

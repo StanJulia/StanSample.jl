@@ -1,18 +1,6 @@
 using CSV, DataFrames, NamedTupleTools
 using StanSample
 using InferenceObjects
-using PosteriorDB
-
-ProjDir = @__DIR__
-include(joinpath(ProjDir, "inferenceData2.jl"))
-
-# the posteriordb part, getting model code and data
-
-posterior_name = "diamonds-diamonds"
-pdb = database()
-post = posterior(pdb, posterior_name)
-model_data = Dict(string(k) => v for (k, v) in load_values(dataset(post)))
-model_code = implementation(model(post), "stan")
 
 stan_schools = """
 data {
@@ -65,7 +53,7 @@ rc = stan_sample(m_schools; data, save_warmup=true)
 
 @assert success(rc)
 
-idata = inferencedata2(m_schools; include_posterior_predictive=true, include_sample_stats=true,
+idata = inferencedata(m_schools; include_posterior_predictive=true, include_sample_stats=true,
     include_log_likelihood=true)
 
 idata |> display
