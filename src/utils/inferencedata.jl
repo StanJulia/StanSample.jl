@@ -24,8 +24,6 @@ function inferencedata(m::SampleModel; kwargs...)
         end
     end
 
-    println([include_log_likelihood, include_sample_stats, include_posterior_predictive])
-
     stan_nts = read_samples(m, :namedtuples; include_internals=include_sample_stats)
     idata = from_namedtuple(stan_nts[[:mu, :theta_tilde, :theta, :tau]])
 
