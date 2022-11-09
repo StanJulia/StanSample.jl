@@ -84,6 +84,20 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 6.12.0 (Under development)
+
+1. Includes inferencedata()
+
+### Version 6.11.7
+
+1. BridgeStan updated
+2. PosteriorDB removed
+
+### Version 6.11.6
+
+1. Added PosteriorDB
+2. Added InferenceObjects
+
 ### Version 6.11.5
 
 1. Add sig_figs field to SampleModel (thanks to Andrew Radcliffe).
