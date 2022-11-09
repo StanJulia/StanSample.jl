@@ -178,7 +178,6 @@ To install CmdStan, follow the instructions in the guide,
 
 * [Getting Started with CmdStan](https://mc-stan.org/docs/cmdstan-guide/cmdstan-installation.html)
 
-
 ### Ensuring tools are built/imported
 
 At this point, everything should be in place to build and execute a
