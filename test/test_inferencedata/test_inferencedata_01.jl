@@ -52,18 +52,24 @@ m_schools = SampleModel("eight_schools", stan_schools, tmpdir)
 rc = stan_sample(m_schools; data, save_warmup=true)
 
 if success(rc)
-
-    idata = inferencedata(m_schools)
-
-    println("\nGroups defined:")
-    idata |> display
-
-    for prop in propertynames(idata)
-        println("\nProperty $(string(prop)):")
-        idata[prop] |> display
-        println()
-    end
+    stan_nts = read_samples(m_schools, :namedtuples; include_internals=true)
+    stan_key_map = (
+        n_leapfrog__=:n_steps,
+        treedepth__=:tree_depth,
+        energy__=:energy,
+        lp__=:lp,
+        stepsize__=:step_size,
+        divergent__=:diverging,
+        accept_stat__=:acceptance_rate,
+    );
+    stan_sample_nts = NamedTuple{filter(∉(keys(stan_key_map)), keys(stan_nts))}(stan_nts)
+    stan_stats_nts = NamedTuple{filter(∈(keys(stan_key_map)), keys(stan_nts))}(stan_nts)
+    stan_stats_nts_rekey = 
+        NamedTuple{map(Base.Fix1(getproperty, stan_key_map), keys(stan_stats_nts))}(
+            values(stan_stats_nts))
+    idata = from_namedtuple(stan_sample_nts; sample_stats=stan_stats_nts_rekey)
 
 else
     @warn "Sampling failed."
 end
+
