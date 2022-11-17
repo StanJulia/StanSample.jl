@@ -1,5 +1,5 @@
-using .DimensionalData
-import .DimensionalData: @dim, XDim, YDim, ZDim
+#using .DimensionalData
+import .DimensionalData: @dim, XDim, YDim, ZDim, DimArray, Dimensions, dims, At
 
 import StanSample: convert_a3d
 
