@@ -84,6 +84,14 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 6.12.0
+
+1. Added experimental version of inferencedata(). See example in ./test/test_inferencedata.jl
+2. Added InferenceObjects.jl as a dependency
+3. Dropped MonteCarloMeasurements.jl as a dependency (still supported using Requires)
+4. Dropped MCMCChains.jl as a dependency (still supported using Requires)
+5. Dropped AxisKeys.jl as a dependency
+
 ### Version 6.11.5
 
 1. Add sig_figs field to SampleModel (thanks to Andrew Radcliffe).
@@ -95,11 +103,9 @@ Typically, a user should prefer to generate outputs with sig_figs=18 so that the
 ### Version 6.11.4
 
 1. Dropped conversion to Symbols in `read_csv_files()` if internals are requested (`include_internals=true`)
-2. Added InferenceObjects and PosteriorDB as dependencies.
+2. Added InferenceObjects as a dependency.
 
 This is part of the work with Set Haxen to enable working with InferenceData objects in a future release (probably v6.12).
-
-Once PosteriorDB is available I'l probably release v7.
 
 ### Version 6.11.1
 
