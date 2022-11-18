@@ -19,12 +19,14 @@ $(SIGNATURES)
 * `kwargs...`                          # Arguments to pass on to `from_namedtuple`
 ```
 
-### Reurns
+### Returns
 ```julia
 * `inferencedata object`               # Will at least contain posterior and sample_stats groups
 ```
 
-See the example in ./test/test_inferencedata.jl.
+See the example in ./test/test_inferencedata.jl. 
+
+Note that this function is currently under development.
 
 """
 function inferencedata(m::SampleModel;
@@ -95,8 +97,6 @@ function inferencedata(m::SampleModel;
     end
 
     # TO DO: update the indexing
-
-    # TO DO: add other groups (data, etc.)
 
     return idata
 end
