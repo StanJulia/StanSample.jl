@@ -50,6 +50,8 @@ function inferencedata(m::SampleModel;
     # If a log_likelihood_symbol is defined (!= nothing), remove it from the future posterior group
     if !isnothing(log_likelihood_symbol)
         sample_nts = NamedTuple{filter(∉([log_likelihood_symbol]), keys(stan_nts))}(stan_nts)
+    else
+        sample_mts = stan_nts
     end
 
     # If a posterior_predictive_symbol is defined (!= nothing), remove it from the future posterior group
@@ -68,7 +70,7 @@ function inferencedata(m::SampleModel;
             values(sample_stats_nts))
 
     # Create initial inferencedata object with 2 groups
-    idata = from_namedtuple(sample_nts; sample_stats=sample_stats_nts_rekey, kwargs...)
+    idata = from_namedtuple(posterior_nts; sample_stats=sample_stats_nts_rekey, kwargs...)
 
     # Merge both log_likelihood and posterior_predictive groups into idata if present
     if !isnothing(posterior_predictive_symbol) && posterior_predictive_symbol in keys(stan_nts)

@@ -55,6 +55,13 @@ if success(rc)
 
     idata = inferencedata(m_schools)
 
+    nt = namedtuple(data)
+
+    # Until InferenceObjects issue #36 is merged
+    ntu=(sigma=nt.sigma, J=[4], y=nt.y)
+    
+    idata = merge(idata, from_namedtuple(; observed_data = ntu))
+
     println("\nGroups defined:")
     idata |> display
 
@@ -67,3 +74,5 @@ if success(rc)
 else
     @warn "Sampling failed."
 end
+
+
