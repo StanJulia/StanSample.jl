@@ -1,6 +1,15 @@
 using CSV, DataFrames, NamedTupleTools
 using StanSample
 using InferenceObjects
+using PosteriorDB
+
+# the posteriordb part, getting model code and data
+
+posterior_name = "diamonds-diamonds"
+pdb = database()
+post = posterior(pdb, posterior_name)
+model_data = Dict(string(k) => v for (k, v) in load_values(dataset(post)))
+model_code = implementation(model(post), "stan")
 
 stan_schools = """
 data {
@@ -51,28 +60,38 @@ tmpdir = joinpath(pwd(), "test", "test_inferencedata", "tmp")
 m_schools = SampleModel("eight_schools", stan_schools, tmpdir)
 rc = stan_sample(m_schools; data, save_warmup=true)
 
-if success(rc)
+@assert success(rc)
 
-    idata = inferencedata(m_schools)
+include_warmup = m_schools.save_warmup ? true : false
+idata = inferencedata(m_schools; include_internals=true, include_warmup)
 
-    nt = namedtuple(data)
+println()
+idata |> display
 
-    # Until InferenceObjects issue #36 is merged
-    ntu=(sigma=nt.sigma, J=[4], y=nt.y)
-    
-    idata = merge(idata, from_namedtuple(; observed_data = ntu))
+println()
+idata.posterior |> display
 
-    println("\nGroups defined:")
-    idata |> display
+println()
+idata.posterior.theta |> display
 
-    for prop in propertynames(idata)
-        println("\nProperty $(string(prop)):")
-        idata[prop] |> display
-        println()
-    end
+println()
+idata.posterior_predictive |> display
 
-else
-    @warn "Sampling failed."
+println()
+idata.log_likelihood |> display
+
+println()
+idata.sample_stats |> display
+
+println()
+idata.sample_stats.lp |> display
+
+if include_warmup
+    println()
+    idata.warmup_sample_stats |> display
+
+    println()
+    idata.warmup_sample_stats.lp |> display
 end
 
 
