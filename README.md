@@ -1,4 +1,4 @@
-# StanSample v6.12
+# StanSample v6.13
 
 | **Project Status**          |  **Build Status** |
 |:---------------------------:|:-----------------:|
