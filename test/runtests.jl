@@ -117,6 +117,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     "test_dimensionaldata/test_dimensionaldata.jl",
   ]
 
+  #=
   @testset "DimensionalData interface" begin
     for test in test_dimensionaldata
       println("\nTesting: $test.")
@@ -124,6 +125,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     end
     println()
   end
+  =#
   
   #=
   test_keywords = [

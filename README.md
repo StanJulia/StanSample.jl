@@ -84,6 +84,10 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 6.13.0
+
+1. Dropped support for read_samples(m, :dimarray) as this conflicted with InferenceData
+
 ### Version 6.12.0
 
 1. Added experimental version of inferencedata(). See example in ./test/test_inferencedata.jl

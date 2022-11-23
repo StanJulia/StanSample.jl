@@ -35,18 +35,18 @@ Currently supported output_formats are:
 7. :dataframes (Vector{DataFrames.DataFrame} object, individual chains)
 8. :keyedarray (KeyedArray object from AxisDict.jl)
 9. :particles (Dict{MonteCarloMeasurements.Particles})
-10. :dimarray (Appended chains DimensionalData.DimArray object)
-11. :dimarrays (DimensionalData.DimArray object)
-12. :mcmcchains (MCMCChains.Chains object)
-13. :nesteddataframe (DataFrame with vectors and matrices)
+10. :mcmcchains (MCMCChains.Chains object)
+11. :nesteddataframe (DataFrame with vectors and matrices)
+
+Another method to read in chains is provided by `inferencedata(model)`. See test_inferencedata.jl in
+the test directory.
 
 Basically chains can be returned as an Array, a KeyedArray, a DimArray, a NamedTuple,
 a StanTable, a DataFrame (possibly with nested columns), a Particles or an MCMCChains.Chains object.
 
-Options 8 to 12 are enabled by the presence of AxisKeys.jl, MonteCarloMeasurements.jl,
-DimensionalData.jl or MCMCChains.jl.
+Options 8 to 10 are enabled by the presence of AxisKeys.jl, MonteCarloMeasurements.jl or MCMCChains.jl.
 
-For NamedTuple, StanTable, DimArray and DataFrame all chains are appended or can be returned
+For NamedTuple, StanTable and DataFrame all chains are appended or can be returned
 as a Vector{...} for each chain.
 
 With the optional keyword argument `chains` a subset of chains can be included,
