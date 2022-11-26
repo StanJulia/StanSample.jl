@@ -44,11 +44,7 @@ data = Dict(
     "sigma" => [15.0, 10.0, 16.0, 11.0, 9.0, 11.0, 10.0, 18.0]
 )
 
-# Sample using cmdstan
-
-# the stan part
-tmpdir = joinpath(pwd(), "test", "test_inferencedata", "tmp")
-m_schools = SampleModel("eight_schools", stan_schools, tmpdir)
+m_schools = SampleModel("eight_schools", stan_schools)
 rc = stan_sample(m_schools; data, save_warmup=true)
 
 if success(rc)
@@ -62,17 +58,21 @@ if success(rc)
     
     idata = merge(idata, from_namedtuple(; observed_data = ntu))
 
-    println("\nGroups defined:")
-    idata |> display
-
-    for prop in propertynames(idata)
-        println("\nProperty $(string(prop)):")
-        idata[prop] |> display
-        println()
-    end
-
 else
     @warn "Sampling failed."
 end
 
+if :observed_data in propertynames(idata)
+    idata.observed_data
+end
+
+DataFrame(idata.observed_data)
+
+keys(idata.posterior)
+
+post_schools = read_samples(m_schools, :dataframe)
+
+posterior_schools = DataFrame(idata.posterior)
+
+idata |> display
 

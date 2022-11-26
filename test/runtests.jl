@@ -113,6 +113,30 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
 
+  test_bridgestan = [
+    "test_bridgestan/test_bridgestan.jl",
+  ]
+
+  @testset "BridgeStan" begin
+    for test in test_bridgestan
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
+  test_inferencedata = [
+    "test_inferencedata/test_inferencedata.jl",
+  ]
+
+  @testset "InferenceData interface" begin
+    for test in test_inferencedata
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
   test_dimensionaldata = [
     "test_dimensionaldata/test_dimensionaldata.jl",
   ]
