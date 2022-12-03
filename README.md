@@ -84,9 +84,14 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-### Version 6.13.0
+### Version 6.13.0 - 6.13.5
 
-1. Dropped support for read_samples(m, :dimarray) as this conflicted with InferenceData
+1. Many more (minor and a bit more) updates to `inferencedata()`
+2. Updates to BridgeStan (more to be expected soon)
+3. Fix for chain numbering when using CPP threads (thanks to @apinter)
+4. Switched to use cmdstan-2.32.0 for testing
+5. Updates to Examples_Notebooks (in particular now using both `inferencedata()` and `inferencedata2()`)
+6. Dropped support for read_samples(m, :dimarray) as this conflicted with InferenceData
 
 ### Version 6.12.0
 
