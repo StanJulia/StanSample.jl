@@ -42,6 +42,7 @@ function read_csv_files(m::SampleModel, output_format::Symbol;
   
   init_a3d = true
   current_chain = 0
+
   #println("Reading $(m.num_chains) chains.")
 
   # Read .csv files and return a3d[n_samples, parameters, n_chains]
@@ -50,7 +51,7 @@ function read_csv_files(m::SampleModel, output_format::Symbol;
 
       if (m.use_cpp_chains && m.check_num_chains) || 
         !m.use_cpp_chains || m.num_cpp_chains == 1
-        csvfile = output_base*name_base*"_$(i).csv"
+        csvfile = output_base*name_base*"_$(i + k - 1).csv"
       else
         if i == 1
           csvfile = output_base*name_base*"_$(i)_$(k).csv"
