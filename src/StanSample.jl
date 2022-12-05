@@ -66,6 +66,7 @@ include("utils/dataframes.jl")
 include("utils/nesteddataframe.jl")
 include("utils/inferencedata.jl")
 include("utils/inferencedata2.jl")
+include("utils/inferencedata3.jl")
 
 stan_sample = stan_run
 
@@ -78,6 +79,7 @@ export
     read_summary,
     inferencedata,
     inferencedata2,
+    inferencedata3,
     stan_summary,
     stan_generate_quantities,
     available_chains,

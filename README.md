@@ -84,6 +84,11 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 6.13.6
+
+1. Added inferencedata3()
+2. Added option to enable logging in the terminal
+
 ### Version 6.13.0 - 6.13.5
 
 1. Many more (minor and a bit more) updates to `inferencedata()`

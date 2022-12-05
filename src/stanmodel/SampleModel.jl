@@ -75,6 +75,9 @@ mutable struct SampleModel <: CmdStanModels
 
     # CMDSTAN_HOME
     cmdstan_home::AbstractString;      # Directory where cmdstan can be found
+
+    # Show logging in terminal
+    show_logging::Bool;
 end
 
 """
@@ -182,7 +185,8 @@ function SampleModel(name::AbstractString, model::AbstractString,
         6,                             # Default number of sig_figs
         true,                          # Create stansummary result
         false,                         # Display stansummary result
-        cmdstan_home
+        cmdstan_home,
+        false
     )
 end
 
@@ -247,6 +251,7 @@ function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
     println(io, "\nStansummary section:")
     println(io, "  summary                   ", m.summary)
     println(io, "  print_summary             ", m.print_summary)
+    println(io, "  show_logging              ", m.show_logging)
     println(io, "\nOther:")
     println(io, "  output_base =             ", m.output_base)
     println(io, "  tmpdir =                  ", m.tmpdir)

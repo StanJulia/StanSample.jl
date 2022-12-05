@@ -69,6 +69,7 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 
 * `summary=true`                       # Create stansummary .csv file
 * `print_summary=false`                # Display summary
+* `show_logging=false`                 # Display log file refreshes in terminal
 ```
 
 Note: Currently I do not suggest to use both C++ level chains and Julia
@@ -91,6 +92,12 @@ subsequent read times).
 function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
 
     handle_keywords!(m, kwargs)
+
+    m.show_logging = false
+    if :show_logging in keys(kwargs)
+        m.show_logging = kwargs[:show_logging]
+    end
+
 
     # Diagnostics files requested?
     diagnostics = false
@@ -126,7 +133,11 @@ function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
 
     #println(m.cmds)
 
-    run(pipeline(par(m.cmds), stdout=m.log_file[1]))
+    if !m.show_logging
+        run(pipeline(par(m.cmds), stdout=m.log_file[1]))
+    else
+        run(pipeline(par(m.cmds); stdout=`tee -a $(m.log_file[1])`))
+    end
  end
 
 """

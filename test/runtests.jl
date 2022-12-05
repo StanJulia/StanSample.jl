@@ -79,6 +79,18 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
   
+  test_logging = [
+    "test_logging/test_logging.jl",
+  ]
+
+  @testset "Test logging" begin
+    for test in test_logging
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+  
   @testset "Bernoulli sig-figs tests" begin
       println("\nTesting bernoulli.jl with sig_figs=18")
       include(joinpath(TestDir, "test_sig_figs", "bernoulli.jl"))
