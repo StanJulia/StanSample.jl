@@ -24,7 +24,7 @@ using Requires
 
 using CSV, DelimitedFiles, Unicode, Parameters
 using NamedTupleTools, Tables, TableOperations
-using DataFrames, Serialization, InferenceObjects
+using DataFrames, Serialization
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
@@ -39,9 +39,11 @@ import StanBase: diagnostic_file_path, setup_diagnostics
 
 function __init__()
     @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("utils/particles.jl")
-    #@require DimensionalData="0703355e-b756-11e9-17c0-8b28908087d0" include("utils/dimarray.jl")
     @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("utils/mcmcchains.jl")
     @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("utils/keyedarray.jl")
+    @require InferenceObjects="b5cf5a8d-e756-4ee3-b014-01d49d192c00" include("utils/inferencedata.jl")
+    #@require DimensionalData="0703355e-b756-11e9-17c0-8b28908087d0" include("utils/dimarray.jl")
+
     ENV["BRIDGESTAN"] = BRIDGESTAN_HOME
 end
 
@@ -64,9 +66,6 @@ include("utils/namedtuples.jl")
 include("utils/tables.jl")
 include("utils/dataframes.jl")
 include("utils/nesteddataframe.jl")
-include("utils/inferencedata.jl")
-include("utils/inferencedata2.jl")
-include("utils/inferencedata3.jl")
 
 stan_sample = stan_run
 
@@ -77,9 +76,6 @@ export
     stan_sample,
     read_samples,
     read_summary,
-    inferencedata,
-    inferencedata2,
-    inferencedata3,
     stan_summary,
     stan_generate_quantities,
     available_chains,

@@ -69,6 +69,7 @@ See extended help for other keyword arguments ( `??stan_sample` ).
 
 * `summary=true`                       # Create stansummary .csv file
 * `print_summary=false`                # Display summary
+
 * `show_logging=false`                 # Display log file refreshes in terminal
 ```
 

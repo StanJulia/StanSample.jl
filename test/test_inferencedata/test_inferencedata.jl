@@ -1,6 +1,6 @@
 using CSV, DataFrames, NamedTupleTools
-using StanSample
 using InferenceObjects
+using StanSample
 
 stan_schools = """
 data {
