@@ -22,9 +22,7 @@ generated quantities {
 
 x = Array(reshape(1:n1*n2, n1, n2))
 data = Dict("x" => x, "n1" => n1, "n2" => n2)
-
-tmpdir = joinpath(ProjDir, "tmp")
-m0_2s = SampleModel("m0_2s", stan0_2, tmpdir)
+m0_2s = SampleModel("m0_2s", stan0_2)
 rc0_2s = stan_sample(m0_2s; data)
 
 if success(rc0_2s)
@@ -53,8 +51,7 @@ generated quantities {
 x = Array(reshape(1:n1*n2*n3, n1, n2, n3))
 data = Dict("x" => x, "n1" => n1, "n2" => n2, "n3" => n3)
 
-tmpdir = joinpath(ProjDir, "tmp")
-m0_3s = SampleModel("m0_3s", stan0_3, tmpdir)
+m0_3s = SampleModel("m0_3s", stan0_3)
 rc0_3s = stan_sample(m0_3s; data)
 
 if success(rc0_3s)
@@ -85,7 +82,7 @@ generated quantities {
 x = Array(reshape(1:n1*n2*n3*n4, n1, n2, n3, n4))
 data = Dict("x" => x, "n1" => n1, "n2" => n2, "n3" => n3, "n4" => n4)
 
-m0_4s = SampleModel("m0_4s", stan0_4, tmpdir)
+m0_4s = SampleModel("m0_4s", stan0_4)
 rc0_4s = stan_sample(m0_4s; data)
 
 if success(rc0_4s)

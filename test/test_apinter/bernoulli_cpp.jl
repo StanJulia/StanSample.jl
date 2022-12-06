@@ -20,10 +20,7 @@ model {
 
 data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
-# Keep tmpdir across multiple runs to prevent re-compilation
-tmpdir = joinpath(ProjDir, "tmp")
-isdir(tmpdir) &&  rm(tmpdir; recursive=true)
-sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
+sm = SampleModel("bernoulli", bernoulli_model);
 rc1 = stan_sample(sm; data);
 
 if success(rc1)
@@ -32,8 +29,7 @@ if success(rc1)
 end
 @test size(DataFrame(st), 1) == 4000
 
-isdir(tmpdir) && rm(tmpdir; recursive=true)
-sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
+sm = SampleModel("bernoulli", bernoulli_model);
 rc2 = stan_sample(sm; use_cpp_chains=true, data);
 
 if success(rc2)
@@ -42,8 +38,7 @@ if success(rc2)
 end
 @test size(DataFrame(st), 1) == 4000
 
-isdir(tmpdir) && rm(tmpdir; recursive=true)
-sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
+sm = SampleModel("bernoulli", bernoulli_model);
 rc3 = stan_sample(sm; use_cpp_chains=true, check_num_chains=false,
     num_cpp_chains=2, num_julia_chains=2, data);
 
@@ -53,8 +48,7 @@ if success(rc3)
 end
 @test size(DataFrame(st), 1) == 4000
 
-isdir(tmpdir) && rm(tmpdir; recursive=true)
-sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
+sm = SampleModel("bernoulli", bernoulli_model);
 rc4 = stan_sample(sm; use_cpp_chains=true, check_num_chains=false,
   num_cpp_chains=4, num_julia_chains=4, data);
 
@@ -64,8 +58,7 @@ if success(rc4)
 end
 @test size(DataFrame(st), 1) == 16000
 
-isdir(tmpdir) && rm(tmpdir; recursive=true)
-sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
+sm = SampleModel("bernoulli", bernoulli_model);
 rc4 = stan_sample(sm; use_cpp_chains=true, check_num_chains=false,
   num_cpp_chains=1, num_julia_chains=4, data);
 
@@ -75,8 +68,7 @@ if success(rc4)
 end
 @test size(DataFrame(st), 1) == 4000
 
-isdir(tmpdir) && rm(tmpdir; recursive=true)
-sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
+sm = SampleModel("bernoulli", bernoulli_model);
 rc4 = stan_sample(sm; use_cpp_chains=true, check_num_chains=false,
   num_cpp_chains=4, num_julia_chains=1, data);
 

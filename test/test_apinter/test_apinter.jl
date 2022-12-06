@@ -9,7 +9,7 @@ model {
 }
 "
 
-sm= SampleModel("mwe_model", mwe_model, joinpath(@__DIR__, "tmp"))
+sm= SampleModel("mwe_model", mwe_model)
 
 rc_mwe = stan_sample(sm; num_cpp_chains=5, use_cpp_chains=true)
 
@@ -21,5 +21,3 @@ display(available_chains(sm))
 
 @assert post_samps_mwe[1].y[1:5] == post_samps_mwe[1].y[1:5]
 @assert post_samps_mwe[1].y[1:5] !== post_samps_mwe[2].y[1:5]
-
-zip.(post_samps_mwe[1].y[1:5], post_samps_mwe[2].y[1:5]) |> display

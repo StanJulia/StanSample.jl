@@ -19,11 +19,8 @@ model {
 ";
 
 data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
-
-# Keep tmpdir across multiple runs to prevent re-compilation
-tmpdir = joinpath(ProjDir, "tmp")
 isdir(tmpdir) &&  rm(tmpdir; recursive=true)
-sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
+sm = SampleModel("bernoulli", bernoulli_model);
 rc1 = stan_sample(sm; data, sig_figs=18);
 
 if success(rc1)

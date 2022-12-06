@@ -76,9 +76,7 @@ stan_data = Dict(
     "n3" => n3,
 );
 
-tmpdir = joinpath(ProjDir, "tmp")
-isdir(tmpdir) && rm(tmpdir; recursive=true)
-stan_model = SampleModel("multidimensional_inference", mdl, tmpdir)
+stan_model = SampleModel("multidimensional_inference", mdl)
 stan_sample(
     stan_model;
     data=stan_data,

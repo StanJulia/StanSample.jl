@@ -18,12 +18,7 @@ model {
 
 bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
-# Keep tmpdir identical to prevent re-compilation
-tmpdir=joinpath(@__DIR__, "tmp")
-isdir(tmpdir) && rm(tmpdir, recursive=true)
-#tmpdir=mktempdir()
-
-sm = SampleModel("bernoulli", bernoulli_model, tmpdir)
+sm = SampleModel("bernoulli", bernoulli_model)
 rc = stan_sample(sm, data=bernoulli_data, num_chains=4, delta=0.85)
 
 # Fetch the cmdstan summary in sdf`

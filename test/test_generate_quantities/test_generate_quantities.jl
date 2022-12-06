@@ -28,7 +28,7 @@ data = Dict(
   "y" => [100, 950, 450]
 );
 
-sm = SampleModel("Generate_quantities", gq, joinpath(@__DIR__, "tmp"));
+sm = SampleModel("Generate_quantities", gq);
 
 rc = stan_sample(sm; data)
 

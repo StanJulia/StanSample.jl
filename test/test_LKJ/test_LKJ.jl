@@ -56,9 +56,7 @@ generated quantities {
 }";
 
 data = (N = N, J = 3, y=Matrix(transpose(y)), Zero=zeros(3))
-
-tmpdir = joinpath(@__DIR__, "tmp")
-m1_0s = SampleModel("stan1_0s", stan1_0, tmpdir)
+m1_0s = SampleModel("stan1_0s", stan1_0)
 rc1_0s = stan_sample(m1_0s; sig_figs=18, num_samples=9000, data)
 
 if success(rc1_0s)
