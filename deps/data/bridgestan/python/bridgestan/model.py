@@ -22,7 +22,8 @@ class StanModel:
     return values.  The constructor arguments are
 
     :param model_lib: A path to a compiled shared object.
-    :param model_data: A path to data in JSON format.
+    :param model_data: Either a string representation of a JSON object or a
+         path to a data file in JSON format ending in ``.json``.
     :param seed: A pseudo random number generator seed.
     :param chain_id: A unique identifier for concurrent chains of
         pseudorandom numbers.
@@ -44,7 +45,8 @@ class StanModel:
         constructor arguments.
 
         :param model_lib: A system path to compiled shared object.
-        :param model_data: A system path to a JSON data file.
+        :param model_data: Either a string representation of a JSON object or a
+            system path to a data file in JSON format ending in ``.json``.
         :param seed: A pseudo random number generator seed.
         :param chain_id: A unique identifier for concurrent chains of
             pseudorandom numbers.
@@ -54,7 +56,7 @@ class StanModel:
             model from C++.
         """
         validate_readable(model_lib)
-        if not model_data is None:
+        if not model_data is None and model_data.endswith('.json'):
             validate_readable(model_data)
         self.lib_path = model_lib
         self.stanlib = ctypes.CDLL(self.lib_path)
@@ -62,7 +64,7 @@ class StanModel:
         self.seed = seed
         self.chain_id = chain_id
 
-        self._construct = self.stanlib.construct
+        self._construct = self.stanlib.bs_construct
         self._construct.restype = ctypes.c_void_p
         self._construct.argtypes = [ctypes.c_char_p, ctypes.c_uint, ctypes.c_uint]
 
@@ -73,23 +75,23 @@ class StanModel:
         if not self.model_rng:
             raise RuntimeError("could not construct model RNG")
 
-        self._name = self.stanlib.name
+        self._name = self.stanlib.bs_name
         self._name.restype = ctypes.c_char_p
         self._name.argtypes = [ctypes.c_void_p]
 
-        self._model_info = self.stanlib.model_info
+        self._model_info = self.stanlib.bs_model_info
         self._model_info.restype = ctypes.c_char_p
         self._model_info.argtypes = [ctypes.c_void_p]
 
-        self._param_num = self.stanlib.param_num
+        self._param_num = self.stanlib.bs_param_num
         self._param_num.restype = ctypes.c_int
         self._param_num.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
 
-        self._param_unc_num = self.stanlib.param_unc_num
+        self._param_unc_num = self.stanlib.bs_param_unc_num
         self._param_unc_num.restype = ctypes.c_int
         self._param_unc_num.argtypes = [ctypes.c_void_p]
 
-        self._param_names = self.stanlib.param_names
+        self._param_names = self.stanlib.bs_param_names
         self._param_names.restype = ctypes.c_char_p
         self._param_names.argtypes = [
             ctypes.c_void_p,
@@ -97,11 +99,11 @@ class StanModel:
             ctypes.c_int,
         ]
 
-        self._param_unc_names = self.stanlib.param_unc_names
+        self._param_unc_names = self.stanlib.bs_param_unc_names
         self._param_unc_names.restype = ctypes.c_char_p
         self._param_unc_names.argtypes = [ctypes.c_void_p]
 
-        self._param_constrain = self.stanlib.param_constrain
+        self._param_constrain = self.stanlib.bs_param_constrain
         self._param_constrain.restype = ctypes.c_int
         self._param_constrain.argtypes = [
             ctypes.c_void_p,
@@ -111,11 +113,11 @@ class StanModel:
             double_array,
         ]
 
-        self._param_unconstrain = self.stanlib.param_unconstrain
+        self._param_unconstrain = self.stanlib.bs_param_unconstrain
         self._param_unconstrain.restype = ctypes.c_int
         self._param_unconstrain.argtypes = [ctypes.c_void_p, double_array, double_array]
 
-        self._param_unconstrain_json = self.stanlib.param_unconstrain_json
+        self._param_unconstrain_json = self.stanlib.bs_param_unconstrain_json
         self._param_unconstrain_json.restype = ctypes.c_int
         self._param_unconstrain_json.argtypes = [
             ctypes.c_void_p,
@@ -123,7 +125,7 @@ class StanModel:
             double_array,
         ]
 
-        self._log_density = self.stanlib.log_density
+        self._log_density = self.stanlib.bs_log_density
         self._log_density.restype = ctypes.c_int
         self._log_density.argtypes = [
             ctypes.c_void_p,
@@ -133,7 +135,7 @@ class StanModel:
             ctypes.POINTER(ctypes.c_double),
         ]
 
-        self._log_density_gradient = self.stanlib.log_density_gradient
+        self._log_density_gradient = self.stanlib.bs_log_density_gradient
         self._log_density_gradient.restype = ctypes.c_int
         self._log_density_gradient.argtypes = [
             ctypes.c_void_p,
@@ -144,7 +146,7 @@ class StanModel:
             double_array,
         ]
 
-        self._log_density_hessian = self.stanlib.log_density_hessian
+        self._log_density_hessian = self.stanlib.bs_log_density_hessian
         self._log_density_hessian.restype = ctypes.c_int
         self._log_density_hessian.argtypes = [
             ctypes.c_void_p,
@@ -156,7 +158,7 @@ class StanModel:
             double_array,
         ]
 
-        self._destruct = self.stanlib.destruct
+        self._destruct = self.stanlib.bs_destruct
         self._destruct.restype = ctypes.c_int
         self._destruct.argtypes = [ctypes.c_void_p]
 
@@ -166,6 +168,8 @@ class StanModel:
         stan_file: str,
         model_data: Optional[str] = None,
         *,
+        stanc_args: List[str] = [],
+        make_args: List[str] = [],
         seed: int = 1234,
         chain_id: int = 0,
     ):
@@ -177,6 +181,12 @@ class StanModel:
 
         :param stan_file: A path to a Stan model file.
         :param model_data: A path to data in JSON format.
+        :param stanc_args: A list of arguments to pass to stanc3.
+            For example, ``["--O1"]`` will enable compiler optimization level 1.
+        :param make_args: A list of additional arguments to pass to Make.
+            For example, ``["STAN_THREADS=True"]`` will enable
+            threading for the compiled model. If the same flags are defined
+            in ``make/local``, the versions passed here will take precedent.
         :param seed: A pseudo random number generator seed.
         :param chain_id: A unique identifier for concurrent chains of
             pseudorandom numbers.
@@ -185,7 +195,7 @@ class StanModel:
         :raises ValueError: If BridgeStan cannot be located.
         :raises RuntimeError: If compilation fails.
         """
-        result = compile_model(stan_file)
+        result = compile_model(stan_file, stanc_args=stanc_args, make_args=make_args)
         return cls(str(result), model_data, seed=seed, chain_id=chain_id)
 
     def __del__(self) -> None:
