@@ -86,7 +86,7 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-### Version 3.16.8 (under development)
+### Version 6.16.8 (under development)
 
 1. Many `tmp` directories created during testing have been removed from the repo.
 2. 
