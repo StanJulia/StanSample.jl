@@ -5,7 +5,7 @@
 #include "model_rng.hpp"
 extern "C" {
 #else
-typedef struct model_rng model_rng;
+typedef struct bs_model_rng bs_model_rng;
 typedef int bool;
 #endif
 /**
@@ -13,14 +13,17 @@ typedef int bool;
  * generator (PRNG) wrapper.  Data must be encoded in JSON as
  * indicated in the *CmdStan Reference Manual*.
  *
- * @param[in] data_file C-style path to JSON-encoded data file
+ * @param[in] data_file C-style string. This is either a
+ * path to JSON-encoded data file (must end with ".json"), or
+ * a string representation of a JSON object.
  * @param[in] seed seed for PRNG
  * @param[in] chain_id identifier for concurrent sequence of PRNG
  * draws
  * @return pointer to constructed model or `nullptr` if construction
  * fails
  */
-model_rng* construct(char* data_file, unsigned int seed, unsigned int chain_id);
+bs_model_rng* bs_construct(char* data_file, unsigned int seed,
+                           unsigned int chain_id);
 
 /**
  * Destroy the model and return 0 for success and -1 if there is an
@@ -30,7 +33,7 @@ model_rng* construct(char* data_file, unsigned int seed, unsigned int chain_id);
  * @return 0 for success and -1 if there is an exception freeing one
  * of the model components.
  */
-int destruct(model_rng* mr);
+int bs_destruct(bs_model_rng* mr);
 
 /**
  * Return the name of the specified model as a C-style string.
@@ -41,7 +44,7 @@ int destruct(model_rng* mr);
  * @param[in] mr pointer to model and RNG structure
  * @return name of model
  */
-const char* name(model_rng* mr);
+const char* bs_name(bs_model_rng* mr);
 
 /**
  * Return information about the compiled model as a C-style string.
@@ -53,7 +56,7 @@ const char* name(model_rng* mr);
  * @return Information about the model including Stan version, Stan defines, and
  * compiler flags.
  */
-const char* model_info(model_rng* mr);
+const char* bs_model_info(bs_model_rng* mr);
 
 /**
  * Return a comma-separated sequence of indexed parameter names,
@@ -74,7 +77,7 @@ const char* model_info(model_rng* mr);
  * @param[in] include_gq `true` to include generated quantities
  * @return CSV-separated, indexed, parameter names
  */
-const char* param_names(model_rng* mr, bool include_tp, bool include_gq);
+const char* bs_param_names(bs_model_rng* mr, bool include_tp, bool include_gq);
 
 /**
  * Return a comma-separated sequence of unconstrained parameters.
@@ -93,7 +96,7 @@ const char* param_names(model_rng* mr, bool include_tp, bool include_gq);
  * @param[in] mr pointer to model and RNG structure
  * @return CSV-separated, indexed, unconstrained parameter names
  */
-const char* param_unc_names(model_rng* mr);
+const char* bs_param_unc_names(bs_model_rng* mr);
 
 /**
  * Return the number of scalar parameters, optionally including the
@@ -105,7 +108,7 @@ const char* param_unc_names(model_rng* mr);
  * @param[in] include_gq `true` to include generated quantities
  * @return number of parameters
  */
-int param_num(model_rng* mr, bool include_tp, bool include_gq);
+int bs_param_num(bs_model_rng* mr, bool include_tp, bool include_gq);
 
 /**
  * Return the number of unconstrained parameters.  The number of
@@ -116,7 +119,7 @@ int param_num(model_rng* mr, bool include_tp, bool include_gq);
  * @param[in] mr pointer to model and RNG structure
  * @return number of unconstrained parameters
  */
-int param_unc_num(model_rng* mr);
+int bs_param_unc_num(bs_model_rng* mr);
 
 /**
  * Set the sequence of constrained parameters based on the specified
@@ -134,8 +137,8 @@ int param_unc_num(model_rng* mr);
  * @return code 0 if successful and code -1 if there is an exception
  * in the underlying Stan code
  */
-int param_constrain(model_rng* mr, bool include_tp, bool include_gq,
-                    const double* theta_unc, double* theta);
+int bs_param_constrain(bs_model_rng* mr, bool include_tp, bool include_gq,
+                       const double* theta_unc, double* theta);
 
 /**
  * Set the sequence of unconstrained parameters based on the
@@ -150,23 +153,25 @@ int param_constrain(model_rng* mr, bool include_tp, bool include_gq,
  * @return code 0 if successful and code -1 if there is an exception
  * in the underlying Stan code
  */
-int param_unconstrain(model_rng* mr, const double* theta, double* theta_unc);
+int bs_param_unconstrain(bs_model_rng* mr, const double* theta,
+                         double* theta_unc);
 
 /**
  * Set the sequence of unconstrained parameters based on the JSON
  * specification of the constrained parameters, and return a return
  * code of 0 for success and -1 for failure.  Parameter order is as
  * declared in the Stan program, with multivariate parameters given
- * in last-index-major order.  The JSON schema assumed is fully
+ * in last-index-major order. The JSON schema assumed is fully
  * defined in the *CmdStan Reference Manual*.
  *
  * @param[in] mr pointer to model and RNG structure
- * @param[in] json json-encoded constrained parameters
+ * @param[in] json JSON-encoded constrained parameters
  * @param[out] theta_unc sequence of unconstrained parameters
  * @return code 0 if successful and code -1 if there is an exception
  * in the underlying Stan code
  */
-int param_unconstrain_json(model_rng* mr, const char* json, double* theta_unc);
+int bs_param_unconstrain_json(bs_model_rng* mr, const char* json,
+                              double* theta_unc);
 
 /**
  * Set the log density of the specified parameters, dropping
@@ -183,8 +188,8 @@ int param_unconstrain_json(model_rng* mr, const char* json, double* theta_unc);
  * @return code 0 if successful and code -1 if there is an exception
  * in the underlying Stan code
  */
-int log_density(model_rng* mr, bool propto, bool jacobian, const double* theta,
-                double* lp);
+int bs_log_density(bs_model_rng* mr, bool propto, bool jacobian,
+                   const double* theta, double* lp);
 
 /**
  * Set the log density and gradient of the specified parameters,
@@ -205,8 +210,8 @@ int log_density(model_rng* mr, bool propto, bool jacobian, const double* theta,
  * @return code 0 if successful and code -1 if there is an exception
  * in the underlying Stan code
  */
-int log_density_gradient(model_rng* mr, bool propto, bool jacobian,
-                         const double* theta, double* val, double* grad);
+int bs_log_density_gradient(bs_model_rng* mr, bool propto, bool jacobian,
+                            const double* theta, double* val, double* grad);
 
 /**
  * Set the log density, gradient, and Hessian of the specified parameters,
@@ -226,12 +231,13 @@ int log_density_gradient(model_rng* mr, bool propto, bool jacobian,
  * @param[in] theta unconstrained parameters
  * @param[out] val log density to be set
  * @param[out] grad gradient to set
+ * @param[out] hessian hessian to set
  * @return code 0 if successful and code -1 if there is an exception
  * in the underlying Stan code
  */
-int log_density_hessian(model_rng* mr, bool propto, bool jacobian,
-                        const double* theta, double* val, double* grad,
-                        double* hessian);
+int bs_log_density_hessian(bs_model_rng* mr, bool propto, bool jacobian,
+                           const double* theta, double* val, double* grad,
+                           double* hessian);
 
 #ifdef __cplusplus
 }

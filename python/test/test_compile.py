@@ -11,10 +11,10 @@ def test_compile_good():
     stanfile = STAN_FOLDER / "multi" / "multi.stan"
     lib = bs.compile.generate_so_name(stanfile)
     lib.unlink(missing_ok=True)
-    res = bs.compile_model(stanfile)
+    res = bs.compile_model(stanfile, stanc_args=["--O1"])
     assert lib.samefile(res)
     lib.unlink()
-    res = bs.compile_model(stanfile, args=["STAN_THREADS=true"])
+    res = bs.compile_model(stanfile, make_args=["STAN_THREADS=true"])
     assert lib.samefile(res)
 
 
@@ -34,18 +34,6 @@ def test_compile_syntax_error():
     stanfile = STAN_FOLDER / "syntax_error" / "syntax_error.stan"
     with pytest.raises(RuntimeError, match=r"Syntax error"):
         bs.compile_model(stanfile)
-
-
-def test_compile_bad_cmdstan():
-    stanfile = STAN_FOLDER / "multi" / "multi.stan"
-    old_path = bs.compile.CMDSTAN_PATH
-    bs.compile.set_cmdstan_path("")
-    with pytest.raises(RuntimeError, match=r"set_cmdstan_path"):
-        bs.compile_model(stanfile)
-    bs.compile.set_cmdstan_path("dummy")
-    with pytest.raises(RuntimeError, match=r"Make sure CmdStan is installed"):
-        bs.compile_model(stanfile)
-    bs.compile.set_cmdstan_path(old_path)
 
 
 def test_compile_bad_bridgestan():

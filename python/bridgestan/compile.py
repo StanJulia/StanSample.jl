@@ -31,30 +31,6 @@ MAKE = os.getenv(
 )
 
 BRIDGESTAN_PATH = os.getenv("BRIDGESTAN", str(PYTHON_FOLDER.parent))
-CMDSTAN_PATH = os.getenv("CMDSTAN", "")
-if not CMDSTAN_PATH:
-    try:
-        import cmdstanpy
-
-        CMDSTAN_PATH = cmdstanpy.cmdstan_path()
-    except:
-        try:
-            CMDSTAN_PATH = str(
-                sorted((filter(Path.is_dir, (Path.home() / ".cmdstan").iterdir())))[0]
-            )
-        except:
-            pass
-
-
-def set_cmdstan_path(path: str) -> None:
-    """Set the path to CmdStan used by BridgeStan.
-
-    By default this is set to the value of the environment
-    variable ``CMDSTAN``, or to the newest installation available
-    in ``~/.cmdstan/``.
-    """
-    global CMDSTAN_PATH
-    CMDSTAN_PATH = path
 
 
 def set_bridgestan_path(path: str) -> None:
@@ -77,20 +53,23 @@ def generate_so_name(model: Path):
     return model.with_stem(f"{name}_model").with_suffix(".so")
 
 
-def compile_model(stan_file: str, args: List[str] = []) -> Path:
+def compile_model(
+    stan_file: str, *, stanc_args: List[str] = [], make_args: List[str] = []
+) -> Path:
     """
     Run BridgeStan's Makefile on a ``.stan`` file, creating the ``.so``
     used by the StanModel class.
 
-    This function assumes that the paths to BridgeStan and CmdStan
-    are both valid. These can be set with :func:`set_bridgestan_path`
-    and :func:`set_cmdstan_path` if their default values do not
-    match your system configuration.
+    This function assumes that the path to BridgeStan is valid.
+    This can be set with :func:`set_bridgestan_path`.
 
     :param stan_file: A path to a Stan model file.
-    :param args: A list of additional arguments to pass to Make.
+    :param stanc_args: A list of arguments to pass to stanc3.
+        For example, ``["--O1"]`` will enable compiler optimization level 1.
+    :param make_args: A list of additional arguments to pass to Make.
         For example, ``["STAN_THREADS=True"]`` will enable
-        threading for the compiled model.
+        threading for the compiled model. If the same flags are defined
+        in ``make/local``, the versions passed here will take precedent.
     :raises FileNotFoundError or PermissionError: If `stan_file` does not exist
         or is not readable.
     :raises ValueError: If BridgeStan cannot be located.
@@ -98,20 +77,19 @@ def compile_model(stan_file: str, args: List[str] = []) -> Path:
     """
     verify_bridgestan_path(BRIDGESTAN_PATH)
 
-    if not CMDSTAN_PATH:
-        raise RuntimeError(
-            "Unable to locate CmdStan, you will need to call "
-            "'set_cmdstan_path()' before using compilation features"
-        )
-
     file_path = Path(stan_file).resolve()
     validate_readable(str(file_path))
     if file_path.suffix != ".stan":
         raise ValueError(f"File '{stan_file}' does not end in .stan")
 
+    stanc_args
     output = generate_so_name(file_path)
-    cmdstan = str(Path(CMDSTAN_PATH).resolve()).replace("\\", "/")
-    cmd = [MAKE, f"CMDSTAN={cmdstan}/"] + args + [str(output)]
+    cmd = (
+        [MAKE]
+        + make_args
+        + ["STANCFLAGS=" + " ".join(["--include-paths=."] + stanc_args)]
+        + [str(output)]
+    )
     proc = subprocess.run(
         cmd, cwd=BRIDGESTAN_PATH, capture_output=True, text=True, check=False
     )
@@ -121,11 +99,6 @@ def compile_model(stan_file: str, args: List[str] = []) -> Path:
             f"Command {' '.join(cmd)} failed with code {proc.returncode}.\n"
             f"stdout:\n{proc.stdout}\nstderr:\n{proc.stderr}"
         )
-        if "stanc" in error:
-            error += (
-                "\nIf CmdStan is already installed, you may "
-                "need to set the location with set_cmdstan_path()"
-            )
 
         raise RuntimeError(error)
     return output

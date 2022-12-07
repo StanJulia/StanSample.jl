@@ -1,4 +1,4 @@
-# R Interface: bridgestan.R
+# R Interface
 
 % The skeleton of this page was made using Roxygen2 and tools::Rd2txt, but it is not automated.
 % Maybe it will be one day
@@ -9,6 +9,40 @@
 
 
 ---
+
+## Installation
+
+This assumes you have followed the [Getting Started guide](../getting-started.rst)
+to install BridgeStan's pre-requisites and downloaded a copy of the BridgeStan source code.
+
+
+
+```R
+devtools::install_github("https://github.com/roualdes/bridgestan", subdir="R")
+```
+
+Or, since you have already downloaded the repository, you can run
+
+```R
+install.packages(file.path(getwd(),"R"), repos=NULL, type="source")
+```
+from the BridgeStan folder.
+
+Note that the R package depends on R 3+ and R6, and will install R6 if it is not
+already installed.
+
+## Example Program
+
+An example program is provided alongside the R interface code in `example.R`:
+
+<details>
+<summary><a>Show example.R</a></summary>
+
+```{literalinclude} ../../R/example.R
+:language: R
+```
+
+</details>
 
 ## API Reference
 
@@ -36,7 +70,7 @@ _Arguments_
 
   - `lib` A path to a compiled BridgeStan Shared Object file.
 
-  - `data` A path to a JSON data file for the model.
+  - `data` Either a string representation of a JSON object or a path to a data file in JSON format ending in ".json".
 
   - `rng_seed` Seed for the RNG in the model object.
 
@@ -179,7 +213,7 @@ _Returns_
 
 **Method** `param_constrain()`:
 
-This turns a vector of unconstrained params into constrained
+Returns a vector of constrained params give the unconstrained parameters.
 parameters See also `StanModel$param_unconstrain()`, the inverse
 of this function.
 
@@ -208,8 +242,7 @@ _Returns_
 
 **Method** `param_unconstrain()`:
 
-This turns a vector of constrained params into unconstrained
-parameters.
+Returns a vector of unconstrained params give the constrained parameters.
 
 It is assumed that these will be in the same order as internally
 represented by the model (e.g., in the same order as
