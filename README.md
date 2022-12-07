@@ -89,7 +89,7 @@ See the docstrings (in particular `??StanSample`) for more help.
 ### Version 6.16.8 (under development)
 
 1. Many `tmp` directories created during testing have been removed from the repo.
-2. 
+2. Updated to upcoming BridgeStan v1.0
 
 ### Version 6.13.7
 
