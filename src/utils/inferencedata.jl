@@ -332,10 +332,11 @@ $(SIGNATURES)
 
 ### Optional positional argument
 ```julia
-* `include_warmup`                     # Directory where output files are stored
-* `log_likelihood_symbol`              # Symbol used for log_likelihood (or nothing, default: :log_lik)
-* `posterior_predictive_symbol`        # Symbol used for posterior_predictive (or nothing, default: :y_hat)
-* `kwargs...`                          # Arguments to pass on to `from_namedtuple`
+* `include_warmup`                  # Directory where output files are stored
+* `log_likelihood_var`              # Symbol(s) used for log_likelihood (or nothing)
+* `posterior_predictive_var`        # Symbol(s) used for posterior_predictive (or nothing)
+* `predictions_var`                 # Symbol(s) used for predictions (or nothing)
+* `kwargs...`                       # Arguments to pass on to `from_namedtuple`
 ```
 
 ### Returns
