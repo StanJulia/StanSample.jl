@@ -349,7 +349,7 @@ See the example in ./test/test_inferencedata.jl.
 Note that this function is currently under development.
 
 """
-inferencedata = inferencedata3
+inferencedata = inferencedata1
 
 export
     inferencedata
