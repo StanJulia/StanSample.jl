@@ -22,15 +22,14 @@ split_nt(nt::NamedTuple, key::Symbol) = split_nt(nt, (key,))
 split_nt(nt::NamedTuple, ::Nothing) = (nt, nothing)
 split_nt(nt::NamedTuple, keys) = split_nt(nt, Tuple(keys))
 
-function split_nt_all(nt::NamedTuple; kwargs...)
-    # break recursion
-    isempty(kwargs) && return nt, NamedTuple()
-    # recursively split
-    k, v = first(kwargs)
-    nt_main, nt_split = split_nt(nt, v)
-    nt_final, nt_split_others = split_nt_all(nt_main; Iterators.drop(kwargs, 1)...)
-    return nt_final, merge(NamedTuple{(k,)}((nt_split,)), nt_split_others)
+function split_nt_all(nt::NamedTuple, pair::Pair{Symbol}, others::Pair{Symbol}...)
+    group_name, keys = pair
+    nt_main, nt_group = split_nt(nt, keys)
+    post_nt, groups_nt_others = split_nt_all(nt_main, others...)
+    groups_nt = NamedTuple{(group_name,)}((nt_group,))
+    return post_nt, merge(groups_nt, groups_nt_others)
 end
+split_nt_all(nt::NamedTuple) = (nt, NamedTuple())
 
 function rekey(d::NamedTuple, keymap)
     new_keys = map(k -> get(keymap, k, k), keys(d))
@@ -51,10 +50,10 @@ function inferencedata1(m::SampleModel;
     # split stan_nts into separate groups based on keyword arguments
     posterior_nts, group_nts = split_nt_all(
         stan_nts,
-        sample_stats=keys(SAMPLE_STATS_KEY_MAP),
-        log_likelihood=log_likelihood_var,
-        posterior_predictive=posterior_predictive_var,
-        predictions=predictions_var,
+        :sample_stats => keys(SAMPLE_STATS_KEY_MAP),
+        :log_likelihood => log_likelihood_var,
+        :posterior_predictive => posterior_predictive_var,
+        :predictions => predictions_var,
     )
     # Remap the names according to above SAMPLE_STATS_KEY_MAP
     sample_stats = rekey(group_nts.sample_stats, SAMPLE_STATS_KEY_MAP)
