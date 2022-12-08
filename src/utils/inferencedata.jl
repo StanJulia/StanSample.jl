@@ -65,9 +65,11 @@ function inferencedata1(m::SampleModel;
 
     # Extract warmup values in separate groups
     if include_warmup
+        warmup_indices = 1:m.num_warmups
+        sample_indices = (1:m.num_samples) .+ m.num_warmups
         idata = let
-            idata_warmup = idata[draw=1:1000]
-            idata_postwarmup = idata[draw=1001:2000]
+            idata_warmup = idata[draw=warmup_indices]
+            idata_postwarmup = idata[draw=sample_indices]
             idata_warmup_rename = InferenceData(NamedTuple(Symbol("warmup_$k") => idata_warmup[k] for k in
                 keys(idata_warmup)))
             merge(idata_postwarmup, idata_warmup_rename)
