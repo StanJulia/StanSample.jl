@@ -13,6 +13,30 @@ const SAMPLE_STATS_KEY_MAP = (
     accept_stat__=:acceptance_rate,
 )
 
+function split_nt(nt::NamedTuple, ks::NTuple{N, Symbol}) where {N}
+    keys1 = filter(∉(ks), keys(nt))
+    keys2 = filter(∈(ks), keys(nt))
+    return NamedTuple{keys1}(nt), NamedTuple{keys2}(nt)
+end
+split_nt(nt::NamedTuple, key::Symbol) = split_nt(nt, (key,))
+split_nt(nt::NamedTuple, ::Nothing) = (nt, nothing)
+split_nt(nt::NamedTuple, keys) = split_nt(nt, Tuple(keys))
+
+function split_nt_all(nt::NamedTuple; kwargs...)
+    # break recursion
+    isempty(kwargs) && return nt, NamedTuple()
+    # recursively split
+    k, v = first(kwargs)
+    nt_main, nt_split = split_nt(nt, v)
+    nt_final, nt_split_others = split_nt_all(nt_main; Iterators.drop(kwargs, 1)...)
+    return nt_final, merge(NamedTuple{(k,)}((nt_split,)), nt_split_others)
+end
+
+function rekey(d::NamedTuple, keymap)
+    new_keys = map(k -> get(keymap, k, k), keys(d))
+    return NamedTuple{new_keys}(values(d))
+end
+
 function inferencedata1(m::SampleModel;
     include_warmup = m.save_warmup,
     log_likelihood_symbol::Union{Nothing, Symbol} = :log_lik,
