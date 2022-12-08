@@ -1,5 +1,18 @@
 using .InferenceObjects
 
+const SymbolOrSymbols = Union{Symbol, AbstractVector{Symbol}, NTuple{N, Symbol} where N}
+
+# Define the "proper" ArviZ names for the sample statistics group.
+const SAMPLE_STATS_KEY_MAP = (
+    n_leapfrog__=:n_steps,
+    treedepth__=:tree_depth,
+    energy__=:energy,
+    lp__=:lp,
+    stepsize__=:step_size,
+    divergent__=:diverging,
+    accept_stat__=:acceptance_rate,
+)
+
 function inferencedata1(m::SampleModel;
     include_warmup = m.save_warmup,
     log_likelihood_symbol::Union{Nothing, Symbol} = :log_lik,
