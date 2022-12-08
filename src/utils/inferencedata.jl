@@ -77,6 +77,7 @@ function inferencedata1(m::SampleModel;
     end
 
     # TO DO: update the indexing
+    # TO DO: import observed and constant data
 
     return idata
 end
