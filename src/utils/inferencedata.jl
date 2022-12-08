@@ -39,9 +39,10 @@ end
 
 function inferencedata1(m::SampleModel;
     include_warmup = m.save_warmup,
-    log_likelihood_symbol::Union{Nothing, Symbol} = :log_lik,
-    posterior_predictive_symbol::Union{Nothing, Symbol} = :y_hat,
-    kwargs...)
+    log_likelihood_var::Union{SymbolOrSymbols,Nothing} = nothing,
+    posterior_predictive_var::Union{SymbolOrSymbols,Nothing} = nothing,
+    kwargs...,
+)
 
     # Read in the draws as a NamedTuple with sample_stats included
     stan_nts = read_samples(m, :namedtuples; include_internals=true)
