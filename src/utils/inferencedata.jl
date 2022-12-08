@@ -41,6 +41,7 @@ function inferencedata1(m::SampleModel;
     include_warmup = m.save_warmup,
     log_likelihood_var::Union{SymbolOrSymbols,Nothing} = nothing,
     posterior_predictive_var::Union{SymbolOrSymbols,Nothing} = nothing,
+    predictions_var::Union{SymbolOrSymbols,Nothing} = nothing,
     kwargs...,
 )
 
