@@ -58,7 +58,31 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   end
   =#
 
-  basic_run_tests = [
+  test_bridgestan = [
+    "test_bridgestan/test_bridgestan.jl",
+  ]
+
+  @testset "BridgeStan" begin
+    for test in test_bridgestan
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
+  test_inferencedata = [
+    "test_inferencedata/test_inferencedata.jl",
+  ]
+
+  @testset "InferenceData interface" begin
+    for test in test_inferencedata
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
+basic_run_tests = [
     "test_bernoulli/test_bernoulli_array_01.jl",
     "test_basic_runs/test_bernoulli_dict.jl",
     "test_basic_runs/test_bernoulli_array_dict_1.jl",
@@ -128,30 +152,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
 
   @testset "Tables.jl interface" begin
     for test in test_tables_interface
-      println("\nTesting: $test.")
-      include(joinpath(TestDir, test))
-    end
-    println()
-  end
-
-  test_bridgestan = [
-    "test_bridgestan/test_bridgestan.jl",
-  ]
-
-  @testset "BridgeStan" begin
-    for test in test_bridgestan
-      println("\nTesting: $test.")
-      include(joinpath(TestDir, test))
-    end
-    println()
-  end
-
-  test_inferencedata = [
-    "test_inferencedata/test_inferencedata.jl",
-  ]
-
-  @testset "InferenceData interface" begin
-    for test in test_inferencedata
       println("\nTesting: $test.")
       include(joinpath(TestDir, test))
     end

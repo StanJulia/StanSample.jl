@@ -49,8 +49,12 @@ rc = stan_sample(m_schools; data, save_warmup=true)
 
 if success(rc)
 
-    idata = inferencedata(m_schools)
-
+idata = StanSample.inferencedata(
+           m_schools;
+           posterior_predictive_var=:y_hat,
+           log_likelihood_var=[:log_lik],
+           dims=(; (k => [:school] for k in [:theta, :theta_tilde, :y_hat, :log_like])...),
+       )
     nt = namedtuple(data)
 
     # Until InferenceObjects issue #36 is merged
