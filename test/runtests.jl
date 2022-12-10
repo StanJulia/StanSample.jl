@@ -71,7 +71,8 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
   =#
-  
+
+  println()
   test_inferencedata = [
     "test_inferencedata/test_inferencedata.jl",
   ]
