@@ -65,8 +65,8 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   @testset "BridgeStan" begin
     for test in test_bridgestan
       println("\nTesting: $test.")
-      #include(joinpath(TestDir, test))
-      println("Test skipped for now.")
+      include(joinpath(TestDir, test))
+      #println("Test skipped for now.")
     end
     println()
   end
@@ -222,7 +222,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
 
   include(joinpath(TestDir, ))
   =#
-  
+
   println()
   
 else
