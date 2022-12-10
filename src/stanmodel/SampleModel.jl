@@ -115,8 +115,8 @@ function SampleModel(name::AbstractString, model::AbstractString,
 
     cmdstan_home = CMDSTAN_HOME
 
-    bridge_path = isdir(BRIDGESTAN_HOME) ? 
-        joinpath(BRIDGESTAN_HOME) : ""
+    bridge_path = isdir(BRIDGESTAN_HOME) ? joinpath(BRIDGESTAN_HOME) : ""
+    println(bridge_path)
 
     error_output = IOBuffer()
     is_ok = cd(cmdstan_home) do
@@ -128,11 +128,12 @@ function SampleModel(name::AbstractString, model::AbstractString,
         throw(StanModelError(name, String(take!(error_output))))
     end
 
-    bridge_output = IOBuffer()
     if length(bridge_path) > 0
         is_ok = cd(bridge_path) do
-            target = tmpdir * "/$(name)_model.so"            
-            success(pipeline(`$(make_command())  -f $(bridge_path)/Makefile $(target)`;
+            bridge_output = IOBuffer()
+            target = tmpdir * "/$(name)_model.so"
+            #Cmd(`make -f $(abspath(bridgestan))/Makefile BS_ROOT=$(abspath(bridgestan)) $output_file`)            
+            success(pipeline(`$(make_command())  -f $(abspath(bridge_path))/Makefile BS_ROOT=$(abspath(bridge_path)) $(target)`;
                 stderr = bridge_output))
         end
         if !is_ok
