@@ -58,6 +58,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   end
   =#
 
+  #=
   test_bridgestan = [
     "test_bridgestan/test_bridgestan.jl",
   ]
@@ -69,7 +70,8 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     end
     println()
   end
-
+  =#
+  
   test_inferencedata = [
     "test_inferencedata/test_inferencedata.jl",
   ]
@@ -82,7 +84,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
 
-basic_run_tests = [
+  basic_run_tests = [
     "test_bernoulli/test_bernoulli_array_01.jl",
     "test_basic_runs/test_bernoulli_dict.jl",
     "test_basic_runs/test_bernoulli_array_dict_1.jl",
