@@ -58,7 +58,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   end
   =#
 
-  #=
   test_bridgestan = [
     "test_bridgestan/test_bridgestan.jl",
   ]
@@ -66,11 +65,11 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   @testset "BridgeStan" begin
     for test in test_bridgestan
       println("\nTesting: $test.")
-      include(joinpath(TestDir, test))
+      #include(joinpath(TestDir, test))
+      println("Test skipped for now.")
     end
     println()
   end
-  =#
 
   println()
   test_inferencedata = [
