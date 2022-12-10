@@ -115,7 +115,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
 
     cmdstan_home = CMDSTAN_HOME
 
-    bridge_path = isdir(BRIDGESTAN_HOME) ? joinpath(BRIDGESTAN_HOME) : ""
+    bridge_path = isdir(BRIDGESTAN_HOME) ? joinpath(BRIDGESTAN_HOME, "/") : ""
     println(bridge_path)
     println(readdir(bridge_path))
     println(readdir(joinpath(bridge_path, "bin")))
