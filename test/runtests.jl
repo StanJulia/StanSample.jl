@@ -58,7 +58,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   end
   =#
 
-
   test_bridgestan = [
     "test_bridgestan/test_bridgestan.jl",
   ]
@@ -191,6 +190,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
   =#
+  =#
 
   #=
   test_JSON = [
@@ -222,6 +222,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
 
   include(joinpath(TestDir, ))
   =#
+  
   println()
   
 else
