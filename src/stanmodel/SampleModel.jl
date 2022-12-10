@@ -118,7 +118,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
     bridge_path = isdir(BRIDGESTAN_HOME) ? joinpath(BRIDGESTAN_HOME) : ""
     println(bridge_path)
     println(readdir(bridge_path))
-    println(joinpath(readdir(bridge_path, "bin"))
+    println(joinpath(readdir(bridge_path, "bin")))
 
     error_output = IOBuffer()
     is_ok = cd(cmdstan_home) do
