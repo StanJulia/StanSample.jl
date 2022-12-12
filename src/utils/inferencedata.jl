@@ -29,6 +29,7 @@ function split_nt_all(nt::NamedTuple, pair::Pair{Symbol}, others::Pair{Symbol}..
     groups_nt = NamedTuple{(group_name,)}((nt_group,))
     return post_nt, merge(groups_nt, groups_nt_others)
 end
+
 split_nt_all(nt::NamedTuple) = (nt, NamedTuple())
 
 function rekey(d::NamedTuple, keymap)
@@ -77,7 +78,7 @@ function inferencedata(m::SampleModel;
 )
 
     # Read in the draws as a NamedTuple with sample_stats included
-    stan_nts = read_samples(m, :namedtuples; include_internals=true)
+    stan_nts = read_samples(m, :permuted_namedtuples; include_internals=true)
 
     # split stan_nts into separate groups based on keyword arguments
     posterior_nts, group_nts = split_nt_all(

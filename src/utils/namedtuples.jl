@@ -4,7 +4,7 @@ RStan/PyStan style extract
 chns: Array: [draws, vars, chains], cnames: ["lp__", "accept_stat__", "f.1", ...]
 Output: namedtuple -> (var[1]=..., ...)
 """
-function extract(chns::Array{Float64,3}, cnames::Vector{String})
+function extract(chns::Array{Float64,3}, cnames::Vector{String}; permute_dims=false)
     draws, vars, chains = size(chns)
 
     ex_dict = Dict{Symbol, Array}()
@@ -31,6 +31,17 @@ function extract(chns::Array{Float64,3}, cnames::Vector{String})
     for (name, group) in group_map
         for (i, idx) in group
             ex_dict[name][idx..., :, :] = chns[:,i,:]
+        end
+    end
+
+    if permute_dims
+        for key in keys(ex_dict)
+            println(key)
+            println(size(ex_dict[key]))
+            println(typeof(ex_dict[key]))
+            if length(size(ex_dict[key])) > 2
+                ex_dict[key] = permutedims(ex_dict[key], (2, 3, 1))
+            end
         end
     end
 
@@ -68,11 +79,24 @@ end
 
 # convert_a3d
 
-# Convert the output file(s) created by cmdstan to a NamedTuple.
+# Convert the output file(s) created by cmdstan to a NamedTuple for each chain.
 
 $(SIGNATURES)
 
 """
 function convert_a3d(a3d_array, cnames, ::Val{:namedtuples})
     extract(a3d_array, cnames)
+end
+
+"""
+
+# convert_a3d
+
+# Convert the output file(s) created by cmdstan to a NamedTuple for each chain.
+
+$(SIGNATURES)
+
+"""
+function convert_a3d(a3d_array, cnames, ::Val{:permuted_namedtuples})
+    extract(a3d_array, cnames; permute_dims=true)
 end

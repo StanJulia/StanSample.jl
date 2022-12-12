@@ -1,2 +1,5 @@
 # Enable threading
 STAN_THREADS=true
+
+STAN ?= $(CMDSTAN_HOME)/stan/
+STANC ?= $(CMDSTAN_HOME)/bin/stanc$(EXE)

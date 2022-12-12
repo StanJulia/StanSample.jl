@@ -56,11 +56,7 @@ idata = StanSample.inferencedata(
            dims=(; (k => [:school] for k in [:theta, :theta_tilde, :y_hat, :log_like])...),
        )
     nt = namedtuple(data)
-
-    # Until InferenceObjects issue #36 is merged
-    ntu=(sigma=nt.sigma, J=[4], y=nt.y)
-    
-    idata = merge(idata, from_namedtuple(; observed_data = ntu))
+    idata = merge(idata, from_namedtuple(; observed_data = nt))
 
 else
     @warn "Sampling failed."

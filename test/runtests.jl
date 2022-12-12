@@ -84,7 +84,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
 
-  #=
   basic_run_tests = [
     "test_bernoulli/test_bernoulli_array_01.jl",
     "test_basic_runs/test_bernoulli_dict.jl",
@@ -190,9 +189,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
   =#
-  =#
 
-  #=
   test_JSON = [
     "test_JSON/test_multidimensional_input_data.jl",
     "test_JSON/test_andy_pohl_model.jl"
@@ -220,9 +217,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
 
-  include(joinpath(TestDir, ))
-  =#
-
+  #include(joinpath(TestDir, ))
   println()
   
 else
