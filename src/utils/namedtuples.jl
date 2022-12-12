@@ -36,9 +36,6 @@ function extract(chns::Array{Float64,3}, cnames::Vector{String}; permute_dims=fa
 
     if permute_dims
         for key in keys(ex_dict)
-            println(key)
-            println(size(ex_dict[key]))
-            println(typeof(ex_dict[key]))
             if length(size(ex_dict[key])) > 2
                 ex_dict[key] = permutedims(ex_dict[key], (2, 3, 1))
             end

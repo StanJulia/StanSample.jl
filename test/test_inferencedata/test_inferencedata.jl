@@ -57,7 +57,6 @@ idata = StanSample.inferencedata(
        )
     nt = namedtuple(data)
     idata = merge(idata, from_namedtuple(; observed_data = nt))
-
 else
     @warn "Sampling failed."
 end
