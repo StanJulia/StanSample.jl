@@ -136,7 +136,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         end
         if !is_ok
             @warn "BridgeStan compilation of model failed."
-            println(String(take!(bridge_output)))
+            throw(StanModelError(String(take!(bridge_output))))
         end
     end
 
