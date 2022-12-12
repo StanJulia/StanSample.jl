@@ -5,3 +5,4 @@
 /docs/build
 tmp
 Manifest.toml
+deps/data/bridgestan/bin
