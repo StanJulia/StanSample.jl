@@ -6,6 +6,7 @@ BS.set_bridgestan_path!(StanSample.BRIDGESTAN_HOME)
 
 p1=joinpath(StanSample.BRIDGESTAN_HOME, "test_models/bernoulli/bernoulli.stan")
 p2=joinpath(StanSample.BRIDGESTAN_HOME, "test_models/bernoulli/bernoulli.data.json")
+
 smb = BS.StanModel(stan_file = p1, data = p2);
 
 println("This model's name is $(BS.name(smb)).")
