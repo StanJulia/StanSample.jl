@@ -60,6 +60,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
 
   test_bridgestan = [
     "test_bridgestan/test_bridgestan.jl",
+    "test_bridgestan/test_BridgeStan_pkg.jl",
   ]
 
   @testset "BridgeStan" begin

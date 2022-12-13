@@ -88,6 +88,12 @@ const BRIDGESTAN_HOME = get!(ENV, "BRIDGESTAN", abspath(joinpath(@__DIR__, "..",
 include(joinpath(BRIDGESTAN_HOME, "julia", "src", "BridgeStan.jl"))
 include("bridgestan/create_smb.jl")
 
-export BridgeStan, StanModel
+using .BridgeStan
+
+const BS = BridgeStan
+
+set_bridgestan_path!(BRIDGESTAN_HOME)
+
+export BS, BRIDGESTAN_HOME, StanModel
 
 end # module

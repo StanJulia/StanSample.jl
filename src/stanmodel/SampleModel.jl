@@ -127,6 +127,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         throw(StanModelError(name, String(take!(error_output))))
     end
 
+    #=
     if length(bridge_path) > 0
         bridge_output = IOBuffer()
         is_ok = cd(bridge_path) do
@@ -139,7 +140,8 @@ function SampleModel(name::AbstractString, model::AbstractString,
             throw(StanModelError(name, String(take!(bridge_output))))
         end
     end
-
+    =#
+    
     SampleModel(name, model, 
         # num_threads
         4,
