@@ -1,2 +1,0 @@
-# Enable threading
-STAN_THREADS=true
