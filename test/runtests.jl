@@ -58,6 +58,7 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   end
   =#
 
+  #=
   test_bridgestan = [
     "test_bridgestan/test_bridgestan.jl",
     "test_bridgestan/test_BridgeStan_pkg.jl",
@@ -71,7 +72,8 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     end
     println()
   end
-
+  =#
+  
   println()
   test_inferencedata = [
     "test_inferencedata/test_inferencedata.jl",
