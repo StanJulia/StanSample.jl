@@ -220,7 +220,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     println()
   end
 
-  #include(joinpath(TestDir, ))
   println()
   
 else

@@ -20,7 +20,7 @@
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
-[BridgeStan](https://gitlab.com/roualdes/bridgestan)'s features are included in this repo. An example is part of `./example/bernoulli.jl`. BridgeStan is new, so expect changes!
+In StanSample v6.13.8 support for BridgeStan (v1.0) has been dropped. I have not been able to make BridgeStan v1.0 work as it did in earlier versions of BridgeStan.
 
 StanSample.jl v6.13 also supports early versions of InferenceObjects.jl with `inferencedata(model)`. As with BridgeStan, this is under development!
 
@@ -86,10 +86,11 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
-### Version 6.16.8 (under development)
+### Version 6.13.8
 
-1. Many `tmp` directories created during testing have been removed from the repo.
-2. Updated to upcoming BridgeStan v1.0
+1. Support for InferenceObjects v0.3
+2. Many `tmp` directories created during testing have been removed from the repo.
+3. Support for BridgeStan v1.0 has been dropped.
 
 ### Version 6.13.7
 

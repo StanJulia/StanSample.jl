@@ -115,8 +115,6 @@ function SampleModel(name::AbstractString, model::AbstractString,
 
     cmdstan_home = CMDSTAN_HOME
 
-    bridge_path = isdir(BRIDGESTAN_HOME) ? joinpath(BRIDGESTAN_HOME) : ""
-
     error_output = IOBuffer()
     is_ok = cd(cmdstan_home) do
         success(pipeline(`$(make_command()) -f $(cmdstan_home)/makefile -C $(cmdstan_home) $(exec_path)`;
@@ -128,6 +126,8 @@ function SampleModel(name::AbstractString, model::AbstractString,
     end
 
     #=
+    bridge_path = isdir(BRIDGESTAN_HOME) ? joinpath(BRIDGESTAN_HOME) : ""
+
     if length(bridge_path) > 0
         bridge_output = IOBuffer()
         is_ok = cd(bridge_path) do
@@ -141,7 +141,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         end
     end
     =#
-    
+
     SampleModel(name, model, 
         # num_threads
         4,
@@ -173,7 +173,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         output_base,                   # Output base
         tmpdir,                        # Tmpdir settings
         exec_path,                     # exec_path
-        bridge_path,                   # BridgeStan path
+        "",                            # BridgeStan path
 
         true,                          # Use JSON for cmdstan input files
         AbstractString[],              # Data files

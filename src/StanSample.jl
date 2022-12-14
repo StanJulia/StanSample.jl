@@ -43,8 +43,7 @@ function __init__()
     @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("utils/keyedarray.jl")
     @require InferenceObjects="b5cf5a8d-e756-4ee3-b014-01d49d192c00" include("utils/inferencedata.jl")
     #@require DimensionalData="0703355e-b756-11e9-17c0-8b28908087d0" include("utils/dimarray.jl")
-
-    ENV["BRIDGESTAN"] = BRIDGESTAN_HOME
+    #ENV["BRIDGESTAN"] = BRIDGESTAN_HOME
 end
 
 include("stanmodel/SampleModel.jl")
@@ -84,16 +83,15 @@ export
     set_make_string
 
 
-const BRIDGESTAN_HOME = get!(ENV, "BRIDGESTAN", abspath(joinpath(@__DIR__, "..", "deps", "data", "bridgestan")))
-include(joinpath(BRIDGESTAN_HOME, "julia", "src", "BridgeStan.jl"))
-include("bridgestan/create_smb.jl")
-
+#const BRIDGESTAN_HOME = get!(ENV, "BRIDGESTAN", abspath(joinpath(@__DIR__, "..", "deps", "data", "bridgestan")))
+#include(joinpath(BRIDGESTAN_HOME, "julia", "src", "BridgeStan.jl"))
+#include("bridgestan/create_smb.jl")
+    
+#=
 using .BridgeStan
-
 const BS = BridgeStan
-
 set_bridgestan_path!(BRIDGESTAN_HOME)
-
 export BS, BRIDGESTAN_HOME, StanModel
+=#
 
 end # module
