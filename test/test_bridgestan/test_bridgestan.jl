@@ -25,8 +25,7 @@ sm = SampleModel("bernoulli", bernoulli_model, tmpdir);
 rc = stan_sample(sm; data);
 
 if success(rc)
-    st = read_samples(sm)
-    #display(DataFrame(st))
+    post = read_samples(sm, :dataframe)
 end
 
 smb = BS.StanModel(

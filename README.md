@@ -20,9 +20,9 @@
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
-In StanSample v6.13.8 support for BridgeStan (v1.0) has been dropped. I have not been able to make BridgeStan v1.0 work as it did in earlier versions of BridgeStan.
+StanSample.jl v6.13.8 supports InferenceObjects.jl with `inferencedata(model)`.
 
-StanSample.jl v6.13 also supports early versions of InferenceObjects.jl with `inferencedata(model)`. As with BridgeStan, this is under development!
+In StanSample v6.13.8 the earlier method of support for BridgeStan (< v1.0) has been dropped. If `bridgestan` is cloned at the same level as 'cmdstan', StanSample will setup some support for it. See `test_bridgestan.jl` for an example and INSTALLING_CMDSTAN.md.
 
 ## Prerequisites
 

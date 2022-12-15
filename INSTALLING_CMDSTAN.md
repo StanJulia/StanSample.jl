@@ -9,6 +9,15 @@ git clone https://github.com/stan-dev/cmdstan.git --recursive cmdstan
 # git clone -b v2.29.1 https://github.com/stan-dev/cmdstan.git --recursive cmdstan
 ```
 
+If you plan to use BridgeStan, I suggest to also clone BridgeStan at this time:
+```
+git clone --recurse-submodules https://github.com/roualdes/bridgestan.git
+```
+
+Both cmdstan and bridgestan a fairly big!
+
+If bridgestan is installed in the same directory as cmdstan, StanSample will automatically set up some support.
+
 ## Customize cmdstan.
 
 ```
@@ -28,9 +37,6 @@ cd cmdstan
 # Or do:
 touch ./make/local
 echo "CXX=clang++\nSTAN_THREADS=true" > ./make/local
-
-# If you prefer using gcc instead of clang++ use:
-# echo "STAN_THREADS=true" > ./make/local
 
 ```
 
@@ -83,4 +89,14 @@ STAN_THREADS=true
 # CXX=mpicxx
 # TBB_CXX_TYPE=gcc
 
+```
+
+If you have enabled BridgeStan you can test this with:
+```
+cd bridgestan
+
+# Also install above `make/local` in the bridgestan directory
+cp ../cmdstand/make.local .
+
+make test_models/multi/multi_model.so
 ```

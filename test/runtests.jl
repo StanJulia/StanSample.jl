@@ -7,7 +7,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
 
   TestDir = @__DIR__
   tmpdir = mktempdir()
-  println()
 
   test_bernoulli = [
     "test_keyedarray/test_bernoulli_keyedarray_01.jl",
@@ -58,22 +57,22 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   end
   =#
 
-  #=
+  
   test_bridgestan = [
     "test_bridgestan/test_bridgestan.jl",
-    "test_bridgestan/test_BridgeStan_pkg.jl",
   ]
 
-  @testset "BridgeStan" begin
-    for test in test_bridgestan
-      println("\nTesting: $test.")
-      include(joinpath(TestDir, test))
-      #println("Test skipped for now.")
+  if isdir(joinpath(ENV["CMDSTAN"], "..", "bridgestan"))
+    @testset "BridgeStan" begin
+      for test in test_bridgestan
+        println("\nTesting: $test.")
+        include(joinpath(TestDir, test))
+        #println("Test skipped for now.")
+      end
+      println()
     end
-    println()
   end
-  =#
-  
+
   println()
   test_inferencedata = [
     "test_inferencedata/test_inferencedata.jl",
