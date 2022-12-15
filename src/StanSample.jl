@@ -43,7 +43,7 @@ function __init__()
     @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("utils/keyedarray.jl")
     @require InferenceObjects="b5cf5a8d-e756-4ee3-b014-01d49d192c00" include("utils/inferencedata.jl")
     #@require DimensionalData="0703355e-b756-11e9-17c0-8b28908087d0" include("utils/dimarray.jl")
-    
+
     ENV["BRIDGESTAN"] = BRIDGESTAN_PATH
 end
 
@@ -89,6 +89,8 @@ if isdir(joinpath(ENV["CMDSTAN"], "..", "bridgestan"))
     const BS = BridgeStan
     BS.set_bridgestan_path!(BRIDGESTAN_PATH)
     export BS, BRIDGESTAN_HOME, StanModel
+else
+    BRIDGESTAN_PATH = ""
 end
 
 end # module
