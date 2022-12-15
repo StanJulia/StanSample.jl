@@ -83,8 +83,8 @@ export
     make_string,
     set_make_string
 
-if isdir(joinpath(ENV["CMDSTAN"], "..", "bridgestan"))
-    const BRIDGESTAN_PATH = get!(ENV, "BRIDGESTAN", abspath(joinpath(ENV["CMDSTAN"], "..", "bridgestan")))
+if isdir(joinpath(CMDSTAN_HOME, "..", "bridgestan"))
+    const BRIDGESTAN_PATH = get!(ENV, "BRIDGESTAN", abspath(joinpath(CMDSTAN_HOME, "..", "bridgestan")))
     include(joinpath(BRIDGESTAN_PATH, "julia", "src", "BridgeStan.jl"))
     const BS = BridgeStan
     BS.set_bridgestan_path!(BRIDGESTAN_PATH)
