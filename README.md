@@ -48,7 +48,7 @@ See the `example/bernoulli.jl` for a basic example. Many more examples and test 
 
 ## Multi-threading and multi-chaining behavior.
 
-StanSample.jl v6 supports 2 mechanisms for in paralel drawing samples for chains, i.e. on C++ level (using threads) and on Julia level (by spawning a Julia process for each chain). 
+From StanSample.jl v6 onwards 2 mechanisms for in paralel drawing samples for chains are supported, i.e. on C++ level (using threads) and on Julia level (by spawning a Julia process for each chain). 
 
 The `use_cpp_chains` keyword argument in the call to `stan_sample()` determines if chains are executed on C++ level or on Julia level. By default, `use_cpp_chains = false`.
 
@@ -57,8 +57,7 @@ From cmdstan-2.28.0 onwards it is possible to use C++ threads to run multiple ch
 rc = stan_sample(_your_model_; use_cpp_chains=true, [ data | init | ...])
 ```
 
-To enable multithreading in `cmdstan` specify this before the build process of `cmdstan`, i.e. before running `make -j9 build`. I typically create a `path_to_my_cmdstan_directory/make/local` file containing `STAN_THREADS=true`.
-You can see an exaple in `.github/CI.yml` script.
+To enable multithreading in `cmdstan` specify this before the build process of `cmdstan`, i.e. before running `make -j9 build`. I typically create a `path_to_my_cmdstan_directory/make/local` file containing `STAN_THREADS=true`. You can see an example in `.github/CI.yml` script.
 
 By default in either case `num_chains=4`. See `??stan_sample` for all keyword arguments. Internally, `num_chains` will be copied to either `num_cpp_chains` or `num_julia_chains`.
 
@@ -92,9 +91,15 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 7.0.0
+
+1. InferenceObjects.jl support.
+2. Conditional support for BridgeStan.
+3. Reduced support for :dimarray and :dimarrays option in `read_samples()`.
+
 ### Version 6.13.8
 
-1. Support for InferenceObjects v0.3
+1. Support for InferenceObjects v0.3.
 2. Many `tmp` directories created during testing have been removed from the repo.
 3. Support for BridgeStan v1.0 has been dropped.
 
