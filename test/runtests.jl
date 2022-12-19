@@ -13,13 +13,13 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     "test_keyedarray/test_keyedarray.jl",
   ]
   
-  #=
+  
   @testset "Bernoulli array tests" begin
       include(joinpath(TestDir, "test_bernoulli/test_bernoulli_keyedarray_01.jl"))
   
       if success(rc)
 
-        sdf = read_summary(sm)
+        sdf = read_summary(sm, :dataframe)
         @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
 
         (samples, parameters) = read_samples(sm, :array;
@@ -55,10 +55,8 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
         @test size(samples) == (250, 8, 4)
       end
   end
-  =#
 
-  
-  test_bridgestan = [
+    test_bridgestan = [
     "test_bridgestan/test_bridgestan.jl",
   ]
 
@@ -176,7 +174,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
   end
   =#
   
-  #=
   test_keywords = [
     "test_keywords/test_bernoulli_keyedarray_01.jl",
     "test_keywords/test_bernoulli_keyedarray_02.jl",
@@ -190,7 +187,6 @@ if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
     end
     println()
   end
-  =#
 
   test_JSON = [
     "test_JSON/test_multidimensional_input_data.jl",

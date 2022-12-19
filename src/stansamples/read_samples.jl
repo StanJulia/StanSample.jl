@@ -41,9 +41,9 @@ Currently supported output_formats are:
 Another method to read in chains is provided by `inferencedata(model)`. See test_inferencedata.jl in
 the test directory.
 
-Basically chains can be returned as an Array, a KeyedArray, a DimArray, a NamedTuple,
-a StanTable, a DataFrame (possibly with nested columns), a Particles or an MCMCChains.Chains object.
-
+Basically chains can be returned as an Array, a KeyedArray, a NamedTuple, a StanTable,
+a DataFrame (possibly with nested columns), a Particles or an MCMCChains.Chains object.
+ 
 Options 8 to 10 are enabled by the presence of AxisKeys.jl, MonteCarloMeasurements.jl or MCMCChains.jl.
 
 For NamedTuple, StanTable and DataFrame all chains are appended or can be returned

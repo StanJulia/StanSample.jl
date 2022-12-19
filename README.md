@@ -1,4 +1,4 @@
-# StanSample v6.13
+# StanSample v7
 
 | **Project Status**          |  **Build Status** |
 |:---------------------------:|:-----------------:|
@@ -20,9 +20,15 @@
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
-StanSample.jl v6.13.8 supports InferenceObjects.jl with `inferencedata(model)`.
+StanSample.jl v7 supports InferenceObjects.jl with `inferencedata(model)`. See note 1 below.
 
-In StanSample v6.13.8 the earlier method of support for BridgeStan (< v1.0) has been dropped. If `bridgestan` is cloned at the same level as 'cmdstan', StanSample will setup some support for it. See `test_bridgestan.jl` for an example and INSTALLING_CMDSTAN.md.
+In StanSample v7 the earlier method of support for BridgeStan (< v1.0) has been dropped. See note 2 below.
+
+## Notes
+
+     1. Use of both InferenceObjects.jl and the `read_samples()` output_format options :dimarray and :dimarrays (based on DimensionalData.jl) creates a conflict. Hence these output_format options are no longer included. See the example Pluto notebook `test_dimarray.jl`in Stan for an example how to still use that option. At some point in time InferenceObjects.jl might provide an alternative way to create a stacked DataFrame and/or DimensionalData object.
+
+     2. If `bridgestan` is cloned at the same level as 'cmdstan', StanSample will setup support for it. See `test_bridgestan.jl` for an example and INSTALLING_CMDSTAN.md. The example Pluto notebook `bridgestan.jl` in Stan.jl also demonstrates this.
 
 ## Prerequisites
 
