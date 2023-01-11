@@ -42,6 +42,14 @@ function extract(chns::Array{Float64,3}, cnames::Vector{String}; permute_dims=fa
         end
     end
 
+    for name in keys(ex_dict)
+        if name in [:treedepth__, :n_leapfrog__]
+            ex_dict[name] = convert(Matrix{Int}, ex_dict[name])
+        elseif name == :divergent__
+            ex_dict[name] = convert(Matrix{Bool}, ex_dict[name])
+        end
+    end
+
     return (;ex_dict...)
 end
 

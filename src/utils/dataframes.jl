@@ -18,6 +18,15 @@ function convert_a3d(a3d_array, cnames, ::Val{:dataframe})
   for j in 2:size(a3d_array, 3)
     df = vcat(df, DataFrame(a3d_array[:, :, j], Symbol.(cnames)))
   end
+
+  for name in names(df)
+    if name in ["treedepth__", "n_leapfrog__"]
+      df[!, name] = Int.(df[:, name])
+    elseif name == "divergent__"
+      df[!, name] = Bool.(df[:, name])
+    end
+  end
+
   df
 end
 
@@ -35,6 +44,15 @@ function convert_a3d(a3d_array, cnames, ::Val{:dataframes})
   dfa = Vector{DataFrame}(undef, size(a3d_array, 3))
   for j in 1:size(a3d_array, 3)
     dfa[j] = DataFrame(a3d_array[:, :, j], Symbol.(cnames))
+
+    for name in names(dfa[j])
+      if name in ["treedepth__", "n_leapfrog__"]
+        dfa[j][!, name] = Int.(dfa[j][:, name])
+      elseif name == "divergent__"
+        dfa[j][!, name] = Bool.(dfa[j][:, name])
+      end
+    end
+
   end
 
   dfa

@@ -3,60 +3,62 @@ using StanSample, Test
 import CompatHelperLocal as CHL
 CHL.@check()
 
-if haskey(ENV, "JULIA_CMDSTAN_HOME") || haskey(ENV, "CMDSTAN")
+if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
 
   TestDir = @__DIR__
   tmpdir = mktempdir()
 
-  test_bernoulli = [
-    "test_keyedarray/test_bernoulli_keyedarray_01.jl",
-    "test_keyedarray/test_keyedarray.jl",
-  ]
-  
-  
   @testset "Bernoulli array tests" begin
-      include(joinpath(TestDir, "test_bernoulli/test_bernoulli_keyedarray_01.jl"))
-  
-      if success(rc)
+    println("\nTesting test_bernoulli/test_bernoulli_keyedarray_01.jl")
+    include(joinpath(TestDir, "test_bernoulli/test_bernoulli_keyedarray_01.jl"))
 
-        sdf = read_summary(sm, :dataframe)
-        @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
+    if success(rc)
 
-        (samples, parameters) = read_samples(sm, :array;
-          return_parameters=true)
-        @test size(samples) == (1000, 1, 6)
-        @test length(parameters) == 1
+      sdf = read_summary(sm, :dataframe)
+      sdf |> display
 
-        (samples, parameters) = read_samples(sm, :array;
-          return_parameters=true, include_internals=true)
-        @test size(samples) == (1000, 8, 6)
-        @test length(parameters) == 8
+      @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
 
-        samples = read_samples(sm, :array;
-          include_internals=true)
-        @test size(samples) == (1000, 8, 6)
+      (samples, parameters) = read_samples(sm, :array;
+        return_parameters=true)
+      @test size(samples) == (1000, 1, 6)
+      @test length(parameters) == 1
 
-        samples = read_samples(sm, :array)
-        @test size(samples) == (1000, 1, 6)
-      end
+      (samples, parameters) = read_samples(sm, :array;
+        return_parameters=true, include_internals=true)
+      @test size(samples) == (1000, 8, 6)
+      @test length(parameters) == 8
 
-      include(joinpath(TestDir, "test_bernoulli/test_bernoulli_array_02.jl"))
-      if success(rc)
-        sdf = read_summary(sm)
-        @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
+      samples = read_samples(sm, :array;
+        include_internals=true)
+      @test size(samples) == (1000, 8, 6)
 
-        (samples, parameters) = read_samples(sm, :array;
-          return_parameters=true)
-        @test size(samples) == (250, 1, 4)
-        @test length(parameters) == 1
+      samples = read_samples(sm, :array)
+      @test size(samples) == (1000, 1, 6)
 
-        samples = read_samples(sm, :array;
-          include_internals=true)
-        @test size(samples) == (250, 8, 4)
-      end
+    end
+
+    println("\nTesting test_bernoulli/test_bernoulli_array_02.jl")
+    include(joinpath(TestDir, "test_bernoulli/test_bernoulli_array_02.jl"))
+
+    if success(rc)
+      sdf = read_summary(sm)
+      @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
+
+      (samples, parameters) = read_samples(sm, :array;
+        return_parameters=true)
+      @test size(samples) == (250, 1, 4)
+      @test length(parameters) == 1
+
+      samples = read_samples(sm, :array;
+        include_internals=true)
+      @test size(samples) == (250, 8, 4)
+
+    end
+
   end
 
-    test_bridgestan = [
+  test_bridgestan = [
     "test_bridgestan/test_bridgestan.jl",
   ]
 

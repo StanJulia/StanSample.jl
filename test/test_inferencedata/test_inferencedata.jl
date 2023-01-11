@@ -75,3 +75,6 @@ posterior_schools = DataFrame(idata.posterior)
 
 idata |> display
 
+sample_stats_schools = DataFrame(idata.sample_stats)
+
+sample_stats_schools[1:10, :] |> display
