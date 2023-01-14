@@ -91,6 +91,10 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 7.0.1
+
+1. Updated column types for sample_stats (NamedTuples and DataFrames)
+
 ### Version 7.0.0
 
 1. InferenceObjects.jl support.

@@ -41,19 +41,21 @@ Currently supported output_formats are:
 Another method to read in chains is provided by `inferencedata(model)`. See test_inferencedata.jl in
 the test directory.
 
-Basically chains can be returned as an Array, a KeyedArray, a NamedTuple, a StanTable,
+Basically chains can be returned as an Array, a KeyedArray, a NamedTuple, a StanTable, an InferenceObject,
 a DataFrame (possibly with nested columns), a Particles or an MCMCChains.Chains object.
  
 Options 8 to 10 are enabled by the presence of AxisKeys.jl, MonteCarloMeasurements.jl or MCMCChains.jl.
 
-For NamedTuple, StanTable and DataFrame all chains are appended or can be returned
+For NamedTuple, StanTable and DataFrame types all chains can be appended or be returned
 as a Vector{...} for each chain.
+
+For the NamedTuple and DataFrame output_formats the columns :treedepth__, :n_leapfrogs__ and :divergent__
+are converted to type Int, Int and Bool.
 
 With the optional keyword argument `chains` a subset of chains can be included,
 e.g. `chains = [2, 4]`.
 
-The optional keyword argument `start` specifies which initial (warm-up) samples
-should be removed.
+The optional keyword argument `start` specifies which samples should be removed, e.g. for warmup samples.
 
 Notes:
 1. Use of the Stan `thinning` option will interfere with the value of start.
