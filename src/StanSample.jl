@@ -85,7 +85,7 @@ export
 
 if isdir(joinpath(CMDSTAN_HOME, "..", "bridgestan"))
     if Int(VERSION.minor) < 8 
-        @warn "Julia-$VERSION < Julia-1.8 too old for BridgeStan, skipping inclusing support for BridgeStan."
+        @warn "Julia-$VERSION < Julia-1.8, too old for BridgeStan, skipping installing support for BridgeStan."
     else
         @info "BridgeStan support available."
         const BRIDGESTAN_PATH = get!(ENV, "BRIDGESTAN", abspath(joinpath(CMDSTAN_HOME, "..", "bridgestan")))

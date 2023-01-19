@@ -26,9 +26,9 @@ In StanSample v7 the earlier method of support for BridgeStan (< v1.0) has been 
 
 ## Notes
 
-     1. Use of both InferenceObjects.jl and the `read_samples()` output_format options :dimarray and :dimarrays (based on DimensionalData.jl) creates a conflict. Hence these output_format options are no longer included. See the example Pluto notebook `test_dimarray.jl`in Stan for an example how to still use that option. At some point in time InferenceObjects.jl might provide an alternative way to create a stacked DataFrame and/or DimensionalData object.
+1. Use of both InferenceObjects.jl and the `read_samples()` output_format options :dimarray and :dimarrays (based on DimensionalData.jl) creates a conflict. Hence these output_format options are no longer included. See the example Pluto notebook `test_dimarray.jl`in Stan for an example how to still use that option. At some point in time InferenceObjects.jl might provide an alternative way to create a stacked DataFrame and/or DimensionalData object.
 
-     2. If `bridgestan` is cloned at the same level as 'cmdstan', StanSample will setup support for it. See `test_bridgestan.jl` for an example and INSTALLING_CMDSTAN.md. The example Pluto notebook `bridgestan.jl` in Stan.jl also demonstrates this.
+2. If `bridgestan` is cloned at the same level as 'cmdstan', StanSample will setup support for it. See `test_bridgestan.jl` for an example and INSTALLING_CMDSTAN.md. The example Pluto notebook `bridgestan.jl` in Stan.jl also demonstrates this.
 
 ## Prerequisites
 
