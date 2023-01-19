@@ -84,11 +84,16 @@ export
     set_make_string
 
 if isdir(joinpath(CMDSTAN_HOME, "..", "bridgestan"))
-    const BRIDGESTAN_PATH = get!(ENV, "BRIDGESTAN", abspath(joinpath(CMDSTAN_HOME, "..", "bridgestan")))
-    include(joinpath(BRIDGESTAN_PATH, "julia", "src", "BridgeStan.jl"))
-    const BS = BridgeStan
-    BS.set_bridgestan_path!(BRIDGESTAN_PATH)
-    export BS, BRIDGESTAN_HOME, StanModel
+    if Int(VERSION.minor) < 8 
+        @warn "Julia-$VERSION < Julia-1.8 too old for BridgeStan, skipping inclusing support for BridgeStan."
+    else
+        @info "BridgeStan support available."
+        const BRIDGESTAN_PATH = get!(ENV, "BRIDGESTAN", abspath(joinpath(CMDSTAN_HOME, "..", "bridgestan")))
+        include(joinpath(BRIDGESTAN_PATH, "julia", "src", "BridgeStan.jl"))
+        const BS = BridgeStan
+        BS.set_bridgestan_path!(BRIDGESTAN_PATH)
+        export BS, BRIDGESTAN_HOME, StanModel
+    end
 else
     BRIDGESTAN_PATH = ""
 end

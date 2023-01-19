@@ -28,8 +28,10 @@ if success(rc)
     post = read_samples(sm, :dataframe)
 end
 
-smb = BS.StanModel(
+smb = BS.StanModel(;
     stan_file = joinpath(sm.tmpdir, sm.name*".stan"),
+    stanc_args=["--warn-pedantic --O1"],
+    make_args=["CXX=clang++", "STAN_THREADS=true"],
     data = joinpath(sm.tmpdir, "$(sm.name)_data_1.json")
 )
 
