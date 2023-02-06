@@ -4,15 +4,14 @@ using StanSample, DocStringExtensions
 
 StanSample.EXTENSIONS_SUPPORTED ? (using BridgeStan) : (using ..BridgeStan)
 
-import StanSample: create_smb
+#import StanSample: create_smb
 
-const BS = BridgeStan
 const BRIDGESTAN_PATH = get_bridgestan_path()
 println(BRIDGESTAN_PATH)
-BS.set_bridgestan_path!(BRIDGESTAN_PATH)
-export BS, BRIDGESTAN_HOME, StanModel
+BridgeStan.set_bridgestan_path!(BRIDGESTAN_PATH)
+export StanModel
 
-
+#=
 """
 
 Create a BridgeStan shared object.
@@ -37,10 +36,10 @@ if either the shared object or data file is missing.
 
 Exported
 """
-function StanSample.create_smb(sm::SampleModel, 
-        data_file=joinpath(sm.tmpdir, sm.name*"_data_1.json");
+function StanSample.create_smb(sm::SampleModel; 
         stanc_args=["--warn-pedantic --O1"],
         make_args=["CXX=clang++", "STAN_THREADS=true"],
+        data_file=joinpath(sm.tmpdir, sm.name*"_data_1.json"),
         seed = 204,
         chain_id = 0
     )
@@ -67,5 +66,6 @@ function StanSample.create_smb(sm::SampleModel,
 
     smb
 end
+=#
 
 end

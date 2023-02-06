@@ -22,18 +22,4 @@ function StanSample.convert_a3d(a3d_array, cnames, ::Val{:particles};
 
 end
 
-#=
-function StanSample.particles(df::DataFrame)
-
-  d = OrderedDict{Symbol, typeof(Particles(size(df, 1), Normal(0.0, 1.0)))}()
-
-  for var in Symbol.(names(df))
-    d[var] = Particles(df[:, var])
-  end
-
-  (;d...)
-
-end
-=#
-
 end

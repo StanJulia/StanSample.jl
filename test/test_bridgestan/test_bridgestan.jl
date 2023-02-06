@@ -28,7 +28,14 @@ if success(rc)
     post = read_samples(sm, :dataframe)
 end
 
-smb = create_smb(sm, joinpath(sm.tmpdir, "$(sm.name)_data_1.json"))
+smb = BridgeStan.StanModel(;
+    stan_file = sm.output_base * ".stan",
+    stanc_args = ["--warn-pedantic --O1"],
+    make_args = ["CXX=clang++", "STAN_THREADS=true"],
+    data=sm.output_base * "_data_1.json",
+    seed = 204,
+    chain_id = 0
+)
 
 println("This model's name is $(BridgeStan.name(smb)).")
 println("It has $(BridgeStan.param_num(smb)) parameters.")

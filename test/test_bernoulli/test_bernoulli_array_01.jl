@@ -1,6 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
-using StanSample
+using AxisKeys, StanSample
 
 bernoulli_model = "
 data {
@@ -24,7 +24,7 @@ rc = stan_sample(sm; data);
 if success(rc)
   (samples, cnames) = read_samples(sm, :array; return_parameters=true)
 
-  ka = read_samples(sm)
+  ka = read_samples(sm, :keyedarray)
   ka |> display
   println()
 

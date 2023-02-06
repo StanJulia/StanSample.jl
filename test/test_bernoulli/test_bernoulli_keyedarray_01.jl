@@ -1,6 +1,6 @@
 ######### StanSample Bernoulli example  ###########
 
-using StanSample
+using AxisKeys, StanSample
 
 bernoulli_model = "
 data {

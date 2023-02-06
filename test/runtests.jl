@@ -13,14 +13,12 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     include(joinpath(TestDir, "test_bernoulli/test_bernoulli_keyedarray_01.jl"))
 
     if success(rc)
-
-      sdf = read_summary(sm, :dataframe)
+      sdf = read_summary(sm)
       sdf |> display
 
       @test sdf[sdf.parameters .== :theta, :mean][1] ≈ 0.33 rtol=0.05
 
-      (samples, parameters) = read_samples(sm, :array;
-        return_parameters=true)
+      (samples, parameters) = read_samples(sm, :array; return_parameters=true)
       @test size(samples) == (1000, 1, 6)
       @test length(parameters) == 1
 
@@ -58,7 +56,7 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
 
   end
 
-  if Int(VERSION.minor) > 8 
+  #if Int(VERSION.minor) > 8 
 
     test_bridgestan = [
       "test_bridgestan/test_bridgestan.jl",
@@ -73,7 +71,7 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
       println()
     end
     
-  end
+  #end
 
   println()
   test_inferencedata = [
