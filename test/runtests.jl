@@ -62,7 +62,7 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     "test_bridgestan/test_bridgestan.jl",
   ]
 
-  if isdir(joinpath(ENV["CMDSTAN"], "..", "bridgestan"))
+  #if isdir(joinpath(ENV["CMDSTAN"], "..", "bridgestan"))
     @testset "BridgeStan" begin
       for test in test_bridgestan
         println("\nTesting: $test.")
@@ -71,7 +71,7 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
       end
       println()
     end
-  end
+  #end
 
   println()
   test_inferencedata = [
