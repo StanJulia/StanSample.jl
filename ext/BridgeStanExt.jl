@@ -36,7 +36,7 @@ if either the shared object or data file is missing.
 Exported
 """
 function StanSample.create_smb(sm::SampleModel, 
-        data_file=joinpath(sm.tmpdir, sm.name * "_data_1.json");
+        data_file=joinpath(sm.tmpdir, sm.name*"_data_1.json");
         stanc_args=["--warn-pedantic --O1"],
         make_args=["CXX=clang++", "STAN_THREADS=true"],
         seed = 204,
@@ -57,7 +57,7 @@ function StanSample.create_smb(sm::SampleModel,
         chain_id = chain_id
     )
 
-    if !isfile(joinpath(sm.tmpdir, sm.name) * "_model.so")
+    if !isfile(joinpath(sm.tmpdir, sm.name)*"_model.so")
         @info "Shared library $(joinpath(sm.tmpdir, sm.name))_model.so has not been created."
         @info "Maybe BridgeStan has not been installed?"
         return nothing
