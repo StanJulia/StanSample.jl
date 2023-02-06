@@ -4,6 +4,8 @@ using StanSample, DocStringExtensions
 
 StanSample.EXTENSIONS_SUPPORTED ? (using BridgeStan) : (using ..BridgeStan)
 
+import StanSample: create_smb
+
 const BS = BridgeStan
 const BRIDGESTAN_PATH = get_bridgestan_path()
 println(BRIDGESTAN_PATH)
