@@ -20,7 +20,6 @@ Exports:
 module StanSample
 
 using Reexport
-using Requires
 
 using CSV, DelimitedFiles, Unicode, Parameters
 using NamedTupleTools, Tables, TableOperations
@@ -37,17 +36,24 @@ import StanBase: data_file_path, init_file_path, sample_file_path
 import StanBase: generated_quantities_file_path, log_file_path
 import StanBase: diagnostic_file_path, setup_diagnostics
 
-function __init__()
-    @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("utils/particles.jl")
-    @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("utils/mcmcchains.jl")
-    @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("utils/keyedarray.jl")
-    @require InferenceObjects="b5cf5a8d-e756-4ee3-b014-01d49d192c00" include("utils/inferencedata.jl")
-    #@require DimensionalData="0703355e-b756-11e9-17c0-8b28908087d0" include("utils/dimarray.jl")
+const EXTENSIONS_SUPPORTED = isdefined(Base, :get_extension)
 
-    ENV["BRIDGESTAN"] = BRIDGESTAN_PATH
+if !EXTENSIONS_SUPPORTED
+    using Requires: @require
+end
+
+function __init__()
+    @static if !EXTENSIONS_SUPPORTED
+        @require BridgeStan="bd48cda9-67a9-57be-86fa-5b3c104eda73" include("../ext/BridgeStanExt.jl")
+        @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("../ext/MonteCarloMeasurementsExt.jl")
+        @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("../ext/MCMCChainsExt.jl")
+        @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("../ext/AxisKeysExt.jl")
+        @require InferenceObjects="b5cf5a8d-e756-4ee3-b014-01d49d192c00" include("../ext/InferenceObjectsExt.jl")
+    end
 end
 
 include("stanmodel/SampleModel.jl")
+include("stanmodel/extension_functions.jl")
 
 include("stanrun/stan_run.jl")
 include("stanrun/cmdline.jl")
@@ -82,20 +88,5 @@ export
     diagnose,
     make_string,
     set_make_string
-
-if isdir(joinpath(CMDSTAN_HOME, "..", "bridgestan"))
-    if Int(VERSION.minor) < 8 
-        @warn "Julia-$VERSION < Julia-1.8, too old for BridgeStan, skipping installing support for BridgeStan."
-    else
-        @info "BridgeStan support available."
-        const BRIDGESTAN_PATH = get!(ENV, "BRIDGESTAN", abspath(joinpath(CMDSTAN_HOME, "..", "bridgestan")))
-        include(joinpath(BRIDGESTAN_PATH, "julia", "src", "BridgeStan.jl"))
-        const BS = BridgeStan
-        BS.set_bridgestan_path!(BRIDGESTAN_PATH)
-        export BS, BRIDGESTAN_HOME, StanModel
-    end
-else
-    BRIDGESTAN_PATH = ""
-end
-
+    
 end # module

@@ -86,6 +86,19 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     println()
   end
 
+  println()
+  test_mcmcchains = [
+    "test_mcmcchains/test_mcmcchains.jl",
+  ]
+
+  @testset "MCMCChains tests" begin
+    for test in test_mcmcchains
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
   basic_run_tests = [
     "test_bernoulli/test_bernoulli_array_01.jl",
     "test_basic_runs/test_bernoulli_dict.jl",
