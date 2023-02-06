@@ -36,7 +36,12 @@ if either the shared object or data file is missing.
 Exported
 """
 function StanSample.create_smb(sm::SampleModel, 
-    data_file=joinpath(sm.tmpdir, sm.name * "_data_1.json"))
+        data_file=joinpath(sm.tmpdir, sm.name * "_data_1.json");
+        stanc_args=["--warn-pedantic --O1"],
+        make_args=["CXX=clang++", "STAN_THREADS=true"],
+        seed = 204,
+        chain_id = 0
+    )
 
     if !isfile(data_file)
         @info "File `$(data_file)` not found."
@@ -45,11 +50,11 @@ function StanSample.create_smb(sm::SampleModel,
 
     smb = BridgeStan.StanModel(;
         stan_file = joinpath(sm.tmpdir, sm.name*".stan"),
-        stanc_args=["--warn-pedantic --O1"],
-        make_args=["CXX=clang++", "STAN_THREADS=true"],
+        stanc_args=stanc_args,
+        make_args=make_args,
         data = data_file,
-        seed = 204,
-        chain_id = 0
+        seed = seed,
+        chain_id = chain_id
     )
 
     if !isfile(joinpath(sm.tmpdir, sm.name) * "_model.so")
