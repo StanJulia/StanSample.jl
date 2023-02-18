@@ -56,8 +56,6 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
 
   end
 
-  #if Int(VERSION.minor) > 8 
-
     test_bridgestan = [
       "test_bridgestan/test_bridgestan.jl",
     ]
@@ -70,9 +68,19 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
       end
       println()
     end
-    
-  #end
 
+  test_dimensionaldata = [
+    "test_dimensionaldata/test_dimensionaldata.jl",
+  ]
+
+  @testset "DimensionalData interface" begin
+    for test in test_dimensionaldata
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+  
   println()
   test_inferencedata = [
     "test_inferencedata/test_inferencedata.jl",
@@ -175,20 +183,6 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     println()
   end
 
-  test_dimensionaldata = [
-    "test_dimensionaldata/test_dimensionaldata.jl",
-  ]
-
-  #=
-  @testset "DimensionalData interface" begin
-    for test in test_dimensionaldata
-      println("\nTesting: $test.")
-      include(joinpath(TestDir, test))
-    end
-    println()
-  end
-  =#
-  
   test_keywords = [
     "test_keywords/test_bernoulli_keyedarray_01.jl",
     "test_keywords/test_bernoulli_keyedarray_02.jl",

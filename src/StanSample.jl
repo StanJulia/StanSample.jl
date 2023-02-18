@@ -49,6 +49,7 @@ function __init__()
         @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("../ext/MCMCChainsExt.jl")
         @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("../ext/AxisKeysExt.jl")
         @require InferenceObjects="b5cf5a8d-e756-4ee3-b014-01d49d192c00" include("../ext/InferenceObjectsExt.jl")
+        @require DimensionalData = "0703355e-b756-11e9-17c0-8b28908087d0" include("../ext/DimensionalDataExt.jl")
     end
 end
 
