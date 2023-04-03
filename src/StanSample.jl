@@ -44,7 +44,6 @@ end
 
 function __init__()
     @static if !EXTENSIONS_SUPPORTED
-        @require BridgeStan="bd48cda9-67a9-57be-86fa-5b3c104eda73" include("../ext/BridgeStanExt.jl")
         @require MonteCarloMeasurements="0987c9cc-fe09-11e8-30f0-b96dd679fdca" include("../ext/MonteCarloMeasurementsExt.jl")
         @require MCMCChains="c7f686f2-ff18-58e9-bc7b-31028e88f75d" include("../ext/MCMCChainsExt.jl")
         @require AxisKeys="94b1ba4f-4ee9-5380-92f1-94cde586c3c5" include("../ext/AxisKeysExt.jl")

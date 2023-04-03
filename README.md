@@ -26,7 +26,7 @@ StanSample.jl v7 supports InferenceObjects.jl as a package extension. Use `infer
 
 1. Use of both InferenceObjects.jl and the `read_samples()` output_format options :dimarray and :dimarrays (based on DimensionalData.jl) creates a conflict. Hence these output_format options are no longer included. See the example Pluto notebook `test_dimarray.jl`in Stan for an example how to still use that option. At some point in time InferenceObjects.jl might provide an alternative way to create a stacked DataFrame and/or DimensionalData object.
 
-2. BridgeStan.jl v1.0.1 is supported as an extension. An example Pluto notebook `bridgestan.jl` in Stan.jl demonstrates how BridgeStan can be used. By default the BridgeStan repo will be downloaded automatically (as an artefact). A specific version of BridgeStan can be used by defining an enviroment variable BRIDGESTAN pointing at that repo..
+BridgeStan.jl v1.0.2 continued to give problems. I've removed it from StanSample.jl. An example Pluto notebook `test_bridgestan.jl` in StanExampleNotebooks.jl demonstrates how BridgeStan can be used.
 
 ## Prerequisites
 

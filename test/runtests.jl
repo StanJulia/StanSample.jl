@@ -56,23 +56,6 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
 
   end
 
-  #if Int(VERSION.minor) > 8 
-
-    test_bridgestan = [
-      "test_bridgestan/test_bridgestan.jl",
-    ]
-
-    @testset "BridgeStan" begin
-      for test in test_bridgestan
-        println("\nTesting: $test.")
-        include(joinpath(TestDir, test))
-        #println("Test skipped for now.")
-      end
-      println()
-    end
-    
-  #end
-
   println()
   test_inferencedata = [
     "test_inferencedata/test_inferencedata.jl",
