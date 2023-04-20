@@ -90,6 +90,11 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
 
+### Version 7.1-4.0
+
+1. Switch to cmdstan.2.32.0 for testing
+2. Removed BridgeStan extension
+
 ### Version 7.0.1
 
 1. Updated column types for sample_stats (NamedTuples and DataFrames)
