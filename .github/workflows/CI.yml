@@ -27,8 +27,8 @@ jobs:
     strategy:
       matrix:
         version:
-          - '1.8'
-          #- '1.9-beta3'
+          - '1'
+          - '1.9'
           - 'nightly'
         os:
           - ubuntu-latest
