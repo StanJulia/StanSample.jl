@@ -12,10 +12,10 @@ stan10_4 = "
 data{
     int N;
     int N_actors;
-    int pulled_left[N];
-    int prosoc_left[N];
-    int condition[N];
-    int actor[N];
+    array[N] int pulled_left;
+    array[N] int prosoc_left;
+    array[N] int condition;
+    array[N] int actor;
 }
 parameters{
     vector[N_actors] a;

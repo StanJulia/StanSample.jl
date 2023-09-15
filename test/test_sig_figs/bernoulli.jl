@@ -7,7 +7,7 @@ ProjDir = @__DIR__
 bernoulli_model = "
 data {
   int<lower=1> N;
-  int y[N];
+  array[N] int y;
 }
 parameters {
   real<lower=0,upper=1> theta;

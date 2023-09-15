@@ -57,8 +57,8 @@ model{
         muW[i] = aW + bEW * E[i];
     }
     {
-        vector[2] YY[500];
-        vector[2] MU[500];
+        array[2] vector[500] YY;
+        array[2] vector[500] MU;
         for ( j in 1:500 ) MU[j] = [ muW[j] , muE[j] ]';
         for ( j in 1:500 ) YY[j] = [ W[j] , E[j] ]';
         YY ~ multi_normal( MU , quad_form_diag(Rho , Sigma) );

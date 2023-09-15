@@ -5,18 +5,18 @@ using StanSample
 stan_schools = """
 data {
     int<lower=0> J;
-    real y[J];
-    real<lower=0> sigma[J];
+    vector[J] y;
+    vector[J] sigma;
 }
 
 parameters {
     real mu;
     real<lower=0> tau;
-    real theta_tilde[J];
+    vector[J] theta_tilde;
 }
 
 transformed parameters {
-    real theta[J];
+    vector[J] theta;
     for (j in 1:J)
         theta[j] = mu + tau * theta_tilde[j];
 }

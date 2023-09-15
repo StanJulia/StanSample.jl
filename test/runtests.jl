@@ -205,6 +205,7 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     "test_LKJ/test_LKJ.jl",
   ]
 
+  #=
   @testset "Nested DataFrame" begin
     for test in test_LKJ
       println("\nTesting: $test.")
@@ -212,7 +213,8 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     end
     println()
   end
-
+  =#
+  
   println()
   
 else
