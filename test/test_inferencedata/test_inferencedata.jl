@@ -65,7 +65,7 @@ if :observed_data in propertynames(idata)
     idata.observed_data
 end
 
-DataFrame(idata.observed_data)
+#DataFrame(idata.observed_data)
 
 keys(idata.posterior)
 
