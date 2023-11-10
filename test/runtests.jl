@@ -59,6 +59,7 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
   println()
   test_inferencedata = [
     "test_inferencedata/test_inferencedata.jl",
+    "test_inferencedata/test_inferencedata_02.jl",
   ]
 
   @testset "InferenceData interface" begin
