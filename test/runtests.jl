@@ -187,20 +187,30 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     println()
   end
 
-  test_JSON = [
-    "test_JSON/test_multidimensional_input_data.jl",
-    "test_JSON/test_andy_pohl_model.jl"
-
+    test_JSON = [
+        "test_JSON/test_multidimensional_input_data.jl",
+        "test_JSON/test_andy_pohl_model.jl"
     ]
 
-  @testset "JSON" begin
-    for test in test_JSON
-      println("\nTesting: $test.")
-      include(joinpath(TestDir, test))
+    @testset "JSON" begin
+        for test in test_JSON
+            println("\nTesting: $test.")
+            include(joinpath(TestDir, test))
+        end
+        println()
     end
-    println()
-  end
 
+    test_arrays_and_tuples = [
+        "test_arrays/test_3d_arrays_01.jl",
+        "test_tuples/test_tuples_02.jl"
+    ]
+
+    @testset "Arrays and tuples" begin
+        for test in test_arrays_and_tuples
+            println("\nTesting: $test.")
+            include(joinpath(TestDir, test))
+        end
+    end
   
 else
   println("\nCMDSTAN and JULIA_CMDSTAN_HOME not set. Skipping tests")

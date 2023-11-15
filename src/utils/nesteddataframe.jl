@@ -103,7 +103,7 @@ function convert_a3d(a3d_array, cnames, ::Val{:nesteddataframe})
         col_names = names(col_df)
         #println(col_names)
         r = split(col_names[end] , ".")
-        if length(r) >3
+        if length(r) > 3
             @info "Array{T, N} where N > 3 not implemented in :nesteddataframe"
             return dft
         end
