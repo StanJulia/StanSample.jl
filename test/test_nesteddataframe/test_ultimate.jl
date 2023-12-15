@@ -51,8 +51,7 @@ generated quantities {
  }
 ";
 
-tmpdir = joinpath("/Users", "rob", ".julia", "dev", "StanIO", "data", "brian_data")
-sm = SampleModel("brian_data", stan, tmpdir)
+sm = SampleModel("brian_data", stan)
 rc = stan_sample(sm)
 
 df = read_samples(sm, :dataframe)

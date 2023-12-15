@@ -83,14 +83,6 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     println()
   end
 
-  basic_run_tests = [
-    "test_bernoulli/test_bernoulli_array_01.jl",
-    "test_basic_runs/test_bernoulli_dict.jl",
-    "test_basic_runs/test_bernoulli_array_dict_1.jl",
-    "test_basic_runs/test_bernoulli_array_dict_2.jl",
-    "test_basic_runs/test_parse_interpolate.jl"
-  ]
-
   test_apinter = [
     "test_apinter/test_apinter.jl",
     "test_apinter/bernoulli_cpp.jl"
@@ -120,6 +112,14 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
       println("\nTesting bernoulli.jl with sig_figs=18")
       include(joinpath(TestDir, "test_sig_figs", "bernoulli.jl"))
   end
+
+  basic_run_tests = [
+    "test_bernoulli/test_bernoulli_array_01.jl",
+    "test_basic_runs/test_bernoulli_dict.jl",
+    "test_basic_runs/test_bernoulli_array_dict_1.jl",
+    "test_basic_runs/test_bernoulli_array_dict_2.jl",
+    "test_basic_runs/test_parse_interpolate.jl"
+  ]
 
   @testset "Bernoulli basic run tests" begin
     for test in basic_run_tests
