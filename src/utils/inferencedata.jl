@@ -47,12 +47,12 @@ $(SIGNATURES)
 
 ### Required arguments
 ```julia
-* `m::SampleModel`                     # SampleModel object
+* `m::SampleModel`                  # SampleModel object
 ```
 
 ### Optional positional argument
 ```julia
-* `include_warmup`                  # Directory where output files are stored
+* `include_warmup`                  # Include warmup draws
 * `log_likelihood_var`              # Symbol(s) used for log_likelihood (or nothing)
 * `posterior_predictive_var`        # Symbol(s) used for posterior_predictive (or nothing)
 * `predictions_var`                 # Symbol(s) used for predictions (or nothing)

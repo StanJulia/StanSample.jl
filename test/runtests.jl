@@ -59,6 +59,7 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
   println()
   test_inferencedata = [
     "test_inferencedata/test_inferencedata.jl",
+    "test_inferencedata/test_inferencedata_02.jl",
   ]
 
   @testset "InferenceData interface" begin
@@ -186,19 +187,18 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     println()
   end
 
-  test_JSON = [
-    "test_JSON/test_multidimensional_input_data.jl",
-    "test_JSON/test_andy_pohl_model.jl"
-
+    test_JSON = [
+        "test_JSON/test_multidimensional_input_data.jl",
+        "test_JSON/test_andy_pohl_model.jl"
     ]
 
-  @testset "JSON" begin
-    for test in test_JSON
-      println("\nTesting: $test.")
-      include(joinpath(TestDir, test))
+    @testset "JSON" begin
+        for test in test_JSON
+            println("\nTesting: $test.")
+            include(joinpath(TestDir, test))
+        end
+        println()
     end
-    println()
-  end
 
   test_nesteddataframe = [
     "test_nesteddataframe/test_pure_01.jl",
