@@ -67,6 +67,26 @@ function append_namedtuples(nts)
     (;dct...)
 end
 
+import Base.convert
+
+"""
+
+# convert_a3d
+
+# Convert the output file(s) created by cmdstan to a NamedTuple. Append all chains
+
+$(SIGNATURES)
+
+"""
+function convert(T, df)
+    dct = OrderedDict()
+    for col_name in names(df)
+        dct[Symbol(col_name)] = df[:, col_name]
+    end
+    nt = (;dct...)
+end
+
+
 """
 
 # convert_a3d

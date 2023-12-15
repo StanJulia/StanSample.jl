@@ -23,7 +23,7 @@ using Reexport
 
 using CSV, DelimitedFiles, Unicode, Parameters
 using NamedTupleTools, Tables, TableOperations
-using DataFrames, Serialization
+using DataFrames, Serialization, OrderedCollections
 
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
@@ -69,6 +69,7 @@ include("stansamples/stansummary.jl")
 
 include("utils/namedtuples.jl")
 include("utils/tables.jl")
+include("utils/reshape.jl")
 include("utils/dataframes.jl")
 include("utils/nesteddataframe.jl")
 

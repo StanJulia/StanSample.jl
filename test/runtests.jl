@@ -200,6 +200,19 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     println()
   end
 
+  test_nesteddataframe = [
+    "test_nesteddataframe/test_pure_01.jl",
+    "test_nesteddataframe/test_ultimate.jl"
+    ]
+
+  @testset "Nested Dataframes" begin
+    for test in test_nesteddataframe
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
   
 else
   println("\nCMDSTAN and JULIA_CMDSTAN_HOME not set. Skipping tests")

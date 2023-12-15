@@ -11,23 +11,51 @@ $(SIGNATURES)
 
 """
 function convert_a3d(a3d_array, cnames, ::Val{:dataframe})
-  # Inital DataFrame
-  df = DataFrame(a3d_array[:, :, 1], Symbol.(cnames))
+    # Inital DataFrame
+    df = DataFrame(a3d_array[:, :, 1], Symbol.(cnames))
 
-  # Append the other chains
-  for j in 2:size(a3d_array, 3)
-    df = vcat(df, DataFrame(a3d_array[:, :, j], Symbol.(cnames)))
-  end
-
-  for name in names(df)
-    if name in ["treedepth__", "n_leapfrog__"]
-      df[!, name] = Int.(df[:, name])
-    elseif name == "divergent__"
-      df[!, name] = Bool.(df[:, name])
+    # Append the other chains
+    for j in 2:size(a3d_array, 3)
+        df = vcat(df, DataFrame(a3d_array[:, :, j], Symbol.(cnames)))
     end
-  end
 
-  df
+    v = Int[]
+    cnames = names(df)
+    for (ind, cn) in enumerate(cnames)
+        if length(findall(!isnothing, findfirst.("real", String.(split(cn, "."))))) > 0
+            append!(v, [ind])
+        end
+    end
+    if length(v) > 0
+        for i in v
+            df[!, String(cnames[i])] = Complex.(df[:, String(cnames[i])], df[:, String(cnames[i+1])])
+            DataFrames.select!(df, Not(String(cnames[i+1])))
+        end
+        cnames = names(df)
+        if length(v) > 0
+            v = Int[]
+            for (ind, cn) in enumerate(cnames)
+                if length(findall(!isnothing, findfirst.("real", String.(split(cn, "."))))) > 0
+                    append!(v, [ind])
+                end
+            end
+            for i in v
+                cnames[i] = cnames[i][1:end-5]
+            end
+        end
+        #println(cnames)
+        df = DataFrame(df, cnames)
+    end
+
+    for name in names(df)
+        if name in ["treedepth__", "n_leapfrog__"]
+            df[!, name] = Int.(df[:, name])
+        elseif name == "divergent__"
+            df[!, name] = Bool.(df[:, name])
+        end
+    end
+
+    df
 end
 
 """
