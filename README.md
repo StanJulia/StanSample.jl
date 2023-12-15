@@ -1,4 +1,4 @@
-# StanSample v8
+# StanSample v7.6
 
 | **Project Status**          |  **Build Status** |
 |:---------------------------:|:-----------------:|
@@ -20,7 +20,7 @@
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
 
-StanSample.jl v8.0.0 supports recent enhancements to the Stan Language visible in the output files (.csv files). It supports array, tuples and complex values.
+StanSample.jl v7.6 supports recent enhancements to the Stan Language visible in the output files (.csv files). It supports array, tuples and complex values.
 
 StanSample.jl v7 supports InferenceObjects.jl as a package extension. Use `inferencedata(model)` to create an InferenceData object. See also note 1 below. An example Pluto notebook can be found [here](https://github.com/StanJulia/StanExampleNotebooks.jl/blob/main/notebooks/DimensionalData/dimensionaldata.jl)
 
