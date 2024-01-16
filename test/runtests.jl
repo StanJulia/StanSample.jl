@@ -213,6 +213,18 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     println()
   end
 
+  test_cholesky_factor_cov = [
+    "test_cholesky_factor_cov/test_cholesky_factor_cov.jl",
+    ]
+
+  @testset "Cholesky factor cov" begin
+    for test in test_cholesky_factor_cov
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
   
 else
   println("\nCMDSTAN and JULIA_CMDSTAN_HOME not set. Skipping tests")

@@ -24,7 +24,6 @@ using Reexport
 using CSV, DelimitedFiles, Unicode, Parameters
 using NamedTupleTools, Tables, TableOperations
 using DataFrames, Serialization, OrderedCollections
-
 using DocStringExtensions: FIELDS, SIGNATURES, TYPEDEF
 
 @reexport using StanBase
