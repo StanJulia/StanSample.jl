@@ -225,6 +225,19 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     println()
   end
 
+  test_chris_two_step = [
+    "test_chris_two_step/chris_two_step_part_1.jl",
+    "test_chris_two_step/chris_two_step_part_2.jl",
+    ]
+
+  @testset "Chris two step test" begin
+    for test in test_chris_two_step
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+
   
 else
   println("\nCMDSTAN and JULIA_CMDSTAN_HOME not set. Skipping tests")
