@@ -161,7 +161,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         1, -1, 100, 2,
         # Adapt fields
         # engaged, save_metric, gamma, delta, kappa, t0, init_buffer, term_buffer, window
-        true, true, 0.05, 0.8, 0.75, 10, 75, 50, 25,
+        true, false, 0.05, 0.8, 0.75, 10, 75, 50, 25,
         # algorithm fields
         :hmc,                          # or :static
         # engine, max_depth
@@ -185,7 +185,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         String[],                      # Sample .csv files 
         String[],                      # Log files
         String[],                      # Diagnostic files
-        true,                          # Save adatation metrics in JSON file
+        false,                         # Save adatation metrics in JSON file
         6,                             # Default number of sig_figs
         true,                          # Create stansummary result
         false,                         # Display stansummary result

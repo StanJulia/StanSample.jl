@@ -55,10 +55,15 @@ function cmdline(m::SampleModel, id)
 
     # Adapt section
     if m.engaged
-        cmd = `$cmd adapt engaged=1 save_metric=1`
+        cmd = `$cmd adapt engaged=1`
     else
-        cmd = `$cmd adapt engaged=0 save_metrc=1`
+        cmd = `$cmd adapt engaged=0`
     end
+
+    if m.save_metric
+        cmd = `$cmd save_metric=1`
+    end
+
     cmd = `$cmd gamma=$(m.gamma) delta=$(m.delta) kappa=$(m.kappa)`
     cmd = `$cmd t0=$(m.t0) init_buffer=$(m.init_buffer)`
     cmd = `$cmd term_buffer=$(m.term_buffer) window=$(m.window)`
@@ -90,13 +95,19 @@ function cmdline(m::SampleModel, id)
     end
 
     # Output files
-    cmd = `$cmd output save_cmdstan_config=1`
+    cmd = `$cmd output`
+
     if length(m.sample_file[id]) > 0
       cmd = `$cmd file=$(m.sample_file[id])`
     end
     if length(m.diagnostic_file) > 0
       cmd = `$cmd diagnostic_file=$(m.diagnostic_file[id])`
     end
+
+    if m.save_cmdstan_config
+        cmd = `$cmd save_cmdstan_config=1`
+    end
+
     cmd = `$cmd sig_figs=$(m.sig_figs)`
 
     # Refresh rate
