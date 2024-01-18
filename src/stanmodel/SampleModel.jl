@@ -22,6 +22,7 @@ mutable struct SampleModel <: CmdStanModels
 
     # Adapt fields
     engaged::Bool;                     # Adaptation enganged?.
+    save_metric::Bool;                 # Save adaptation matric file in JSON
     gamma::Float64;                    # Adaptation regularization scale    
     delta::Float64;                    # Adaptation target acceptance statistic
     kappa::Float64;                    # Adaptation relaxation exponent
@@ -67,6 +68,7 @@ mutable struct SampleModel <: CmdStanModels
     diagnostic_file::Vector{String};   # Diagnostic file array
 
     # Output control
+    save_cmdstan_config::Bool;         # Save cmdstan config in JSON file
     sig_figs::Int;                     # Number of significant digits for values in output files
 
     # Stansummary settings
@@ -158,8 +160,8 @@ function SampleModel(name::AbstractString, model::AbstractString,
         # thin, seed, refresh, init_bound
         1, -1, 100, 2,
         # Adapt fields
-        # engaged, gamma, delta, kappa, t0, init_buffer, term_buffer, window
-        true, 0.05, 0.8, 0.75, 10, 75, 50, 25,
+        # engaged, save_metric, gamma, delta, kappa, t0, init_buffer, term_buffer, window
+        true, true, 0.05, 0.8, 0.75, 10, 75, 50, 25,
         # algorithm fields
         :hmc,                          # or :static
         # engine, max_depth
@@ -183,6 +185,7 @@ function SampleModel(name::AbstractString, model::AbstractString,
         String[],                      # Sample .csv files 
         String[],                      # Log files
         String[],                      # Diagnostic files
+        true,                          # Save adatation metrics in JSON file
         6,                             # Default number of sig_figs
         true,                          # Create stansummary result
         false,                         # Display stansummary result
@@ -215,6 +218,7 @@ function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
     println(io, "  init_bound =              ", m.init_bound)
     println(io, "\nAdapt section:")
     println(io, "  engaged =                 ", m.engaged)
+    println(io, "  save_metric =             ", m.save_metric)
     println(io, "  gamma =                   ", m.gamma)
     println(io, "  delta =                   ", m.delta)
     println(io, "  kappa =                   ", m.kappa)
@@ -248,6 +252,7 @@ function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
     println(io, "\nData and init files:")
     println(io, "  use_json =                ", m.use_json)
     println(io, "\nOutput control:")
+    println(io, "  save cmdstan_config =     ", m.save_cmdstan_config)
     println(io, "  sig_figs =                ", m.sig_figs)
     println(io, "\nStansummary section:")
     println(io, "  summary                   ", m.summary)

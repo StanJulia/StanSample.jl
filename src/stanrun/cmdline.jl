@@ -55,9 +55,9 @@ function cmdline(m::SampleModel, id)
 
     # Adapt section
     if m.engaged
-        cmd = `$cmd adapt engaged=1`
+        cmd = `$cmd adapt engaged=1 save_metric=1`
     else
-        cmd = `$cmd adapt engaged=0`
+        cmd = `$cmd adapt engaged=0 save_metrc=1`
     end
     cmd = `$cmd gamma=$(m.gamma) delta=$(m.delta) kappa=$(m.kappa)`
     cmd = `$cmd t0=$(m.t0) init_buffer=$(m.init_buffer)`
@@ -90,7 +90,7 @@ function cmdline(m::SampleModel, id)
     end
 
     # Output files
-    cmd = `$cmd output`
+    cmd = `$cmd output save_cmdstan_config=1`
     if length(m.sample_file[id]) > 0
       cmd = `$cmd file=$(m.sample_file[id])`
     end

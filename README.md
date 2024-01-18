@@ -1,4 +1,4 @@
-# StanSample v7.6
+# StanSample v7.8
 
 | **Project Status**          |  **Build Status** |
 |:---------------------------:|:-----------------:|
@@ -19,6 +19,8 @@
 ## Purpose
 
 StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan Language Program. It is the primary workhorse in the StanJulia ecosystem.
+
+StanSample.jl v7.8.0 supports the new save_metric and save_cmdstan_config command keywords.
 
 StanSample.jl v7.6 supports recent enhancements to the Stan Language visible in the output files (.csv files). It supports array, tuples and complex values.
 
@@ -91,6 +93,12 @@ using StanSample
 See the docstrings (in particular `??StanSample`) for more help.
 
 ## Versions
+
+### Versions 7.5-7.8
+
+1. Switching to cmdstan v2.34.0
+2. Support for new command keywords settings `save_metric1 and `save_cmdstan_config`
+3. Support for Stan .csv file extensions in output format :nesteddataframe.
 
 ### Version 7.1-4.0
 
