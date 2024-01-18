@@ -20,7 +20,7 @@ model {
 bernoulli_data = Dict("N" => 10, "y" => [0, 1, 0, 1, 0, 0, 0, 0, 0, 1])
 
 sm = SampleModel("bernoulli", bernoulli_model);
-rc = stan_sample(sm; data=bernoulli_data, 
+rc = stan_sample(sm; data=bernoulli_data, save_metric=true, save_cmdstan_config=true,
   num_threads=6, num_cpp_chains=1, num_chains=6, seed=123);
 
 if success(rc)
