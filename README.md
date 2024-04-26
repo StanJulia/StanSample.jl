@@ -22,7 +22,7 @@ StanSample.jl wraps `cmdstan`'s `sample` method to generate draws from a Stan La
 
 StanSample.jl v7.8.0 supports the new save_metric and save_cmdstan_config command keywords.
 
-StanSample.jl v7.6 supports recent enhancements to the Stan Language visible in the output files (.csv files). It supports array, tuples and complex values.
+StanSample.jl v7.6 supports recent enhancements to the Stan Language visible in the output files (.csv files). It supports array, tuples and complex values in `output_format=:nesteddataframe`.
 
 StanSample.jl v7 supports InferenceObjects.jl as a package extension. Use `inferencedata(model)` to create an InferenceData object. See also note 1 below. An example Pluto notebook can be found [here](https://github.com/StanJulia/StanExampleNotebooks.jl/blob/main/notebooks/DimensionalData/dimensionaldata.jl)
 
@@ -96,7 +96,7 @@ See the docstrings (in particular `??StanSample`) for more help.
 
 ### Versions 7.5-7.8
 
-1. Switching to cmdstan v2.34.0
+1. Switching to cmdstan v2.34.1
 2. Support for new command keywords settings `save_metric1 and `save_cmdstan_config`
 3. Support for Stan .csv file extensions in output format :nesteddataframe.
 

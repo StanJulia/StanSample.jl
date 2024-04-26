@@ -157,9 +157,12 @@ function stan_cmds(m::T, id::Int; kwargs...) where {T <: CmdStanModels}
             append!(m.sample_file, [sample_file_path(m.output_base, id)])
         end
     end
+
     append!(m.log_file, [log_file_path(m.output_base, id)])
+
     if length(m.diagnostic_file) > 0
       append!(m.diagnostic_file, [diagnostic_file_path(m.output_base, id)])
     end
+    
     cmdline(m, id)
 end

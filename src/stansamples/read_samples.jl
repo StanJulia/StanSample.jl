@@ -11,7 +11,7 @@ $(SIGNATURES)
 
 ### Required arguments
 ```julia
-* `model`                         : SampleModel
+* `model`                         : <: CmdStanModel
 * `output_format=:table`          : Requested format for samples
 ```
 

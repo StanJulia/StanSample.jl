@@ -80,6 +80,7 @@ mutable struct SampleModel <: CmdStanModels
 
     # Show logging in terminal
     show_logging::Bool;
+    save_diagnostics::Bool;
 end
 
 """
@@ -127,23 +128,6 @@ function SampleModel(name::AbstractString, model::AbstractString,
         throw(StanModelError(name, String(take!(error_output))))
     end
 
-    #=
-    bridge_path = isdir(BRIDGESTAN_HOME) ? joinpath(BRIDGESTAN_HOME) : ""
-
-    if length(bridge_path) > 0
-        bridge_output = IOBuffer()
-        is_ok = cd(bridge_path) do
-            target = tmpdir * "/$(name)_model.so"
-            success(pipeline(`$(make_command())  -f $(bridge_path)/Makefile $(target)`;
-                stderr = bridge_output))
-        end
-        if !is_ok
-            @warn "BridgeStan compilation of model failed."
-            throw(StanModelError(name, String(take!(bridge_output))))
-        end
-    end
-    =#
-
     SampleModel(name, model, 
         # num_threads
         4,
@@ -183,14 +167,15 @@ function SampleModel(name::AbstractString, model::AbstractString,
 
         Cmd[],                         # Command lines
         String[],                      # Sample .csv files 
-        String[],                      # Log files
+        String[],                      # Log .log files
         String[],                      # Diagnostic files
         false,                         # Save adatation metrics in JSON file
         6,                             # Default number of sig_figs
         true,                          # Create stansummary result
         false,                         # Display stansummary result
         cmdstan_home,
-        false
+        false,                         # Show logging
+        false                          # Save diagnostics
     )
 end
 
@@ -258,6 +243,7 @@ function Base.show(io::IO, ::MIME"text/plain", m::SampleModel)
     println(io, "  summary                   ", m.summary)
     println(io, "  print_summary             ", m.print_summary)
     println(io, "  show_logging              ", m.show_logging)
+    println(io, "  save_diagnostics          ", m.save_diagnostics)
     println(io, "\nOther:")
     println(io, "  output_base =             ", m.output_base)
     println(io, "  tmpdir =                  ", m.tmpdir)

@@ -8,7 +8,7 @@ $(SIGNATURES)
 
 ### Required arguments
 ```julia
-* `m`                              : SampleModel
+* `m`                                  : SampleMode
 * `output_format`                      : Requested output format
 ```
 
