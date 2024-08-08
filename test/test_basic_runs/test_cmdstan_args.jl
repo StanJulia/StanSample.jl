@@ -12,7 +12,7 @@ cd(ProjDir) # do
       real<lower=0,upper=1> theta;
     } 
     model {
-      theta ~ beta(2,1);
+      theta ~ beta(1,1);
       y ~ bernoulli(theta);
     }
   ";
