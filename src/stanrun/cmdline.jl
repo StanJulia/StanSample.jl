@@ -19,9 +19,9 @@ function cmdline(m::SampleModel, id; kwargs...)
 
     if m.use_cpp_chains
         cmd = :num_threads in keys(kwargs) ? `$cmd num_threads=$(m.num_threads)` : `$cmd`
-        cmd = `$cmd sample num_chains=$(m.num_cpp_chains)`
+        cmd = `$cmd method=sample num_chains=$(m.num_cpp_chains)`
     else
-        cmd = `$cmd sample`
+        cmd = `$cmd method=sample`
     end
 
     cmd = :num_samples in keys(kwargs) ? `$cmd num_samples=$(m.num_samples)` : `$cmd`
@@ -43,7 +43,7 @@ function cmdline(m::SampleModel, id; kwargs...)
     if m.algorithm == :hmc
         cmd = :engine in keys(kwargs) ? `$cmd engine=$(string(m.engine))` : `$cmd`
         if m.engine == :nuts
-            cmd = :max_depth in keys(kwargs) ? `$cmd nuts max_depth=$(m.max_depth)` : `$cmd`
+            cmd = :max_depth in keys(kwargs) ? `$cmd max_depth=$(m.max_depth)` : `$cmd`
         elseif m.engine == :static
             cmd = :int_time in keys(kwargs) ? `$cmd int_time=$(m.int_time)` : `$cmd`
         end
@@ -85,4 +85,3 @@ function cmdline(m::SampleModel, id; kwargs...)
       
     cmd
   end
-

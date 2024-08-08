@@ -132,7 +132,6 @@ function stan_run(m::T; kwargs...) where {T <: CmdStanModels}
     m.diagnostic_file = String[]
     m.cmds = [stan_cmds(m, id; kwargs...) for id in 1:m.num_julia_chains]
 
-    #println(m.cmds)
 
     if !m.show_logging
         run(pipeline(par(m.cmds), stdout=m.log_file[1]))
@@ -164,5 +163,5 @@ function stan_cmds(m::T, id::Int; kwargs...) where {T <: CmdStanModels}
       append!(m.diagnostic_file, [diagnostic_file_path(m.output_base, id)])
     end
     
-    cmdline(m, id)
+    cmdline(m, id; kwargs...)
 end
