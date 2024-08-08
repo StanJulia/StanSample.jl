@@ -100,7 +100,11 @@ using StanSample
 
 See the docstrings (in particular `??StanSample`) for more help.
 
-## Versions
+## Versions 
+
+### Version 7.9-7.10
+
+1. Fix by zeyus for cmdstan options
 
 ### Versions 7.5-7.8
 
