@@ -1,4 +1,4 @@
-# StanSample v7.9
+# StanSample v7.10
 
 | **Project Status**          |  **Build Status** |
 |:---------------------------:|:-----------------:|
@@ -100,12 +100,16 @@ using StanSample
 
 See the docstrings (in particular `??StanSample`) for more help.
 
-## Versions
+## Versions 
+
+### Version 7.9-7.10
+
+1. Fix by zeyus for cmdstan options
 
 ### Versions 7.5-7.8
 
-1. Switching to cmdstan v2.34.1
-2. Support for new command keywords settings `save_metric1 and `save_cmdstan_config`
+1. Switching to cmdstan v2.35.0
+2. Support for new command keywords settings `save_metric1` and `save_cmdstan_config`
 3. Support for Stan .csv file extensions in output format :nesteddataframe.
 
 ### Version 7.1-4.0
