@@ -118,7 +118,8 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     "test_basic_runs/test_bernoulli_dict.jl",
     "test_basic_runs/test_bernoulli_array_dict_1.jl",
     "test_basic_runs/test_bernoulli_array_dict_2.jl",
-    "test_basic_runs/test_parse_interpolate.jl"
+    "test_basic_runs/test_parse_interpolate.jl",
+    "test_basic_runs/test_cmdstan_args.jl",
   ]
 
   @testset "Bernoulli basic run tests" begin
@@ -242,4 +243,3 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
 else
   println("\nCMDSTAN and JULIA_CMDSTAN_HOME not set. Skipping tests")
 end
-
