@@ -16,7 +16,6 @@ function cmdline(m::SampleModel, id; kwargs...)
     cmd = ``
     # Handle the model name field for unix and windows
     cmd = `$(m.exec_path)`
-
     if m.use_cpp_chains
         cmd = :num_threads in keys(kwargs) ? `$cmd num_threads=$(m.num_threads)` : `$cmd`
         cmd = `$cmd method=sample num_chains=$(m.num_cpp_chains)`
@@ -25,7 +24,7 @@ function cmdline(m::SampleModel, id; kwargs...)
     end
 
     cmd = :num_samples in keys(kwargs) ? `$cmd num_samples=$(m.num_samples)` : `$cmd`
-    cmd = :num_warmup in keys(kwargs) ? `$cmd num_warmup=$(m.num_warmups)` : `$cmd`
+    cmd = :num_warmups in keys(kwargs) ? `$cmd num_warmup=$(m.num_warmups)` : `$cmd`
     cmd = :save_warmup in keys(kwargs) ? `$cmd save_warmup=$(m.save_warmup)` : `$cmd`
     cmd = :save_warmup in keys(kwargs) ? `$cmd thin=$(m.thin)` : `$cmd`
     cmd = `$cmd adapt engaged=$(m.engaged)`
@@ -38,8 +37,8 @@ function cmdline(m::SampleModel, id; kwargs...)
     cmd = :window in keys(kwargs) ? `$cmd window=$(m.window)` : `$cmd`
     cmd = :save_metric in keys(kwargs) ? `$cmd save_metric=$(m.save_metric)` : `$cmd`
 
-    # Algorithm section
-    cmd = :algorithm in keys(kwargs) ? `$cmd algorithm=$(string(m.algorithm))` : `$cmd`
+    # Algorithm section, algorithm can only be HMC
+    cmd = `$cmd algorithm=$(string(m.algorithm))`
     if m.algorithm == :hmc
         cmd = :engine in keys(kwargs) ? `$cmd engine=$(string(m.engine))` : `$cmd`
         if m.engine == :nuts
