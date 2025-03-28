@@ -40,6 +40,6 @@ rc = stan_sample(
 if success(rc)
     (samples, cnames) = read_samples(sm, :array; return_parameters = true)
     @assert occursin(metric_file_name, string(rc.processes[1].cmd))
-    sdf = read_summary(sm)rm
+    sdf = read_summary(sm)
     sdf |> display
 end
