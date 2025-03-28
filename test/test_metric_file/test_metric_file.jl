@@ -31,10 +31,6 @@ rc = stan_sample(sm; data, algorithm=:hmc, stepsize=0.9, metric_file=fl);
 if success(rc)
   (samples, cnames) = read_samples(sm, :array; return_parameters=true)
 
-  ka = read_samples(sm, :keyedarray)
-  ka |> display
-  println()
-
-  sdf = read_summary(sm)
+  sdf = read_summary(sm)rm 
   sdf |> display
 end
