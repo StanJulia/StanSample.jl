@@ -32,7 +32,7 @@ rc = stan_sample(
     data,
     algorithm = :hmc,
     stepsize = 0.9,
-    metric_file = fl,
+    metric_file = joinpath(tempdir(), metric_file_name),
     num_warmups = 0,
     engaged = false,
 );

@@ -164,15 +164,14 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
     "test_dimensionaldata/test_dimensionaldata.jl",
   ]
 
-  #=
-  @testset "DimensionalData interface" begin
-    for test in test_dimensionaldata
-      println("\nTesting: $test.")
-      include(joinpath(TestDir, test))
-    end
-    println()
-  end
-  =#
+  
+  ##@testset "DimensionalData interface" begin
+  ##  for test in test_dimensionaldata
+  ##    println("\nTesting: $test.")
+  ##    include(joinpath(TestDir, test))
+  ##  end
+  ##  println()
+  ##end
   
   test_keywords = [
     "test_keywords/test_bernoulli_keyedarray_01.jl",
@@ -233,6 +232,19 @@ if haskey(ENV, "CMDSTAN") || haskey(ENV, "JULIA_CMDSTAN_HOME")
 
   @testset "Chris two step test" begin
     for test in test_chris_two_step
+      println("\nTesting: $test.")
+      include(joinpath(TestDir, test))
+    end
+    println()
+  end
+ 
+  println()
+  test_metric_file_name = [
+    "test_metric_file_name_keyword/test_metric_file.jl",
+  ]
+
+  @testset "Metric file name" begin
+    for test in test_metric_file_name
       println("\nTesting: $test.")
       include(joinpath(TestDir, test))
     end
