@@ -47,6 +47,7 @@ function cmdline(m::SampleModel, id; kwargs...)
             cmd = :int_time in keys(kwargs) ? `$cmd int_time=$(m.int_time)` : `$cmd`
         end
         cmd = :metric in keys(kwargs) ? `$cmd metric=$(string(m.metric))` : `$cmd`
+        cmd = :metric_file in keys(kwargs) ? `$cmd metric_file=$(m.metric_file)` : `$cmd`
         cmd = :stepsize in keys(kwargs) ? `$cmd stepsize=$(m.stepsize)` : `$cmd`
         cmd = :stepsize_jitter in keys(kwargs) ? `$cmd stepsize_jitter=$(m.stepsize_jitter)` : `$cmd`
     end
